@@ -226,22 +226,14 @@ async function startAnalysis() {
 // 渲染报告
 // ============================================================
 function renderReport(analysis) {
-  // 第一屏：核心结论
   renderCoreInsight(analysis.coreInsight);
-
-  // 第二屏：双向双栏
+  renderResponsibilityRatio(analysis.responsibilityRatio);
   renderDualColumns(analysis.dualAnalysis);
-
-  // 第三屏：对话回放
   renderReplay(analysis.replay);
-
-  // 第四屏：如果重来
   renderWhatIf(analysis.whatIf);
-
-  // 第五屏：破冰 + 行为观察
+  renderEmotionAnalysis(analysis.emotionAnalysis);
+  renderEmotionRelief(analysis.emotionRelief);
   renderIcebreakers(analysis.icebreakers, analysis.behavioralNotes);
-
-  // 分享按钮
   setupShare(analysis);
 }
 
@@ -249,7 +241,7 @@ function renderCoreInsight(insight) {
   if (!insight) return;
   $('#core-insight').innerHTML = `
     <div class="insight-tag">${insight.conflictType || ''}</div>
-    <h3 class="insight-title">${insight.title || ''}</h3>
+    <h3 class="insight-title">🧠 ${insight.title || ''}</h3>
     <p class="insight-summary">${insight.summary || ''}</p>
     <div class="insight-real-topic">
       <span class="label">表面上在吵：</span>
@@ -258,54 +250,60 @@ function renderCoreInsight(insight) {
   `;
 }
 
+// ============================================================
+// 🆕 冲突贡献度
+// ============================================================
+function renderResponsibilityRatio(ratio) {
+  if (!ratio) return;
+  const a = ratio.sideA || 50;
+  const b = ratio.sideB || 50;
+  $('#screen-responsibility').classList.remove('hidden');
+  $('#responsibility-container').innerHTML = `
+    <div class="ratio-bar-wrap">
+      <div class="ratio-side">
+        <span class="ratio-label">👤 A</span>
+        <div class="ratio-bar-bg"><div class="ratio-bar-fill a" style="width:${a}%"></div></div>
+        <span class="ratio-pct">${a}%</span>
+        <p class="ratio-reason">${ratio.reasonA || ''}</p>
+      </div>
+      <div class="ratio-side">
+        <span class="ratio-label">👤 B</span>
+        <div class="ratio-bar-bg"><div class="ratio-bar-fill b" style="width:${b}%"></div></div>
+        <span class="ratio-pct">${b}%</span>
+        <p class="ratio-reason">${ratio.reasonB || ''}</p>
+      </div>
+    </div>
+    <p class="ratio-note">${ratio.note || ''}</p>
+  `;
+}
+
+// ============================================================
+// 双向双栏（增强视觉区分）
+// ============================================================
 function renderDualColumns(dual) {
   if (!dual) return;
   const { sideA, sideB, gap } = dual;
 
   $('#dual-columns').innerHTML = `
     <div class="column column-a">
-      <div class="column-header">👤 ${sideA?.label || 'A'} 的世界</div>
-      <div class="layer">
-        <span class="layer-label">说了</span>
-        <p class="layer-said">${sideA?.said || ''}</p>
-      </div>
+      <div class="column-header">🟠 ${sideA?.label || 'A'} 的世界</div>
+      <div class="layer"><span class="layer-label">💬 说了</span><p class="layer-said">${sideA?.said || ''}</p></div>
+      <div class="layer arrow-layer">⬇ 对方听到的</div>
+      <div class="layer"><p class="layer-heard">${sideA?.heardByB || ''}</p></div>
+      <div class="layer arrow-layer">⬇ 内心活动</div>
+      <div class="layer"><p class="layer-inner">${sideA?.innerVoice || ''}</p></div>
       <div class="layer arrow-layer">⬇</div>
-      <div class="layer">
-        <span class="layer-label">对方听到的</span>
-        <p class="layer-heard">${sideA?.heardByB || ''}</p>
-      </div>
-      <div class="layer arrow-layer">⬇</div>
-      <div class="layer">
-        <span class="layer-label">内心活动</span>
-        <p class="layer-inner">${sideA?.innerVoice || ''}</p>
-      </div>
-      <div class="layer arrow-layer">⬇</div>
-      <div class="layer layer-real">
-        <span class="layer-label">❤️ 真正想说的</span>
-        <p>${sideA?.realMeaning || ''}</p>
-      </div>
+      <div class="layer layer-real"><span class="layer-label">❤️ 真正想说的</span><p>${sideA?.realMeaning || ''}</p></div>
     </div>
     <div class="column column-b">
-      <div class="column-header">👤 ${sideB?.label || 'B'} 的世界</div>
-      <div class="layer">
-        <span class="layer-label">说了</span>
-        <p class="layer-said">${sideB?.said || ''}</p>
-      </div>
+      <div class="column-header">🔵 ${sideB?.label || 'B'} 的世界</div>
+      <div class="layer"><span class="layer-label">💬 说了</span><p class="layer-said">${sideB?.said || ''}</p></div>
+      <div class="layer arrow-layer">⬇ 对方听到的</div>
+      <div class="layer"><p class="layer-heard">${sideB?.heardByA || ''}</p></div>
+      <div class="layer arrow-layer">⬇ 内心活动</div>
+      <div class="layer"><p class="layer-inner">${sideB?.innerVoice || ''}</p></div>
       <div class="layer arrow-layer">⬇</div>
-      <div class="layer">
-        <span class="layer-label">对方听到的</span>
-        <p class="layer-heard">${sideB?.heardByA || ''}</p>
-      </div>
-      <div class="layer arrow-layer">⬇</div>
-      <div class="layer">
-        <span class="layer-label">内心活动</span>
-        <p class="layer-inner">${sideB?.innerVoice || ''}</p>
-      </div>
-      <div class="layer arrow-layer">⬇</div>
-      <div class="layer layer-real">
-        <span class="layer-label">❤️ 真正想说的</span>
-        <p>${sideB?.realMeaning || ''}</p>
-      </div>
+      <div class="layer layer-real"><span class="layer-label">❤️ 真正想说的</span><p>${sideB?.realMeaning || ''}</p></div>
     </div>
   `;
 
@@ -317,6 +315,9 @@ function renderDualColumns(dual) {
   ` : '';
 }
 
+// ============================================================
+// 对话回放（纯心理分析 + 隐藏需求）
+// ============================================================
 function renderReplay(replayList) {
   if (!replayList || !Array.isArray(replayList)) return;
 
@@ -327,13 +328,13 @@ function renderReplay(replayList) {
     return `
       <div class="${turnClass}">
         <div class="replay-header">
-          <span class="replay-round">第 ${r.round} 句</span>
-          <span class="replay-speaker">${r.speaker === 'A' ? '👤 A' : '👤 B'}</span>
+          <span class="replay-round">第${r.round}句</span>
+          <span class="replay-speaker">${r.speaker === 'A' ? '🟠 A' : '🔵 B'}</span>
           ${turnBadge}
         </div>
         <p class="replay-text">${r.text || ''}</p>
-        ${r.annotation ? `<div class="replay-annotation">💡 ${r.annotation}</div>` : ''}
-        ${r.alternativeResponse ? `<div class="replay-alt">🔄 如果当时：${r.alternativeResponse}</div>` : ''}
+        ${r.psychology ? `<div class="replay-psychology">🧠 知间解说：${r.psychology}</div>` : ''}
+        ${r.hiddenNeed ? `<div class="replay-need">💎 未说出口的需求：${r.hiddenNeed}</div>` : ''}
       </div>
     `;
   }).join('');
@@ -341,13 +342,16 @@ function renderReplay(replayList) {
   $('#replay-container').innerHTML = html;
 }
 
+// ============================================================
+// 如果重来
+// ============================================================
 function renderWhatIf(whatIf) {
   if (!whatIf) return;
 
   const sideBySide = whatIf.sideBySide || [];
   const rows = sideBySide.map((row) => `
     <div class="what-if-row">
-      <div class="what-if-speaker">${row.speaker === 'A' ? '👤 A' : '👤 B'}</div>
+      <div class="what-if-speaker">${row.speaker === 'A' ? '🟠 A' : '🔵 B'}</div>
       <div class="what-if-original">${row.original || ''}</div>
       <div class="what-if-arrow">→</div>
       <div class="what-if-alt">${row.alternative || ''}</div>
@@ -356,23 +360,74 @@ function renderWhatIf(whatIf) {
 
   $('#what-if-container').innerHTML = `
     <div class="what-if-summary">
-      <div class="what-if-flow">
-        <span class="flow-label">🔴 现实中</span>
-        <p>${whatIf.originalFlow || ''}</p>
-      </div>
-      <div class="what-if-flow">
-        <span class="flow-label">🟢 如果重来</span>
-        <p>${whatIf.alternativeFlow || ''}</p>
-      </div>
+      <div class="what-if-flow"><span class="flow-label">🔴 现实中</span><p>${whatIf.originalFlow || ''}</p></div>
+      <div class="what-if-flow"><span class="flow-label">🟢 如果重来</span><p>${whatIf.alternativeFlow || ''}</p></div>
     </div>
     <div class="what-if-table">
-      <div class="what-if-header">
-        <span>现实中说的</span>
-        <span>如果这样说</span>
-      </div>
+      <div class="what-if-header"><span>现实中说的</span><span>如果这样说</span></div>
       ${rows}
     </div>
   `;
+}
+
+// ============================================================
+// 🆕 情绪量化分析
+// ============================================================
+function renderEmotionAnalysis(emotion) {
+  if (!emotion) return;
+  $('#screen-emotion').classList.remove('hidden');
+
+  const renderSide = (data, label) => {
+    if (!data) return '';
+    const dims = [
+      { key: 'anxiety', label: '😰 焦虑', color: '#f59e0b' },
+      { key: 'anger', label: '😤 愤怒', color: '#ef4444' },
+      { key: 'sadness', label: '😢 悲伤', color: '#3b82f6' },
+      { key: 'hurt', label: '💔 委屈', color: '#8b5cf6' },
+      { key: 'exhaustion', label: '😮‍💨 疲惫', color: '#6b7280' },
+      { key: 'helplessness', label: '😶 无力感', color: '#94a3b8' },
+    ];
+    const bars = dims.map(d => `
+      <div class="emotion-bar-row">
+        <span class="emotion-label">${d.label}</span>
+        <div class="emotion-bar-bg"><div class="emotion-bar-fill" style="width:${data[d.key]||0}%;background:${d.color}"></div></div>
+        <span class="emotion-score">${data[d.key]||0}</span>
+      </div>
+    `).join('');
+    return `<div class="emotion-card"><h4>${label}</h4>${bars}<p class="emotion-summary">${data.summary||''}</p></div>`;
+  };
+
+  $('#emotion-container').innerHTML = `
+    <div class="emotion-grid">
+      ${renderSide(emotion.sideA, '🟠 A 的情绪画像')}
+      ${renderSide(emotion.sideB, '🔵 B 的情绪画像')}
+    </div>
+  `;
+}
+
+// ============================================================
+// 🆕 多流派情绪调节建议
+// ============================================================
+function renderEmotionRelief(relief) {
+  if (!relief) return;
+  $('#screen-relief').classList.remove('hidden');
+
+  const methods = (relief.forUser || []).map(m => `
+    <div class="relief-card">
+      <div class="relief-header">
+        <span class="relief-method">🌿 ${m.method||''}</span>
+        <span class="relief-school">${m.school||''}</span>
+      </div>
+      <p class="relief-steps">${m.steps||''}</p>
+      <p class="relief-why">💡 ${m.whyItHelps||''}</p>
+    </div>
+  `).join('');
+
+  $('#relief-container').innerHTML = methods;
+  if (relief.note) {
+    $('#relief-note').textContent = relief.note;
+    $('#relief-note').classList.remove('hidden');
+  }
 }
 
 function renderIcebreakers(icebreakers, notes) {

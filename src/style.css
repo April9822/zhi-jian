@@ -1017,3 +1017,272 @@ textarea:focus {
 #ocr-text {
   width: 100%;
 }
+
+/* ============================================================
+   🆕 冲突贡献度
+   ============================================================ */
+.screen-responsibility {
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+  border: 1px solid var(--gold-light);
+}
+
+.ratio-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ratio-side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ratio-label {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--navy);
+}
+
+.ratio-bar-bg {
+  height: 14px;
+  background: #e5e7eb;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.ratio-bar-fill {
+  height: 100%;
+  border-radius: 7px;
+  transition: width 1s ease;
+}
+
+.ratio-bar-fill.a { background: linear-gradient(90deg, #f59e0b, #f97316); }
+.ratio-bar-fill.b { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+
+.ratio-pct {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.ratio-reason {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.ratio-note {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ============================================================
+   🆕 情绪量化
+   ============================================================ */
+.screen-emotion {
+  background: linear-gradient(135deg, #faf5ff, #f5f3ff);
+}
+
+.emotion-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.emotion-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.emotion-card h4 {
+  font-size: 15px;
+  margin-bottom: 14px;
+  color: var(--navy);
+}
+
+.emotion-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.emotion-label {
+  width: 70px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.emotion-bar-bg {
+  flex: 1;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.emotion-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+
+.emotion-score {
+  width: 28px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  text-align: right;
+}
+
+.emotion-summary {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--warm-border);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   🆕 情绪调节疗法
+   ============================================================ */
+.screen-relief {
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+}
+
+.relief-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  border-left: 3px solid #22c55e;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+
+.relief-card:hover {
+  border-left-color: #16a34a;
+  box-shadow: var(--shadow-md);
+}
+
+.relief-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.relief-method {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--navy);
+}
+
+.relief-school {
+  display: inline-block;
+  background: #dcfce7;
+  color: #15803d;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.relief-steps {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+
+.relief-why {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.relief-note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* ============================================================
+   🆕 对话回放 · 心理分析
+   ============================================================ */
+.replay-psychology {
+  background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+  border-left: 3px solid #3b82f6;
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+.replay-need {
+  background: linear-gradient(135deg, #fefce8, #fef9c3);
+  border-left: 3px solid #eab308;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #854d0e;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   🆕 分享CTA
+   ============================================================ */
+.share-cta-hint {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 14px;
+}
+
+/* ============================================================
+   双栏增强区分
+   ============================================================ */
+.column-a {
+  border-top: 3px solid #f97316;
+  background: #fff7ed;
+}
+
+.column-b {
+  border-top: 3px solid #3b82f6;
+  background: #eff6ff;
+}
+
+.column-a .column-header { color: #c2410c; border-bottom-color: #fed7aa; }
+.column-b .column-header { color: #1d4ed8; border-bottom-color: #bfdbfe; }
+
+/* ============================================================
+   输入提示多人限制
+   ============================================================ */
+.input-notice {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+@media (max-width: 640px) {
+  .emotion-grid {
+    grid-template-columns: 1fr;
+  }
+}
