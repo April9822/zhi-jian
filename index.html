@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>知间 InBetween — 理解人与人之间</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+    <!-- ====== 首页：输入区 ====== -->
+    <main id="input-screen" class="screen active">
+      <div class="hero">
+        <h1 class="brand">知间</h1>
+        <p class="subtitle">理解人与人之间</p>
+        <p class="greeting">发生了什么事？我在。</p>
+      </div>
+
+      <div class="input-card">
+        <!-- Tab 切换 -->
+        <div class="tab-bar">
+          <button class="tab active" data-tab="paste">✏️ 粘贴对话</button>
+          <button class="tab" data-tab="image">📸 上传截图</button>
+        </div>
+
+        <!-- 粘贴文字 -->
+        <div id="tab-paste" class="tab-content active">
+          <textarea
+            id="text-input"
+            placeholder="把微信聊天记录复制到这里……&#10;&#10;格式示例：&#10;我：你为什么不回我消息&#10;TA：刚刚在忙"
+            rows="10"
+          ></textarea>
+        </div>
+
+        <!-- 上传截图 -->
+        <div id="tab-image" class="tab-content">
+          <div id="drop-zone" class="drop-zone">
+            <div class="drop-icon">📷</div>
+            <p>点击或拖拽上传聊天截图</p>
+            <p class="drop-hint">支持 JPG、PNG。分析后立即删除。</p>
+            <input type="file" id="image-input" accept="image/*" hidden />
+            <button id="upload-btn" class="btn-secondary">选择图片</button>
+          </div>
+          <div id="ocr-preview" class="hidden">
+            <p class="ocr-label">🔍 AI 识别的内容（可编辑修改）：</p>
+            <textarea id="ocr-text" rows="8"></textarea>
+          </div>
+        </div>
+
+        <!-- 标注身份 -->
+        <div id="identity-section" class="identity-section hidden">
+          <p class="identity-label">标注你的身份（帮助知间理解对话）：</p>
+          <div class="identity-buttons">
+            <button class="identity-btn" data-role="A">👤 我是 A</button>
+            <button class="identity-btn" data-role="B">👤 我是 B</button>
+            <button class="identity-btn" data-role="auto">🤖 帮我判断</button>
+          </div>
+          <p id="identity-hint" class="identity-hint"></p>
+        </div>
+
+        <!-- 隐私声明 -->
+        <div class="privacy-note">
+          🔒 分析完成后立即删除，不存储、不训练、不分享。
+        </div>
+      </div>
+
+      <button id="analyze-btn" class="btn-primary" disabled>
+        开始分析
+      </button>
+      <p id="input-hint" class="input-hint">请输入至少 5 条对话</p>
+    </main>
+
+    <!-- ====== 加载中 ====== -->
+    <div id="loading-screen" class="screen">
+      <div class="loading-card">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">知间正在理解你们的对话……</p>
+        <p class="loading-sub">这可能需要 10-20 秒</p>
+      </div>
+    </div>
+
+    <!-- ====== 报告页 ====== -->
+    <main id="report-screen" class="screen">
+      <div class="report-container">
+        <!-- 第一屏：核心结论 -->
+        <section id="screen-1" class="report-screen screen-1">
+          <h2 class="section-label">核心洞察</h2>
+          <div id="core-insight" class="core-insight"></div>
+        </section>
+
+        <!-- 第二屏：双向双栏 -->
+        <section id="screen-2" class="report-screen screen-2">
+          <h2 class="section-label">你们各自的世界</h2>
+          <div id="dual-columns" class="dual-columns"></div>
+          <div id="gap-annotation" class="gap-annotation"></div>
+        </section>
+
+        <!-- 第三屏：对话回放 -->
+        <section id="screen-3" class="report-screen screen-3">
+          <h2 class="section-label">对话回放</h2>
+          <div id="replay-container" class="replay-container"></div>
+        </section>
+
+        <!-- 第四屏：如果重来 -->
+        <section id="screen-4" class="report-screen screen-4">
+          <h2 class="section-label">如果重来</h2>
+          <div id="what-if-container" class="what-if-container"></div>
+        </section>
+
+        <!-- 第五屏：破冰 + 分享 -->
+        <section id="screen-5" class="report-screen screen-5">
+          <h2 class="section-label">下一步</h2>
+          <div id="icebreaker-container" class="icebreaker-container"></div>
+          <div id="share-section" class="share-section">
+            <button id="share-btn" class="btn-primary">📤 分享 TA 的那一半</button>
+            <p class="share-hint">TA 只会看到自己的部分。你的隐私是安全的。</p>
+          </div>
+          <div id="share-link-box" class="share-link-box hidden">
+            <p class="share-label">🔗 TA 的链接（复制发送）：</p>
+            <div class="link-copy-row">
+              <input id="share-url" type="text" readonly />
+              <button id="copy-link-btn" class="btn-secondary">复制</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 报告底部 -->
+        <footer class="report-footer">
+          <button id="new-analysis-btn" class="btn-secondary">🔄 开始新的分析</button>
+          <p class="register-teaser">想记住这次分析？<a href="#" id="register-teaser-link">创建账号</a></p>
+          <p class="footer-brand">知间 InBetween · 理解人与人之间</p>
+        </footer>
+      </div>
+    </main>
+
+    <!-- ====== Toast ====== -->
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

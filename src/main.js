@@ -1,0 +1,566 @@
+/**
+ * 知间 InBetween V1.0
+ * 前端主逻辑
+ */
+
+// ============================================================
+// 状态管理
+// ============================================================
+const state = {
+  conversation: '',
+  userRole: null, // 'A' | 'B' | 'auto'
+  ocrText: '',
+  inputMode: 'paste', // 'paste' | 'image'
+  imageFile: null,
+};
+
+// ============================================================
+// DOM 引用
+// ============================================================
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+const dom = {
+  inputScreen: $('#input-screen'),
+  loadingScreen: $('#loading-screen'),
+  reportScreen: $('#report-screen'),
+  textInput: $('#text-input'),
+  dropZone: $('#drop-zone'),
+  imageInput: $('#image-input'),
+  uploadBtn: $('#upload-btn'),
+  ocrPreview: $('#ocr-preview'),
+  ocrText: $('#ocr-text'),
+  identitySection: $('#identity-section'),
+  identityHint: $('#identity-hint'),
+  analyzeBtn: $('#analyze-btn'),
+  inputHint: $('#input-hint'),
+  tabs: $$('.tab'),
+  tabContents: $$('.tab-content'),
+};
+
+// ============================================================
+// Tab 切换
+// ============================================================
+dom.tabs.forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    state.inputMode = target;
+
+    dom.tabs.forEach((t) => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    dom.tabContents.forEach((c) => c.classList.remove('active'));
+    if (target === 'paste') {
+      $('#tab-paste').classList.add('active');
+    } else {
+      $('#tab-image').classList.add('active');
+    }
+
+    updateAnalyzeButton();
+  });
+});
+
+// ============================================================
+// 图片上传
+// ============================================================
+dom.uploadBtn.addEventListener('click', () => dom.imageInput.click());
+
+dom.imageInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) handleImageFile(file);
+});
+
+// 拖拽上传
+dom.dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dom.dropZone.classList.add('dragover');
+});
+
+dom.dropZone.addEventListener('dragleave', () => {
+  dom.dropZone.classList.remove('dragover');
+});
+
+dom.dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dom.dropZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    handleImageFile(file);
+  }
+});
+
+function handleImageFile(file) {
+  state.imageFile = file;
+  state.inputMode = 'image';
+
+  // 显示已选文件
+  dom.dropZone.querySelector('.drop-icon').textContent = '✅';
+  dom.dropZone.querySelector('p').textContent = `已选择：${file.name}`;
+
+  // V1.0 引导用户使用粘贴方式
+  // OCR 功能将在 V1.1 接入真实 OCR API
+  dom.ocrPreview.classList.remove('hidden');
+  dom.ocrText.value = '[截图已上传]\n\nOCR 文字识别功能将在 V1.1 上线。\n现在请使用「粘贴对话」标签页，\n把聊天记录复制粘贴进来即可开始分析。';
+  dom.ocrText.style.color = '#64748b';
+
+  updateAnalyzeButton();
+  showToast('📸 截图已上传。OCR 功能 V1.1 上线，现在请使用「粘贴对话」');
+}
+
+// ============================================================
+// 文字输入监听
+// ============================================================
+dom.textInput.addEventListener('input', () => {
+  state.conversation = dom.textInput.value.trim();
+  updateAnalyzeButton();
+  updateIdentitySection();
+});
+
+// OCR 文字变化也监听
+dom.ocrText.addEventListener('input', () => {
+  state.ocrText = dom.ocrText.value.trim();
+  updateAnalyzeButton();
+  updateIdentitySection();
+});
+
+function updateIdentitySection() {
+  const text = state.inputMode === 'paste' ? (state.conversation || '') : (state.ocrText || '');
+  const lines = text.split('\n').filter((l) => l.trim().length > 0);
+
+  if (lines.length >= 3) {
+    dom.identitySection.classList.remove('hidden');
+  } else {
+    dom.identitySection.classList.add('hidden');
+  }
+}
+
+function updateAnalyzeButton() {
+  const text = state.inputMode === 'paste' ? (state.conversation || '') : (state.ocrText || '');
+  const lines = text.split('\n').filter((l) => l.trim().length > 0);
+
+  if (text.includes('[OCR') || text.includes('[截图已上传]')) {
+    // OCR placeholder text - don't count
+    dom.analyzeBtn.disabled = true;
+    dom.inputHint.textContent = '请切换到「粘贴对话」输入文字内容';
+    dom.inputHint.style.color = '#fbbf24';
+    return;
+  }
+
+  if (lines.length >= 5) {
+    dom.analyzeBtn.disabled = false;
+    dom.inputHint.textContent = `检测到 ${lines.length} 条对话，可以开始分析`;
+    dom.inputHint.style.color = '#4ade80';
+  } else if (lines.length >= 1) {
+    dom.analyzeBtn.disabled = true;
+    dom.inputHint.textContent = `还需要至少 ${5 - lines.length} 条对话才能分析`;
+    dom.inputHint.style.color = '#fbbf24';
+  } else {
+    dom.analyzeBtn.disabled = true;
+    dom.inputHint.textContent = '请输入至少 5 条对话';
+    dom.inputHint.style.color = '#94a3b8';
+  }
+}
+
+// ============================================================
+// 身份标注
+// ============================================================
+$$('.identity-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    $$('.identity-btn').forEach((b) => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    state.userRole = btn.dataset.role;
+
+    const labels = { A: '已标记：你是 A', B: '已标记：你是 B', auto: 'AI 将自动判断你的身份' };
+    dom.identityHint.textContent = labels[state.userRole] || '';
+  });
+});
+
+// ============================================================
+// 开始分析
+// ============================================================
+dom.analyzeBtn.addEventListener('click', startAnalysis);
+
+async function startAnalysis() {
+  const conversation = state.conversation || dom.ocrText.value.trim();
+  if (!conversation || conversation.length < 10) {
+    showToast('请先输入对话内容');
+    return;
+  }
+
+  // 切换到加载状态
+  dom.inputScreen.classList.remove('active');
+  dom.loadingScreen.classList.add('active');
+  dom.reportScreen.classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  try {
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        conversation,
+        userRole: state.userRole || 'auto',
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.error || '分析失败');
+    }
+
+    renderReport(data.analysis);
+    dom.loadingScreen.classList.remove('active');
+    dom.reportScreen.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    dom.loadingScreen.classList.remove('active');
+    dom.inputScreen.classList.add('active');
+    showToast(`分析失败：${err.message}`);
+    console.error('分析错误：', err);
+  }
+}
+
+// ============================================================
+// 渲染报告
+// ============================================================
+function renderReport(analysis) {
+  // 第一屏：核心结论
+  renderCoreInsight(analysis.coreInsight);
+
+  // 第二屏：双向双栏
+  renderDualColumns(analysis.dualAnalysis);
+
+  // 第三屏：对话回放
+  renderReplay(analysis.replay);
+
+  // 第四屏：如果重来
+  renderWhatIf(analysis.whatIf);
+
+  // 第五屏：破冰 + 行为观察
+  renderIcebreakers(analysis.icebreakers, analysis.behavioralNotes);
+
+  // 分享按钮
+  setupShare(analysis);
+}
+
+function renderCoreInsight(insight) {
+  if (!insight) return;
+  $('#core-insight').innerHTML = `
+    <div class="insight-tag">${insight.conflictType || ''}</div>
+    <h3 class="insight-title">${insight.title || ''}</h3>
+    <p class="insight-summary">${insight.summary || ''}</p>
+    <div class="insight-real-topic">
+      <span class="label">表面上在吵：</span>
+      <span>${insight.realTopic || ''}</span>
+    </div>
+  `;
+}
+
+function renderDualColumns(dual) {
+  if (!dual) return;
+  const { sideA, sideB, gap } = dual;
+
+  $('#dual-columns').innerHTML = `
+    <div class="column column-a">
+      <div class="column-header">👤 ${sideA?.label || 'A'} 的世界</div>
+      <div class="layer">
+        <span class="layer-label">说了</span>
+        <p class="layer-said">${sideA?.said || ''}</p>
+      </div>
+      <div class="layer arrow-layer">⬇</div>
+      <div class="layer">
+        <span class="layer-label">对方听到的</span>
+        <p class="layer-heard">${sideA?.heardByB || ''}</p>
+      </div>
+      <div class="layer arrow-layer">⬇</div>
+      <div class="layer">
+        <span class="layer-label">内心活动</span>
+        <p class="layer-inner">${sideA?.innerVoice || ''}</p>
+      </div>
+      <div class="layer arrow-layer">⬇</div>
+      <div class="layer layer-real">
+        <span class="layer-label">❤️ 真正想说的</span>
+        <p>${sideA?.realMeaning || ''}</p>
+      </div>
+    </div>
+    <div class="column column-b">
+      <div class="column-header">👤 ${sideB?.label || 'B'} 的世界</div>
+      <div class="layer">
+        <span class="layer-label">说了</span>
+        <p class="layer-said">${sideB?.said || ''}</p>
+      </div>
+      <div class="layer arrow-layer">⬇</div>
+      <div class="layer">
+        <span class="layer-label">对方听到的</span>
+        <p class="layer-heard">${sideB?.heardByA || ''}</p>
+      </div>
+      <div class="layer arrow-layer">⬇</div>
+      <div class="layer">
+        <span class="layer-label">内心活动</span>
+        <p class="layer-inner">${sideB?.innerVoice || ''}</p>
+      </div>
+      <div class="layer arrow-layer">⬇</div>
+      <div class="layer layer-real">
+        <span class="layer-label">❤️ 真正想说的</span>
+        <p>${sideB?.realMeaning || ''}</p>
+      </div>
+    </div>
+  `;
+
+  $('#gap-annotation').innerHTML = gap ? `
+    <div class="gap-card">
+      <div class="gap-icon">🔍</div>
+      <p>${gap}</p>
+    </div>
+  ` : '';
+}
+
+function renderReplay(replayList) {
+  if (!replayList || !Array.isArray(replayList)) return;
+
+  const html = replayList.map((r) => {
+    const turnClass = r.isTurningPoint ? 'replay-item turning-point' : 'replay-item';
+    const turnBadge = r.isTurningPoint ? '<span class="turn-badge">⚡ 转折点</span>' : '';
+
+    return `
+      <div class="${turnClass}">
+        <div class="replay-header">
+          <span class="replay-round">第 ${r.round} 句</span>
+          <span class="replay-speaker">${r.speaker === 'A' ? '👤 A' : '👤 B'}</span>
+          ${turnBadge}
+        </div>
+        <p class="replay-text">${r.text || ''}</p>
+        ${r.annotation ? `<div class="replay-annotation">💡 ${r.annotation}</div>` : ''}
+        ${r.alternativeResponse ? `<div class="replay-alt">🔄 如果当时：${r.alternativeResponse}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+
+  $('#replay-container').innerHTML = html;
+}
+
+function renderWhatIf(whatIf) {
+  if (!whatIf) return;
+
+  const sideBySide = whatIf.sideBySide || [];
+  const rows = sideBySide.map((row) => `
+    <div class="what-if-row">
+      <div class="what-if-speaker">${row.speaker === 'A' ? '👤 A' : '👤 B'}</div>
+      <div class="what-if-original">${row.original || ''}</div>
+      <div class="what-if-arrow">→</div>
+      <div class="what-if-alt">${row.alternative || ''}</div>
+    </div>
+  `).join('');
+
+  $('#what-if-container').innerHTML = `
+    <div class="what-if-summary">
+      <div class="what-if-flow">
+        <span class="flow-label">🔴 现实中</span>
+        <p>${whatIf.originalFlow || ''}</p>
+      </div>
+      <div class="what-if-flow">
+        <span class="flow-label">🟢 如果重来</span>
+        <p>${whatIf.alternativeFlow || ''}</p>
+      </div>
+    </div>
+    <div class="what-if-table">
+      <div class="what-if-header">
+        <span>现实中说的</span>
+        <span>如果这样说</span>
+      </div>
+      ${rows}
+    </div>
+  `;
+}
+
+function renderIcebreakers(icebreakers, notes) {
+  if (!icebreakers || !Array.isArray(icebreakers)) return;
+
+  const cards = icebreakers.map((ib) => `
+    <div class="icebreaker-card">
+      <span class="icebreaker-style">${ib.style || ''}</span>
+      <p class="icebreaker-text">${ib.text || ''}</p>
+      <button class="btn-copy-icebreaker" data-text="${escapeHtml(ib.text || '')}">📋 复制</button>
+    </div>
+  `).join('');
+
+  let notesHtml = '';
+  if (notes) {
+    notesHtml = `
+      <div class="behavioral-notes">
+        <h3>📋 本次对话行为观察</h3>
+        <div class="notes-grid">
+          <div class="note-card">
+            <span class="note-label">👤 A 的沟通模式</span>
+            <p>${notes.sideA || ''}</p>
+          </div>
+          <div class="note-card">
+            <span class="note-label">👤 B 的沟通模式</span>
+            <p>${notes.sideB || ''}</p>
+          </div>
+        </div>
+        <p class="note-disclaimer">⚠️ 以上是基于本次对话的行为观察，不代表长期人格。</p>
+      </div>
+    `;
+  }
+
+  $('#icebreaker-container').innerHTML = `
+    <div class="icebreaker-cards">${cards}</div>
+    ${notesHtml}
+  `;
+
+  // 复制按钮事件
+  $$('.btn-copy-icebreaker').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const text = btn.dataset.text || '';
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✅ 已复制';
+        setTimeout(() => { btn.textContent = '📋 复制'; }, 2000);
+      });
+    });
+  });
+}
+
+function setupShare(analysis) {
+  $('#share-btn').addEventListener('click', () => {
+    // V1.0 简化：生成一个带参数的 URL
+    const shareData = {
+      sideB: analysis.dualAnalysis?.sideB,
+      whatIfB: analysis.whatIf?.sideBySide?.filter((r) => r.speaker === 'B'),
+      icebreakerForB: analysis.icebreakers?.[0],
+    };
+
+    const encoded = btoa(encodeURIComponent(JSON.stringify(shareData)));
+    const url = `${window.location.origin}?share=${encoded}`;
+
+    const linkBox = $('#share-link-box');
+    linkBox.classList.remove('hidden');
+    $('#share-url').value = url;
+
+    // 自动复制
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('🔗 TA 的链接已复制，可以直接发送给TA');
+    });
+  });
+
+  $('#copy-link-btn').addEventListener('click', () => {
+    const url = $('#share-url').value;
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('✅ 链接已复制');
+    });
+  });
+}
+
+// ============================================================
+// 辅助功能
+// ============================================================
+$('#new-analysis-btn').addEventListener('click', () => {
+  state.conversation = '';
+  state.userRole = null;
+  state.ocrText = '';
+  state.imageFile = null;
+  dom.textInput.value = '';
+  dom.ocrText.value = '';
+  dom.identitySection.classList.add('hidden');
+  dom.ocrPreview.classList.add('hidden');
+  dom.analyzeBtn.disabled = true;
+  dom.inputHint.textContent = '请输入至少 5 条对话';
+  dom.inputHint.style.color = '#94a3b8';
+  dom.reportScreen.classList.remove('active');
+  dom.inputScreen.classList.add('active');
+  $$('.identity-btn').forEach((b) => b.classList.remove('selected'));
+  $('#share-link-box').classList.add('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+$('#register-teaser-link').addEventListener('click', (e) => {
+  e.preventDefault();
+  showToast('📬 账号功能即将上线，敬请期待！');
+});
+
+function showToast(message) {
+  const toast = $('#toast');
+  toast.textContent = message;
+  toast.classList.remove('hidden');
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.classList.add('hidden'), 300);
+  }, 3000);
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ============================================================
+// 分享链接处理（接收方）
+// ============================================================
+function handleSharedLink() {
+  const params = new URLSearchParams(window.location.search);
+  const share = params.get('share');
+  if (share) {
+    try {
+      const data = JSON.parse(decodeURIComponent(atob(share)));
+      renderSharedView(data);
+    } catch (e) {
+      // 无效的分享链接，显示正常首页
+    }
+  }
+}
+
+function renderSharedView(data) {
+  dom.inputScreen.classList.remove('active');
+  dom.reportScreen.classList.add('active');
+
+  $('#core-insight').innerHTML = `
+    <div class="shared-banner">🔗 有人委托知间，帮你看看这段对话。</div>
+    <p class="shared-intro">这是你的部分。你不会看到对方的信息。</p>
+  `;
+
+  // 渲染 TA 那半
+  if (data.sideB) {
+    const sb = data.sideB;
+    $('#dual-columns').innerHTML = `
+      <div class="column column-b single-column">
+        <div class="column-header">👤 你的世界</div>
+        <div class="layer">
+          <span class="layer-label">你说了</span>
+          <p class="layer-said">${sb.said || ''}</p>
+        </div>
+        <div class="layer arrow-layer">⬇</div>
+        <div class="layer">
+          <span class="layer-label">对方可能听到的</span>
+          <p class="layer-heard">${sb.heardByA || sb.heardByB || ''}</p>
+        </div>
+        <div class="layer arrow-layer">⬇</div>
+        <div class="layer layer-real">
+          <span class="layer-label">❤️ 你可能真正想说的</span>
+          <p>${sb.realMeaning || ''}</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // 隐藏分享按钮（接收方不需要再分享）
+  $('#share-section').classList.add('hidden');
+  $('#screen-3').classList.add('hidden');
+  $('#screen-4').classList.add('hidden');
+
+  // 底部增加回传入口
+  $('.report-footer').innerHTML = `
+    <div class="shared-cta">
+      <p>你也想看看对方是怎么听到你这句话的吗？</p>
+      <button class="btn-primary" onclick="location.href='/'">📤 上传你的聊天记录</button>
+      <p class="shared-cta-hint">双方都上传后，知间可以合成更完整的报告。</p>
+    </div>
+    <p class="footer-brand">知间 InBetween · 理解人与人之间</p>
+  `;
+}
+
+// ============================================================
+// 初始化
+// ============================================================
+handleSharedLink();
