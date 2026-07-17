@@ -300,32 +300,12 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 }
 
 /* 中央光点 */
-.glow-center{
-  position:fixed;top:45%;left:50%;z-index:1;
-  width:8px;height:8px;border-radius:50%;
-  background:rgba(255,200,150,.9);
-  box-shadow:0 0 40px 20px rgba(255,180,120,.4),0 0 80px 40px rgba(255,150,100,.15);
-  transform:translate(-50%,-50%);
-  animation:glowPulse 5s ease-in-out infinite;
-  pointer-events:none;
 }
-@keyframes glowPulse{
-  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7}
   50%{transform:translate(-50%,-50%) scale(3);opacity:1}
 }
 
 /* 波纹 */
-.ripple-ring{
-  position:fixed;top:45%;left:50%;z-index:1;
-  border-radius:50%;border:1px solid rgba(255,200,150,.25);
-  transform:translate(-50%,-50%);
-  pointer-events:none;
 }
-.r1{width:80px;height:80px;animation:rippleOut 6s ease-out infinite}
-.r2{width:80px;height:80px;animation:rippleOut 6s ease-out 2s infinite}
-.r3{width:80px;height:80px;animation:rippleOut 6s ease-out 4s infinite}
-@keyframes rippleOut{
-  0%{width:40px;height:40px;opacity:.6;border-color:rgba(255,200,150,.35)}
   100%{width:300px;height:300px;opacity:0;border-color:rgba(255,120,80,0)}
 }
 
@@ -353,3 +333,21 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   box-shadow:0 0 20px rgba(255,150,80,.15),inset 0 1px 0 rgba(255,255,255,.1);
 }
 .intro-btn.primary:hover{box-shadow:0 0 30px rgba(255,150,80,.3),inset 0 1px 0 rgba(255,255,255,.15)}
+/* 光点随场景变化 */
+.glow-center{
+  position:fixed;z-index:1;
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,200,150,.25);
+  box-shadow:0 0 25px 12px rgba(255,170,100,.1);
+  pointer-events:none;
+  transition:all 2s ease;
+}
+.ripple-ring{
+  position:fixed;z-index:1;
+  border-radius:50%;border:1px solid rgba(255,180,130,.08);
+  pointer-events:none;
+  transition:all 2.5s ease;
+}
+/* 淡出旧光点 */
+.glow-center.dim{background:rgba(255,200,150,.05);box-shadow:0 0 10px 4px rgba(255,150,80,.03)}
+.ripple-ring.dim{border-color:rgba(255,180,130,0);opacity:0}

@@ -699,3 +699,58 @@ window.goToSpace = function() {
     container.appendChild(p);
   }
 })();
+
+// ============================================================
+// 光点随场景移动
+// ============================================================
+(function initGlowMotion() {
+  var glow = document.querySelector('.glow-center');
+  var rings = document.querySelectorAll('.ripple-ring');
+  if (!glow) return;
+
+  // 每个场景对应的光点位置和大小
+  var positions = [
+    { top: 38, left: 45, size: 0.8 },   // S1
+    { top: 40, left: 48, size: 1.0 },   // S2
+    { top: 42, left: 50, size: 1.2 },   // S3
+    { top: 44, left: 48, size: 1.6 },   // S4 - 高潮
+    { top: 42, left: 45, size: 1.2 },   // S5
+    { top: 40, left: 44, size: 1.0 },   // S6
+  ];
+  var idx = 0;
+
+  function moveGlow(i) {
+    var p = positions[i];
+    if (!p) return;
+    glow.style.top = p.top + '%';
+    glow.style.left = p.left + '%';
+    glow.style.transform = 'translate(-50%,-50%) scale(' + p.size + ')';
+    // 波纹随光点
+    rings.forEach(function(r, j) {
+      var s = p.size * (1 + j * 0.6);
+      r.style.top = p.top + '%';
+      r.style.left = p.left + '%';
+      r.style.width = (60 * s) + 'px';
+      r.style.height = (60 * s) + 'px';
+      r.style.transform = 'translate(-50%,-50%)';
+    });
+  }
+
+  // 场景切换时移动光点
+  moveGlow(0);
+  // S2 starts at 4s, S3 at 8s, S4 at 13.5s, S5 at 19s, S6 at 22.5s
+  var timings = [4000, 8000, 13500, 19000, 22500];
+  timings.forEach(function(t, i) {
+    setTimeout(function() {
+      // 先变暗
+      glow.classList.add('dim');
+      rings.forEach(function(r) { r.classList.add('dim'); });
+      // 短暂后移动到新位置再亮起
+      setTimeout(function() {
+        moveGlow(i + 1);
+        glow.classList.remove('dim');
+        rings.forEach(function(r) { r.classList.remove('dim'); });
+      }, 800);
+    }, t);
+  });
+})();
