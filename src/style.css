@@ -32,7 +32,7 @@ body{
 
 /* 舞台 */
 .scene-stage{
-  position:relative;width:270px;margin-left:18%;padding-top:38vh;
+  position:relative;width:270px;margin-left:18%;padding-top:44vh;
 }
 .scene{
   position:absolute;top:0;left:0;width:100%;text-align:left;
@@ -45,7 +45,7 @@ body{
   opacity:0;margin:0;white-space:nowrap;
   font-family:-apple-system,'PingFang SC',sans-serif;color:#F5F3EE;
   line-height:1.4;letter-spacing:.02em;
-  animation:fadeUp .7s ease forwards;
+  animation:fadeUp .55s ease forwards;
 }
 .sl span{display:inline-block;vertical-align:baseline;margin-right:.12em}
 
@@ -54,8 +54,8 @@ body{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-2px)}
 }
-.kw{animation:kwFloat 2.5s ease-in-out infinite}
-.kw.breathe{animation:kwBreathe 2s ease-in-out infinite}
+.kw{animation:kwFloat 2.5s ease-in-out infinite;animation-delay:1.5s}
+.kw.breathe{animation:kwBreathe 2s ease-in-out infinite;animation-delay:2.5s}
 @keyframes kwBreathe{
   0%,100%{transform:scale(1)}
   50%{transform:scale(1.05)}
@@ -68,7 +68,7 @@ body{
 .s4 { animation: Sfade 5.5s ease forwards; }
 .s5 { animation: Sfade 4.5s ease forwards; }
 .s6 { animation: Slast 5s ease forwards; pointer-events:auto; }
-@keyframes Sfade{0%,100%{opacity:0}4%{opacity:1}80%{opacity:1}94%{opacity:0}}
+@keyframes Sfade{0%,100%{opacity:0}8%{opacity:1}78%{opacity:1}96%{opacity:0}}
 @keyframes Slast{0%{opacity:0}6%{opacity:1}100%{opacity:1}}
 
 /* 按钮 */
