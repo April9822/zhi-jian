@@ -9,43 +9,81 @@
 <body>
   <div id="app">
 
-    <!-- ====== 欢迎页 ====== -->
     <main id="intro-screen" class="screen active intro-screen">
       <div class="halo"></div>
       <div class="scene-stage">
 
-        <div class="scene s1">
-          <p class="scene-line s1-l1" style="font-size:38px;font-weight:500;animation-name:to100">你来了……</p>
-          <p class="scene-line s1-l2 offset" style="font-size:20px;font-weight:400;animation-name:to65">我是「知间」</p>
+        <!-- Scene 1: 0-4s -->
+        <div class="scene s1" style="animation-delay:0s">
+          <p class="sl" style="animation-delay:0s"><span style="font-size:36px;font-weight:500;opacity:1">你来了……</span></p>
+          <p class="sl" style="animation-delay:0.8s"><span style="font-size:22px;font-weight:400;opacity:0.65">我是「知间」</span></p>
         </div>
 
-        <div class="scene s2">
-          <p class="scene-line s2-l1" style="font-size:30px;font-weight:400;animation-name:to85">刚才那场争吵</p>
-          <p class="scene-line s2-l2" style="font-size:32px;font-weight:500;animation-name:to95">是不是还留在心里</p>
+        <!-- Scene 2: 4.8-8s -->
+        <div class="scene s2" style="animation-delay:4.8s">
+          <p class="sl" style="animation-delay:0s">
+            <span style="font-size:25px;font-weight:400;opacity:0.7">刚才那场</span>
+            <span class="kw" style="font-size:34px;font-weight:500;opacity:1">争吵</span>
+          </p>
+          <p class="sl" style="animation-delay:1s">
+            <span style="font-size:24px;font-weight:400;opacity:0.75">是不是还留在</span>
+            <span class="kw" style="font-size:34px;font-weight:500;opacity:1">心里</span>
+          </p>
         </div>
 
-        <div class="scene s3">
-          <p class="scene-line s3-l1" style="font-size:20px;font-weight:400;animation-name:to55">有些话</p>
-          <p class="scene-line s3-l2" style="font-size:24px;font-weight:400;animation-name:to70">说出口以后</p>
-          <p class="scene-line s3-l3" style="font-size:28px;font-weight:500;animation-name:to85">留下的是伤害</p>
-          <p class="scene-line s3-l4" style="font-size:32px;font-weight:500;animation-name:to100">也藏着没有说出的在乎</p>
+        <!-- Scene 3: 9.5-14s -->
+        <div class="scene s3" style="animation-delay:9.5s">
+          <p class="sl" style="animation-delay:0s">
+            <span style="font-size:20px;font-weight:400;opacity:0.65">有些话</span>
+          </p>
+          <p class="sl" style="animation-delay:0s">
+            <span style="font-size:26px;font-weight:400;opacity:0.8">说出口以后</span>
+          </p>
+          <p class="sl" style="animation-delay:1.3s">
+            <span style="font-size:24px;font-weight:400;opacity:0.85">留下的是</span>
+            <span class="kw" style="font-size:36px;font-weight:500;opacity:1">伤害</span>
+          </p>
+          <p class="sl" style="animation-delay:2.3s">
+            <span style="font-size:24px;font-weight:400;opacity:0.85">也藏着没有说出的</span>
+            <span class="kw" style="font-size:38px;font-weight:500;opacity:1">在乎</span>
+          </p>
         </div>
 
-        <div class="scene s4">
-          <p class="scene-line s4-l1" style="font-size:20px;font-weight:400;animation-name:to55">很多冲突</p>
-          <p class="scene-line s4-l2" style="font-size:26px;font-weight:400;animation-name:to70">都不是从争吵开始</p>
-          <p class="scene-line s4-l3" style="font-size:24px;font-weight:400;animation-name:to80">而是因为</p>
-          <p class="scene-line s4-l4" style="font-size:40px;font-weight:600;animation-name:to100">没有被理解</p>
+        <!-- Scene 4: 15.5-20s 品牌核心 -->
+        <div class="scene s4" style="animation-delay:15.5s">
+          <p class="sl" style="animation-delay:0s">
+            <span style="font-size:20px;font-weight:400;opacity:0.55">很多冲突</span>
+          </p>
+          <p class="sl" style="animation-delay:0s">
+            <span style="font-size:24px;font-weight:400;opacity:0.7">都不是从</span>
+            <span class="kw" style="font-size:34px;font-weight:500;opacity:0.9">争吵</span>
+            <span style="font-size:24px;font-weight:400;opacity:0.7">开始</span>
+          </p>
+          <p class="sl" style="animation-delay:1.3s">
+            <span style="font-size:24px;font-weight:400;opacity:0.85">而是因为</span>
+          </p>
+          <p class="sl" style="animation-delay:1.9s">
+            <span style="font-size:36px;font-weight:500;opacity:1">没有被</span>
+            <span class="kw breathe" style="font-size:44px;font-weight:600;opacity:1">理解</span>
+          </p>
         </div>
 
-        <div class="scene s5">
-          <p class="scene-line s5-l1" style="font-size:24px;font-weight:400;animation-name:to65">让我陪你</p>
-          <p class="scene-line s5-l2" style="font-size:34px;font-weight:500;animation-name:to100">重新听懂这场争吵</p>
+        <!-- Scene 5: 21-25s -->
+        <div class="scene s5" style="animation-delay:21s">
+          <p class="sl" style="animation-delay:0s"><span style="font-size:24px;font-weight:400;opacity:0.65">让我陪你</span></p>
+          <p class="sl" style="animation-delay:0.8s">
+            <span class="kw" style="font-size:38px;font-weight:500;opacity:1">听懂</span>
+            <span style="font-size:28px;font-weight:400;opacity:0.85">这场争吵背后的话</span>
+          </p>
         </div>
 
-        <div class="scene s6">
-          <p class="scene-line s6-l1" style="font-size:22px;font-weight:400;animation-name:to65">如果你愿意</p>
-          <p class="scene-line s6-l2" style="font-size:36px;font-weight:500;animation-name:to100">让我陪你看看</p>
+        <!-- Scene 6: 25-28s -->
+        <div class="scene s6" style="animation-delay:25s">
+          <p class="sl" style="animation-delay:0s"><span style="font-size:22px;font-weight:400;opacity:0.65">如果你愿意</span></p>
+          <p class="sl" style="animation-delay:0.7s">
+            <span style="font-size:28px;font-weight:400;opacity:0.8">我们一起</span>
+            <span class="kw" style="font-size:38px;font-weight:500;opacity:1">看看</span>
+          </p>
           <div class="scene-buttons">
             <button class="intro-btn primary" onclick="window.goToInput()">开始倾诉</button>
             <button class="intro-btn secondary" onclick="window.goToInput()">以后再说</button>
@@ -117,7 +155,7 @@
       <p id="input-hint" class="input-hint">请输入至少 5 条对话</p>
     </main>
 
-    <!-- ====== 加载 ====== -->
+    <!-- ====== 加载/报告 ====== -->
     <div id="loading-screen" class="screen">
       <div class="loading-card">
         <div class="loading-spinner"></div>
@@ -126,66 +164,22 @@
       </div>
     </div>
 
-    <!-- ====== 报告页 ====== -->
     <main id="report-screen" class="screen">
       <div class="report-container">
-        <section id="screen-1" class="report-screen screen-1">
-          <h2 class="section-label">🎯 核心洞察</h2>
-          <div id="core-insight" class="core-insight"></div>
-        </section>
-        <section id="screen-responsibility" class="report-screen screen-responsibility hidden">
-          <h2 class="section-label">📊 本次冲突行为贡献度</h2>
-          <div id="responsibility-container"></div>
-        </section>
-        <section id="screen-2" class="report-screen screen-2">
-          <h2 class="section-label">🌍 你们各自的世界</h2>
-          <div id="dual-columns" class="dual-columns"></div>
-          <div id="gap-annotation" class="gap-annotation"></div>
-        </section>
-        <section id="screen-3" class="report-screen screen-3">
-          <h2 class="section-label">🎙️ 对话回放 · 知间解说</h2>
-          <div id="replay-container" class="replay-container"></div>
-        </section>
-        <section id="screen-4" class="report-screen screen-4">
-          <h2 class="section-label">🔄 如果重来</h2>
-          <div id="what-if-container" class="what-if-container"></div>
-        </section>
-        <section id="screen-emotion" class="report-screen screen-emotion hidden">
-          <h2 class="section-label">📈 吵架后的情绪画像</h2>
-          <div id="emotion-container"></div>
-        </section>
-        <section id="screen-relief" class="report-screen screen-relief hidden">
-          <h2 class="section-label">🪴 试试这些方法</h2>
-          <div id="relief-container"></div>
-          <p id="relief-note" class="relief-note hidden"></p>
-        </section>
-        <section id="screen-5" class="report-screen screen-5">
-          <h2 class="section-label">💬 破局与分享</h2>
-          <div id="icebreaker-container" class="icebreaker-container"></div>
-          <div id="share-section" class="share-section">
-            <button id="share-btn" class="btn-primary">📤 分享 TA 的那一半</button>
-            <p class="share-hint">TA 只会看到自己的分析部分。你的隐私是安全的。</p>
-          </div>
-          <div id="share-link-box" class="share-link-box hidden">
-            <p class="share-label">🔗 TA 的链接（复制发送）：</p>
-            <div class="link-copy-row">
-              <input id="share-url" type="text" readonly />
-              <button id="copy-link-btn" class="btn-secondary">复制</button>
-            </div>
-          </div>
-          <p class="share-cta-hint">💡 让TA也上传自己的视角，知间可以合成更完整的双侧报告。</p>
-        </section>
-        <footer class="report-footer">
-          <button id="new-analysis-btn" class="btn-secondary">🔄 开始新的分析</button>
-          <p class="register-teaser">🌱 想记住这次分析，看到自己的成长？<a href="#" id="register-teaser-link">创建账号</a></p>
-          <p class="footer-brand">知间 InBetween · 理解人与人之间</p>
-        </footer>
+        <section id="screen-1" class="report-screen screen-1"><h2 class="section-label">🎯 核心洞察</h2><div id="core-insight" class="core-insight"></div></section>
+        <section id="screen-responsibility" class="report-screen screen-responsibility hidden"><h2 class="section-label">📊 本次冲突行为贡献度</h2><div id="responsibility-container"></div></section>
+        <section id="screen-2" class="report-screen screen-2"><h2 class="section-label">🌍 你们各自的世界</h2><div id="dual-columns" class="dual-columns"></div><div id="gap-annotation" class="gap-annotation"></div></section>
+        <section id="screen-3" class="report-screen screen-3"><h2 class="section-label">🎙️ 对话回放 · 知间解说</h2><div id="replay-container" class="replay-container"></div></section>
+        <section id="screen-4" class="report-screen screen-4"><h2 class="section-label">🔄 如果重来</h2><div id="what-if-container" class="what-if-container"></div></section>
+        <section id="screen-emotion" class="report-screen screen-emotion hidden"><h2 class="section-label">📈 吵架后的情绪画像</h2><div id="emotion-container"></div></section>
+        <section id="screen-relief" class="report-screen screen-relief hidden"><h2 class="section-label">🪴 试试这些方法</h2><div id="relief-container"></div><p id="relief-note" class="relief-note hidden"></p></section>
+        <section id="screen-5" class="report-screen screen-5"><h2 class="section-label">💬 破局与分享</h2><div id="icebreaker-container" class="icebreaker-container"></div><div id="share-section" class="share-section"><button id="share-btn" class="btn-primary">📤 分享 TA 的那一半</button><p class="share-hint">TA 只会看到自己的分析部分。你的隐私是安全的。</p></div></section>
+        <footer class="report-footer"><button id="new-analysis-btn" class="btn-secondary">🔄 开始新的分析</button><p class="register-teaser">🌱 想记住这次分析，看到自己的成长？<a href="#" id="register-teaser-link">创建账号</a></p><p class="footer-brand">知间 InBetween · 理解人与人之间</p></footer>
       </div>
     </main>
 
     <div id="toast" class="toast hidden"></div>
   </div>
-
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>
