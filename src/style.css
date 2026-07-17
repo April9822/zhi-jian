@@ -286,7 +286,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 /* ============================================================
    🌌 流动光晕背景
    ============================================================ */
-.bg-layer{
+.bg-layer{transition:background 3s ease;
   position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;
   background:linear-gradient(170deg,#11142F 0%,#2D1B3D 30%,#6B2A3A 55%,#D85A16 85%,#E87830 100%);
   background-size:200% 200%;
@@ -311,16 +311,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 
 /* 粒子 */
 .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.particle{
-  position:absolute;border-radius:50%;
-  background:rgba(255,200,160,.5);
-  animation:floatUp 8s linear infinite;
-}
-@keyframes floatUp{
-  0%{transform:translateY(0) scale(0);opacity:0}
-  10%{opacity:.8}
-  90%{opacity:.2}
-  100%{transform:translateY(-100vh) scale(1.5);opacity:0}
 }
 
 /* 移除旧 halo */
@@ -334,20 +324,8 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 }
 .intro-btn.primary:hover{box-shadow:0 0 30px rgba(255,150,80,.3),inset 0 1px 0 rgba(255,255,255,.15)}
 /* 光点随场景变化 */
-.glow-center{
-  position:fixed;z-index:1;
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(255,200,150,.25);
-  box-shadow:0 0 25px 12px rgba(255,170,100,.1);
-  pointer-events:none;
   transition:all 2s ease;
 }
-.ripple-ring{
-  position:fixed;z-index:1;
-  border-radius:50%;border:1px solid rgba(255,180,130,.08);
-  pointer-events:none;
   transition:all 2.5s ease;
 }
 /* 淡出旧光点 */
-.glow-center.dim{background:rgba(255,200,150,.05);box-shadow:0 0 10px 4px rgba(255,150,80,.03)}
-.ripple-ring.dim{border-color:rgba(255,180,130,0);opacity:0}
