@@ -86,7 +86,7 @@
           </p>
           <div class="scene-buttons">
             <button class="intro-btn primary" onclick="window.goToInput()">开始倾诉</button>
-            <button class="intro-btn secondary" onclick="window.goToInput()">以后再说</button>
+            <button class="intro-btn secondary" onclick="window.goToSpace()">以后再说</button>
           </div>
         </div>
 
@@ -94,6 +94,43 @@
           <p>我在听……</p>
         </div>
 
+      </div>
+    </main>
+
+    <!-- ====== 知间空间 ====== -->
+    <main id="space-screen" class="screen">
+      <div class="space-container">
+        <div class="space-hero">
+          <h1 class="space-brand">知间</h1>
+          <p class="space-subtitle">理解人与人之间</p>
+        </div>
+        <div class="space-card">
+          <h2>🤲 为什么要做知间</h2>
+          <p>冲突不是关系的终点，而是理解的起点。知间不判对错，只帮你看见彼此真正想说的话。</p>
+        </div>
+        <div class="space-card">
+          <h2>🔒 你的隐私</h2>
+          <p>分析完成后立即删除原始对话。我们不存储、不训练、不分享你的任何隐私数据。</p>
+        </div>
+        <div class="space-card preview-card">
+          <h2>📋 一份真实的知间报告长这样</h2>
+          <div class="preview-block">
+            <p>🎯 <strong>核心洞察：期待落差的循环</strong></p>
+            <p>表面吵"回消息"，实际吵"你还在乎我吗"</p>
+            <p>📊 行为贡献度：A 60% / B 40%</p>
+            <p>📈 情绪画像：焦虑75 · 委屈80 · 疲惫55</p>
+            <p>🪴 调节建议：非暴力沟通 · 正念呼吸</p>
+            <p>💬 破冰话术：3种风格可选</p>
+          </div>
+        </div>
+        <div class="space-card signup-card">
+          <h2>🌱 想记住每次成长？</h2>
+          <p>创建账号后，知间会帮你追踪沟通模式变化，看见自己的进步。</p>
+          <button class="btn-primary" onclick="showToast('📬 账号功能即将上线，敬请期待！')">创建账号</button>
+          <p style="text-align:center;margin-top:12px;font-size:14px;color:var(--text-secondary)">已有账号？<a href="#" onclick="showToast('📬 登录功能即将上线！')" style="color:var(--gold-dark)">登录</a></p>
+        </div>
+        <button class="btn-secondary" onclick="document.getElementById('space-screen').classList.remove('active');document.getElementById('input-screen').classList.add('active')" style="margin:20px auto;display:block">✏️ 开始倾诉</button>
+        <p class="footer-brand">知间 InBetween · 理解人与人之间</p>
       </div>
     </main>
 

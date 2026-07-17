@@ -660,3 +660,21 @@ function startLoadingMessages() {
 function stopLoadingMessages() {
   if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
 }
+
+// ============================================================
+// 知间空间
+// ============================================================
+window.goToSpace = function() {
+  var intro = document.getElementById('intro-screen');
+  if (intro) {
+    intro.classList.add('fade-out');
+    document.body.style.background = '#FFF6E8';
+    document.body.style.color = '#2B2B2B';
+    setTimeout(function() {
+      intro.style.display = 'none';
+      intro.classList.remove('active', 'fade-out');
+      document.getElementById('space-screen').classList.add('active');
+      window.scrollTo({ top: 0 });
+    }, 600);
+  }
+};

@@ -271,3 +271,14 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .loading-msg.show{animation:loadPulse 2.5s ease-in-out infinite}
 @keyframes loadBgShift{0%{background:#101521}30%{background:#26354A}60%{background:#52657A}85%{background:#8EA5B5}100%{background:#D6DDD8}}
 .report-container{background:transparent}
+.space-container{max-width:600px;margin:0 auto;padding:60px 24px 80px;text-align:center}
+.space-hero{margin-bottom:40px}
+.space-brand{font-size:40px;font-weight:700;color:var(--gold-dark);letter-spacing:.05em;margin-bottom:6px}
+.space-subtitle{font-size:16px;color:var(--text-secondary)}
+.space-card{background:#fff;border-radius:var(--radius-lg);padding:28px 24px;margin-bottom:20px;text-align:left;box-shadow:var(--shadow-sm)}
+.space-card h2{font-size:18px;color:var(--navy);margin-bottom:10px}
+.space-card p{font-size:15px;color:var(--text-secondary);line-height:1.7}
+.preview-card{background:linear-gradient(135deg,#fef3c7,#fef9e7);border:1px solid var(--gold-light)}
+.preview-block{background:rgba(255,255,255,.6);border-radius:var(--radius);padding:18px;margin-top:12px;font-size:14px;line-height:2}
+.signup-card{text-align:center}
+.signup-card .btn-primary{width:auto;padding:14px 40px;display:inline-block}
