@@ -50,7 +50,7 @@ function apiProxyPlugin() {
 
         if (!conversation || conversation.trim().length < 10) {
           res.writeHead(400);
-          res.end(JSON.stringify({ error: '对话内容太短' }));
+          res.end(JSON.stringify({ error: '对话内容太短，请至少输入3条有意义的对话' }));
           return;
         }
 

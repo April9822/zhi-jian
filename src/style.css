@@ -262,8 +262,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   0% { opacity: 0; filter: blur(8px); transform: translateY(10px); }
   100% { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
-BROKEN
-BROKEN
 @keyframes loadPulse{0%,100%{opacity:0.6}50%{opacity:1}}
 .loading-msg.show{animation:loadPulse 2s ease-in-out infinite}
 #loading-screen{justify-content:center;align-items:center;min-height:100vh;animation:loadBgShift 20s ease forwards}
