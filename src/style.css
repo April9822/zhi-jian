@@ -93,34 +93,33 @@ h1, h2, h3, h4 {
   align-items: center;
   gap: 8px;
   opacity: 0;
-  animation: sceneFade 18s ease forwards;
+  animation: sceneFade 2.5s ease forwards;
   pointer-events: none;
 }
 
-/* 每个 Scene 的时间窗口 */
+/* Scene 间隔 2.8s，动画 2.5s → 0.3s 纯黑过渡 */
 #scene-1 { animation-delay: 0s; }
 #scene-2 { animation-delay: 2.8s; }
 #scene-3 { animation-delay: 5.6s; }
 #scene-4 { animation-delay: 8.4s; }
 #scene-5 { animation-delay: 11.2s; }
-#scene-6 { animation-delay: 14s; pointer-events: auto; }
+#scene-6 { animation-delay: 14s; animation-duration: 4s; pointer-events: auto; }
 
 @keyframes sceneFade {
-  0%      { opacity: 0; transform: translateY(12px); }
-  8%      { opacity: 1; transform: translateY(0); }
-  84%     { opacity: 1; transform: translateY(0); }
-  100%    { opacity: 0; transform: translateY(-8px); }
+  0%      { opacity: 0; transform: translateY(10px); }
+  14%     { opacity: 1; transform: translateY(0); }
+  72%     { opacity: 1; transform: translateY(0); }
+  100%    { opacity: 0; transform: translateY(-4px); }
 }
 
-/* 最后一个scene停在可见状态 */
+/* 最后一个scene停留 */
 #scene-6 {
   animation-name: sceneFadeLast;
-  animation-duration: 4s;
 }
 
 @keyframes sceneFadeLast {
-  0%      { opacity: 0; transform: translateY(12px); }
-  25%     { opacity: 1; transform: translateY(0); }
+  0%      { opacity: 0; transform: translateY(10px); }
+  18%     { opacity: 1; transform: translateY(0); }
   100%    { opacity: 1; transform: translateY(0); }
 }
 
