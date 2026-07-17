@@ -65,12 +65,12 @@ body {
 .scene-stage {
   position: relative;
   width: 100%; max-width: 290px;
-  padding-top: 34vh;
   margin: 0 auto;
 }
 
 .scene {
-  position: absolute; top: 34vh;
+  position: absolute;
+  top: 32vh;
   width: 100%; text-align: left;
   display: flex; flex-direction: column;
   opacity: 0;
