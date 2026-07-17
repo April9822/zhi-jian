@@ -14,20 +14,28 @@
     <!-- ================================================================
          开场：一封信
          ================================================================ -->
-    <main id="intro-screen" class="screen active intro-screen" onclick="window.goToInput()">
+    <main id="intro-screen" class="screen active intro-screen">
       <div class="letter">
         <div class="letter-page">
-          <p class="letter-line" style="animation-delay:0s">亲爱的你。</p>
-          <p class="letter-line" style="animation-delay:1s">今天，是不是发生了一些</p>
-          <p class="letter-line" style="animation-delay:1.5s">不开心的事？</p>
-          <p class="letter-line letter-line-soft" style="animation-delay:2.5s">我不会站在任何一方。</p>
-          <p class="letter-line letter-line-soft" style="animation-delay:3s">但我愿意陪你一起，</p>
-          <p class="letter-line letter-line-soft" style="animation-delay:3.5s">看看真正发生了什么。</p>
-          <button id="open-letter-btn" class="letter-btn" style="animation-delay:4s" onclick="window.goToInput()">一起看看</button>
+          <p class="intro-line" style="animation-delay:0s;font-size:44px;font-weight:600">你好。</p>
+          <p class="intro-line" style="animation-delay:1.5s;font-size:32px;font-weight:500">我是「知间」。</p>
+          <p class="intro-line intro-breathe" style="animation-delay:3.2s;font-size:54px;font-weight:700">今天……</p>
+          <p class="intro-line intro-slow-zoom" style="animation-delay:4.2s;font-size:56px;font-weight:700">发生什么事了吗？</p>
+          <p class="intro-line" style="animation-delay:6.8s;font-size:26px;font-weight:400;color:rgba(255,255,255,0.55)">我不会急着判断谁对谁错。</p>
+          <p class="intro-line intro-breathe" style="animation-delay:8.8s;font-size:34px;font-weight:500">我想先听听你的故事。</p>
+          <p class="intro-line" style="animation-delay:11.5s;font-size:30px;font-weight:400;color:rgba(255,255,255,0.5)">很多时候。</p>
+          <p class="intro-line intro-slow-appear" style="animation-delay:12.8s;font-size:42px;font-weight:400">我们以为自己是在争吵。</p>
+          <p class="intro-line intro-pause" style="animation-delay:15.2s;font-size:58px;font-weight:700">其实。</p>
+          <p class="intro-line intro-slow-appear" style="animation-delay:16.5s;font-size:48px;font-weight:500">只是没有被理解。</p>
+          <p class="intro-line" style="animation-delay:20s;font-size:36px;font-weight:400;color:rgba(255,255,255,0.5)">今天。</p>
+          <p class="intro-line intro-breathe" style="animation-delay:21.2s;font-size:52px;font-weight:700">想和我聊聊吗？</p>
+          <div class="intro-buttons" style="animation-delay:23s">
+            <button class="intro-btn primary" onclick="window.goToInput()">愿意聊聊</button>
+            <button class="intro-btn secondary" onclick="window.goToInput()">以后吧</button>
+          </div>
         </div>
       </div>
       <p class="letter-brand">知间</p>
-      <p class="letter-skip" onclick="window.goToInput()">轻触任意处跳过</p>
     </main>
 
     <!-- ====== 首页：输入区 ====== -->

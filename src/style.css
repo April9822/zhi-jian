@@ -72,43 +72,109 @@ h1, h2, h3, h4 {
 .letter-page {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
-.letter-line, .letter-btn {
+/* 公共动画入口 */
+.intro-line, .intro-buttons {
   opacity: 0;
-  animation: letterAppear 1.6s ease forwards;
+  animation: fadeIn 0.8s ease forwards;
   animation-play-state: running;
 }
 
-.letter-line {
+.intro-line {
   font-family: 'Noto Serif SC', 'STSong', serif;
-  font-size: 24px;
   color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
+  line-height: 1.5;
   letter-spacing: 0.04em;
 }
 
-.letter-line-soft { font-size: 20px; }
-
-.letter-btn {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 14px 40px;
-  border-radius: 30px;
-  cursor: pointer;
-  align-self: flex-start;
-  margin-top: 24px;
-  letter-spacing: 0.06em;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.letter-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: white;
+/* 呼吸一次 */
+.intro-breathe {
+  animation-name: breatheOnce;
+  animation-duration: 2s;
+}
+
+@keyframes breatheOnce {
+  0%   { opacity: 0; transform: scale(0.97); }
+  40%  { opacity: 1; transform: scale(1); }
+  55%  { opacity: 1; transform: scale(1.03); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 缓慢放大 100%→103% */
+.intro-slow-zoom {
+  animation-name: slowZoom;
+  animation-duration: 1.6s;
+}
+
+@keyframes slowZoom {
+  from { opacity: 0; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1.03); }
+}
+
+/* 缓慢浮现 */
+.intro-slow-appear {
+  animation-name: slowAppear;
+  animation-duration: 2s;
+}
+
+@keyframes slowAppear {
+  0%   { opacity: 0; }
+  60%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* 独立停顿 */
+.intro-pause {
+  animation-name: strongPause;
+  animation-duration: 1.2s;
+}
+
+@keyframes strongPause {
+  0%   { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 按钮组 */
+.intro-buttons {
+  display: flex;
+  gap: 14px;
+  margin-top: 32px;
+  animation-name: fadeUp;
+  animation-duration: 1s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.intro-btn {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 17px;
+  padding: 14px 32px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  letter-spacing: 0.04em;
+}
+
+.intro-btn.primary {
+  background: rgba(255,255,255,0.9);
+  color: #1a1a1a;
+}
+
+.intro-btn.secondary {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.6);
 }
 
 .letter-brand {
@@ -118,35 +184,6 @@ h1, h2, h3, h4 {
   position: absolute;
   bottom: 32px;
   letter-spacing: 0.1em;
-}
-
-.letter-skip {
-  font-size: 12px;
-  color: rgba(255,255,255,0.15);
-  position: absolute;
-  bottom: 16px;
-  letter-spacing: 0.06em;
-  animation: letterAppear 1.6s ease forwards;
-  animation-delay: 10s;
-  opacity: 0;
-}
-
-@keyframes letterAppear {
-  0%   { opacity: 0; transform: translateY(14px); }
-  40%  { opacity: 1; transform: translateY(0); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-/* 呼吸动画叠加在后面的文字上 */
-.letter-line:nth-child(4).letterAppearDone,
-.letter-line:nth-child(5).letterAppearDone,
-.letter-line:nth-child(6).letterAppearDone {
-  animation: letterAppear 1.6s ease forwards, breathe 5s ease-in-out 1.6s infinite;
-}
-
-@keyframes breathe {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.03); }
 }
 
 .intro-screen.fade-out {
