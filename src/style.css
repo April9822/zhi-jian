@@ -121,6 +121,17 @@ h1, h2, h3, h4 {
   letter-spacing: 0.1em;
 }
 
+.letter-skip {
+  font-size: 12px;
+  color: rgba(255,255,255,0.15);
+  position: absolute;
+  bottom: 16px;
+  letter-spacing: 0.06em;
+  animation: letterAppear 1.6s ease forwards;
+  animation-delay: 10s;
+  opacity: 0;
+}
+
 @keyframes letterAppear {
   0%   { opacity: 0; transform: translateY(14px); }
   40%  { opacity: 1; transform: translateY(0); }
