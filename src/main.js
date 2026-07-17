@@ -38,7 +38,7 @@ window.goToInput = function() {
 // ============================================================
 const state = {
   conversation: '',
-  userRole: null, // 'A' | 'B' | 'auto'
+  userRole: null, // 'A' | 'B' | 'observer' | 'auto'
   ocrText: '',
   inputMode: 'paste', // 'paste' | 'image'
   imageFile: null,
@@ -197,7 +197,7 @@ $$('.identity-btn').forEach((btn) => {
     btn.classList.add('selected');
     state.userRole = btn.dataset.role;
 
-    const labels = { A: '已标记：你是 A', B: '已标记：你是 B', auto: 'AI 将自动判断你的身份' };
+    const labels = { A: '你是对话中更主动的一方', B: '你是对话中回应和防御更多的一方', auto: 'AI 正在分析对话角色...' };
     dom.identityHint.textContent = labels[state.userRole] || '';
   });
 });

@@ -121,6 +121,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .drop-hint{font-size:13px!important;color:var(--text-muted)!important}
 .identity-section{margin-top:20px;padding-top:20px;border-top:1px solid var(--warm-border)}
 .identity-label{font-size:14px;color:var(--text-secondary);margin-bottom:10px}
+.identity-sub{font-size:13px;color:var(--text-muted);margin-bottom:12px}
 .identity-buttons{display:flex;gap:10px;flex-wrap:wrap}
 .identity-btn{flex:1;min-width:100px;padding:10px 14px;border:1px solid var(--warm-border);border-radius:8px;background:#fff;font-size:14px;cursor:pointer;transition:all .2s;font-family:inherit}
 .identity-btn:hover{border-color:var(--gold);background:var(--accent-soft)}
