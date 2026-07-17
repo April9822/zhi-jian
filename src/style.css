@@ -77,16 +77,16 @@ body {
 
 /* 舞台：绝对定位，不受flex影响 */
 .scene-stage {
-  position: absolute;
-  top: 28vh;
-  left: 6vw;
-  width: 270px;
+  position: relative;
+  width: 100%; max-width: 320px;
+  margin: 0 auto;
+  padding-top: 28vh;
 }
 .scene {
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
   width: 100%; text-align: left;
-  display: flex; flex-direction: column; gap: 22px;
+  display: flex; flex-direction: column; gap: 24px;
   opacity: 0;
 }
 
