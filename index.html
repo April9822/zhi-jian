@@ -5,66 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>知间 InBetween — 理解人与人之间</title>
   <link rel="stylesheet" href="/src/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
   <div id="app">
-    <!-- ================================================================
-         开场：一封信
-         ================================================================ -->
+
+    <!-- ====== 欢迎页 ====== -->
     <main id="intro-screen" class="screen active intro-screen">
-      <div class="lamp"></div>
       <div class="halo"></div>
       <div class="scene-stage">
 
-        <!-- Scene 1 -->
         <div class="scene s1">
-          <p class="scene-line s1-l1" style="font-size:34px;font-weight:500;animation-name:to100">你来了……</p>
-          <p class="scene-line s1-l2 offset" style="font-size:22px;font-weight:400;animation-name:to70">我是「知间」</p>
+          <p class="scene-line s1-l1" style="font-size:38px;font-weight:500;animation-name:to100">你来了……</p>
+          <p class="scene-line s1-l2 offset" style="font-size:20px;font-weight:400;animation-name:to65">我是「知间」</p>
         </div>
 
-        <!-- Scene 2 -->
         <div class="scene s2">
-          <p class="scene-line s2-l1" style="font-size:22px;font-weight:400;animation-name:to65">刚才那场争吵</p>
-          <p class="scene-line s2-l2" style="font-size:36px;font-weight:500;animation-name:to100">是不是还留在心里</p>
+          <p class="scene-line s2-l1" style="font-size:30px;font-weight:400;animation-name:to85">刚才那场争吵</p>
+          <p class="scene-line s2-l2" style="font-size:32px;font-weight:500;animation-name:to95">是不是还留在心里</p>
         </div>
 
-        <!-- Scene 3 (4行逐行出现) -->
         <div class="scene s3">
-          <p class="scene-line s3-l1" style="font-size:22px;font-weight:400;animation-name:to65">有些话</p>
-          <p class="scene-line s3-l2" style="font-size:22px;font-weight:400;animation-name:to65">说出口以后</p>
-          <p class="scene-line s3-l3" style="font-size:22px;font-weight:400;animation-name:to65">留下的是伤害</p>
-          <p class="scene-line s3-l4" style="font-size:30px;font-weight:500;animation-name:to100">也藏着没有说出的在乎</p>
+          <p class="scene-line s3-l1" style="font-size:20px;font-weight:400;animation-name:to55">有些话</p>
+          <p class="scene-line s3-l2" style="font-size:24px;font-weight:400;animation-name:to70">说出口以后</p>
+          <p class="scene-line s3-l3" style="font-size:28px;font-weight:500;animation-name:to85">留下的是伤害</p>
+          <p class="scene-line s3-l4" style="font-size:32px;font-weight:500;animation-name:to100">也藏着没有说出的在乎</p>
         </div>
 
-        <!-- Scene 4（品牌高潮） -->
         <div class="scene s4">
           <p class="scene-line s4-l1" style="font-size:20px;font-weight:400;animation-name:to55">很多冲突</p>
-          <p class="scene-line s4-l1b" style="font-size:20px;font-weight:400;animation-name:to55">都不是从争吵开始</p>
-          <p class="scene-line s4-l2" style="font-size:38px;font-weight:600;animation-name:to100">而是从一次</p>
-          <p class="scene-line s4-l3" style="font-size:38px;font-weight:600;animation-name:to100">没有被理解开始</p>
+          <p class="scene-line s4-l2" style="font-size:26px;font-weight:400;animation-name:to70">都不是从争吵开始</p>
+          <p class="scene-line s4-l3" style="font-size:24px;font-weight:400;animation-name:to80">而是因为</p>
+          <p class="scene-line s4-l4" style="font-size:40px;font-weight:600;animation-name:to100">没有被理解</p>
         </div>
 
-        <!-- Scene 5 -->
         <div class="scene s5">
-          <p class="scene-line s5-l1" style="font-size:22px;font-weight:400;animation-name:to65">让我陪你</p>
-          <p class="scene-line s5-l2" style="font-size:36px;font-weight:500;animation-name:to100">把这段经历重新看清</p>
+          <p class="scene-line s5-l1" style="font-size:24px;font-weight:400;animation-name:to65">让我陪你</p>
+          <p class="scene-line s5-l2" style="font-size:34px;font-weight:500;animation-name:to100">重新听懂这场争吵</p>
         </div>
 
-        <!-- Scene 6 -->
         <div class="scene s6">
-          <p class="scene-line s6-l1" style="font-size:22px;font-weight:400;animation-name:to65">准备好了的话</p>
-          <p class="scene-line s6-l2" style="font-size:34px;font-weight:500;animation-name:to100">把它交给我</p>
-          <div class="scene-buttons s6-btns">
+          <p class="scene-line s6-l1" style="font-size:22px;font-weight:400;animation-name:to65">如果你愿意</p>
+          <p class="scene-line s6-l2" style="font-size:36px;font-weight:500;animation-name:to100">让我陪你看看</p>
+          <div class="scene-buttons">
             <button class="intro-btn primary" onclick="window.goToInput()">开始倾诉</button>
             <button class="intro-btn secondary" onclick="window.goToInput()">以后再说</button>
           </div>
           <p class="sign-off">—— 知间</p>
         </div>
 
-        <!-- 过渡 -->
         <div id="transition-msg" class="scene transition-msg">
           <p>我在听……</p>
         </div>
@@ -72,32 +60,22 @@
       </div>
     </main>
 
-    <!-- ====== 首页：输入区 ====== -->
+    <!-- ====== 输入页 ====== -->
     <main id="input-screen" class="screen">
       <div class="hero">
         <h1 class="brand">知间</h1>
         <p class="subtitle">理解人与人之间</p>
         <p class="greeting">我在听。把对话发给我。</p>
       </div>
-
       <div class="input-card">
-        <!-- Tab 切换 -->
         <div class="tab-bar">
           <button class="tab active" data-tab="paste">✏️ 粘贴对话</button>
           <button class="tab" data-tab="image">📸 上传截图 <span class="coming-soon-tag">即将上线</span></button>
           <button class="tab" data-tab="audio">🎙️ 录制对话 <span class="coming-soon-tag">即将上线</span></button>
         </div>
-
-        <!-- 粘贴文字 -->
         <div id="tab-paste" class="tab-content active">
-          <textarea
-            id="text-input"
-            placeholder="把微信聊天记录复制到这里……&#10;&#10;格式示例：&#10;我：你为什么不回我消息&#10;TA：刚刚在忙"
-            rows="10"
-          ></textarea>
+          <textarea id="text-input" placeholder="把微信聊天记录复制到这里……&#10;&#10;格式示例：&#10;我：你为什么不回我消息&#10;TA：刚刚在忙" rows="10"></textarea>
         </div>
-
-        <!-- 上传截图 -->
         <div id="tab-image" class="tab-content">
           <div id="drop-zone" class="drop-zone">
             <div class="drop-icon">📷</div>
@@ -107,8 +85,6 @@
             <button id="upload-btn" class="btn-secondary" type="button">选择图片</button>
           </div>
         </div>
-
-        <!-- 录制对话（即将上线） -->
         <div id="tab-audio" class="tab-content">
           <div class="audio-placeholder">
             <div class="audio-icon">🎙️</div>
@@ -127,8 +103,6 @@
             <p class="audio-note">支持实时录音，也支持上传已有录音文件。</p>
           </div>
         </div>
-
-        <!-- 标注身份 -->
         <div id="identity-section" class="identity-section hidden">
           <p class="identity-label">标注你的身份（帮助知间理解对话）：</p>
           <div class="identity-buttons">
@@ -138,20 +112,13 @@
           </div>
           <p id="identity-hint" class="identity-hint"></p>
         </div>
-
-        <!-- 隐私声明 -->
-        <div class="privacy-note">
-          🔒 分析完成后立即删除，不存储、不训练、不分享。
-        </div>
+        <div class="privacy-note">🔒 分析完成后立即删除，不存储、不训练、不分享。</div>
       </div>
-
-      <button id="analyze-btn" class="btn-primary" disabled>
-        开始分析
-      </button>
+      <button id="analyze-btn" class="btn-primary" disabled>开始分析</button>
       <p id="input-hint" class="input-hint">请输入至少 5 条对话</p>
     </main>
 
-    <!-- ====== 加载中 ====== -->
+    <!-- ====== 加载 ====== -->
     <div id="loading-screen" class="screen">
       <div class="loading-card">
         <div class="loading-spinner"></div>
@@ -163,51 +130,36 @@
     <!-- ====== 报告页 ====== -->
     <main id="report-screen" class="screen">
       <div class="report-container">
-        <!-- 第一屏：核心洞察 -->
         <section id="screen-1" class="report-screen screen-1">
           <h2 class="section-label">🎯 核心洞察</h2>
           <div id="core-insight" class="core-insight"></div>
         </section>
-
-        <!-- 冲突贡献度 -->
         <section id="screen-responsibility" class="report-screen screen-responsibility hidden">
           <h2 class="section-label">📊 本次冲突行为贡献度</h2>
           <div id="responsibility-container"></div>
         </section>
-
-        <!-- 第二屏：你们各自的世界 -->
         <section id="screen-2" class="report-screen screen-2">
           <h2 class="section-label">🌍 你们各自的世界</h2>
           <div id="dual-columns" class="dual-columns"></div>
           <div id="gap-annotation" class="gap-annotation"></div>
         </section>
-
-        <!-- 第三屏：对话回放 · 知间解说 -->
         <section id="screen-3" class="report-screen screen-3">
           <h2 class="section-label">🎙️ 对话回放 · 知间解说</h2>
           <div id="replay-container" class="replay-container"></div>
         </section>
-
-        <!-- 第四屏：如果重来 -->
         <section id="screen-4" class="report-screen screen-4">
           <h2 class="section-label">🔄 如果重来</h2>
           <div id="what-if-container" class="what-if-container"></div>
         </section>
-
-        <!-- 情绪量化分析 -->
         <section id="screen-emotion" class="report-screen screen-emotion hidden">
           <h2 class="section-label">📈 吵架后的情绪画像</h2>
           <div id="emotion-container"></div>
         </section>
-
-        <!-- 情绪调节建议 -->
         <section id="screen-relief" class="report-screen screen-relief hidden">
           <h2 class="section-label">🪴 试试这些方法</h2>
           <div id="relief-container"></div>
           <p id="relief-note" class="relief-note hidden"></p>
         </section>
-
-        <!-- 破局与分享 -->
         <section id="screen-5" class="report-screen screen-5">
           <h2 class="section-label">💬 破局与分享</h2>
           <div id="icebreaker-container" class="icebreaker-container"></div>
@@ -224,8 +176,6 @@
           </div>
           <p class="share-cta-hint">💡 让TA也上传自己的视角，知间可以合成更完整的双侧报告。</p>
         </section>
-
-        <!-- 报告底部 -->
         <footer class="report-footer">
           <button id="new-analysis-btn" class="btn-secondary">🔄 开始新的分析</button>
           <p class="register-teaser">🌱 想记住这次分析，看到自己的成长？<a href="#" id="register-teaser-link">创建账号</a></p>
@@ -234,7 +184,6 @@
       </div>
     </main>
 
-    <!-- ====== Toast ====== -->
     <div id="toast" class="toast hidden"></div>
   </div>
 
