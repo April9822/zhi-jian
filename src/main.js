@@ -7,14 +7,18 @@
 // 全局跳转函数
 // ============================================================
 window.goToInput = function() {
-  const intro = document.getElementById('intro-screen');
+  var intro = document.getElementById('intro-screen');
   if (!intro || intro.classList.contains('fade-out')) return;
 
-  const allScenes = document.querySelectorAll('.scene');
-  allScenes.forEach(function(s) { s.style.display = 'none'; });
-
-  const msg = document.getElementById('transition-msg');
-  msg.classList.add('show');
+  var s6 = document.querySelector('.s6');
+  if (s6) {
+    var elts = s6.querySelectorAll('span, .scene-buttons');
+    elts.forEach(function(el) {
+      el.style.transition = 'opacity 0.6s ease, filter 0.6s ease';
+      el.style.opacity = '0';
+      el.style.filter = 'blur(3px)';
+    });
+  }
 
   setTimeout(function() {
     intro.classList.add('fade-out');
@@ -26,7 +30,7 @@ window.goToInput = function() {
       document.getElementById('input-screen').classList.add('active');
       window.scrollTo({ top: 0 });
     }, 600);
-  }, 800);
+  }, 700);
 };
 
 // ============================================================
@@ -138,11 +142,13 @@ dom.textInput.addEventListener('input', () => {
 });
 
 // OCR 文字变化也监听
-dom.ocrText.addEventListener('input', () => {
-  state.ocrText = dom.ocrText.value.trim();
-  updateAnalyzeButton();
-  updateIdentitySection();
-});
+if (dom.ocrText) {
+  dom.ocrText.addEventListener('input', () => {
+    state.ocrText = dom.ocrText.value.trim();
+    updateAnalyzeButton();
+    updateIdentitySection();
+  });
+}
 
 function updateIdentitySection() {
   const text = state.inputMode === 'paste' ? (state.conversation || '') : (state.ocrText || '');
@@ -202,17 +208,18 @@ $$('.identity-btn').forEach((btn) => {
 dom.analyzeBtn.addEventListener('click', startAnalysis);
 
 async function startAnalysis() {
-  const conversation = state.conversation || dom.ocrText.value.trim();
+  const conversation = state.conversation || (dom.ocrText ? dom.ocrText.value.trim() : '');
   if (!conversation || conversation.length < 10) {
     showToast('请先输入对话内容');
     return;
   }
 
-  // 切换到加载状态
+  // 切换到加载状态 + 启动思考动画
   dom.inputScreen.classList.remove('active');
   dom.loadingScreen.classList.add('active');
   dom.reportScreen.classList.remove('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  startLoadingMessages();
 
   try {
     const response = await fetch('/api/analyze', {
@@ -232,11 +239,13 @@ async function startAnalysis() {
 
     renderReport(data.analysis);
     dom.loadingScreen.classList.remove('active');
+      stopLoadingMessages();
     dom.reportScreen.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
   } catch (err) {
     dom.loadingScreen.classList.remove('active');
+      stopLoadingMessages();
     dom.inputScreen.classList.add('active');
     showToast(`分析失败：${err.message}`);
     console.error('分析错误：', err);
@@ -501,30 +510,18 @@ function renderIcebreakers(icebreakers, notes) {
 
 function setupShare(analysis) {
   $('#share-btn').addEventListener('click', () => {
-    // V1.0 简化：生成一个带参数的 URL
     const shareData = {
       sideB: analysis.dualAnalysis?.sideB,
-      whatIfB: analysis.whatIf?.sideBySide?.filter((r) => r.speaker === 'B'),
+      whatIfB: analysis.whatIf?.sideBySide?.filter(function(r) { return r.speaker === 'B'; }),
       icebreakerForB: analysis.icebreakers?.[0],
     };
-
-    const encoded = btoa(encodeURIComponent(JSON.stringify(shareData)));
-    const url = `${window.location.origin}?share=${encoded}`;
-
-    const linkBox = $('#share-link-box');
-    linkBox.classList.remove('hidden');
-    $('#share-url').value = url;
-
-    // 自动复制
-    navigator.clipboard.writeText(url).then(() => {
+    // URL-safe base64
+    const raw = btoa(encodeURIComponent(JSON.stringify(shareData)));
+    const encoded = raw.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const url = window.location.origin + '?share=' + encoded;
+    // 复制
+    navigator.clipboard.writeText(url).then(function() {
       showToast('🔗 TA 的链接已复制，可以直接发送给TA');
-    });
-  });
-
-  $('#copy-link-btn').addEventListener('click', () => {
-    const url = $('#share-url').value;
-    navigator.clipboard.writeText(url).then(() => {
-      showToast('✅ 链接已复制');
     });
   });
 }
@@ -538,9 +535,9 @@ $('#new-analysis-btn').addEventListener('click', () => {
   state.ocrText = '';
   state.imageFile = null;
   dom.textInput.value = '';
-  dom.ocrText.value = '';
+  if (dom.ocrText) dom.ocrText.value = ''
   dom.identitySection.classList.add('hidden');
-  dom.ocrPreview.classList.add('hidden');
+  if (dom.ocrPreview) dom.ocrPreview.classList.add('hidden');
   dom.analyzeBtn.disabled = true;
   dom.inputHint.textContent = '请输入至少 5 条对话';
   dom.inputHint.style.color = '#94a3b8';
@@ -579,7 +576,7 @@ function handleSharedLink() {
   const share = params.get('share');
   if (share) {
     try {
-      const data = JSON.parse(decodeURIComponent(atob(share)));
+      var fixed = share.replace(/-/g,"+").replace(/_/g,"/");var data = JSON.parse(decodeURIComponent(atob(fixed)));
       renderSharedView(data);
     } catch (e) {
       // 无效的分享链接，显示正常首页
@@ -640,3 +637,26 @@ function renderSharedView(data) {
 // 初始化
 // ============================================================
 handleSharedLink();
+
+// ============================================================
+// 思考动画：渐进式消息
+// ============================================================
+var loadingTimer = null;
+function startLoadingMessages() {
+  var msgs = ['#lm1','#lm2','#lm3','#lm4'];
+  var idx = 0;
+  // 隐藏所有
+  msgs.forEach(function(s) { var el = document.querySelector(s); if (el) el.style.opacity = '0'; });
+  function showNext() {
+    var el = document.querySelector(msgs[idx]);
+    if (el) { el.style.transition = 'opacity 1s ease'; el.style.opacity = '1'; }
+    idx++;
+  }
+  showNext();
+  loadingTimer = setInterval(function() {
+    if (idx < msgs.length) showNext();
+  }, 3500);
+}
+function stopLoadingMessages() {
+  if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
+}

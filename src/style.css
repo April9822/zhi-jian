@@ -14,13 +14,13 @@
 body{
   font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;
   background:linear-gradient(180deg, #080B14 0%, #182337 60%, #1E2D45 100%);color:#F5F3EE;line-height:1.7;
-  -webkit-font-smoothing:antialiased;min-height:100vh;
+  -webkit-font-smoothing:antialiased;min-height:100vh;-webkit-text-size-adjust:100%;
 }
 
 /* ============================================================
    Welcome
    ============================================================ */
-.intro-screen{background:linear-gradient(180deg, #080B14 0%, #182337 60%, #1E2D45 100%);min-height:100vh;padding:0;position:relative;overflow:hidden}
+.intro-screen{background:linear-gradient(180deg, #080B14 0%, #182337 60%, #1E2D45 100%);min-height:100vh;-webkit-text-size-adjust:100%;padding:0;position:relative;overflow:hidden}
 
 /* 光晕 */
 .halo{
@@ -31,7 +31,7 @@ body{
 }
 
 /* 舞台 */
-.scene-stage{position:absolute;top:40vh;left:50%;transform:translateX(-50%);width:270px;
+.scene-stage{position:absolute;top:19.8vh;left:60px;width:min(270px, 72vw);
 }
 .scene{
   position:absolute;top:0;left:0;width:100%;text-align:left;
@@ -61,21 +61,21 @@ body{
 }
 
 /* 场景容器淡出 */
-.s1 { animation: Sfade 5s ease forwards; }
-.s2 { animation: Sfade 4.2s ease forwards; }
-.s3 { animation: Sfade 5.6s ease forwards; }
-.s4 { animation: Sfade 5.5s ease forwards; }
-.s5 { animation: Sfade 4.5s ease forwards; }
-.s6 { animation: Slast 5s ease forwards; pointer-events:auto; }
+.s1 { animation: Sfade 4s ease forwards; }
+.s2 { animation: Sfade 4s ease forwards; }
+.s3 { animation: Sfade 5.2s ease forwards; }
+.s4 { animation: Sfade 5.2s ease forwards; }
+.s5 { animation: Sfade 3.2s ease forwards; }
+.s6 { animation: Slast 4.5s ease forwards; pointer-events:auto; }
 @keyframes Sfade{0%,100%{opacity:0}8%{opacity:1}78%{opacity:1}96%{opacity:0}}
 @keyframes Slast{0%{opacity:0}6%{opacity:1}100%{opacity:1}}
 
 /* 按钮 */
 .scene-buttons{
-  position:fixed;bottom:12vh;left:50%;transform:translateX(-50%);z-index:10;
+  position:fixed;bottom:max(120px, calc(env(safe-area-inset-bottom) + 90px));left:50%;transform:translateX(-50%);z-index:10;
   display:flex;gap:14px;opacity:0;
   animation:btnIn .8s ease forwards;
-  animation-delay:29.5s;
+  animation-delay:24s;
 }
 @keyframes btnIn{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
@@ -96,23 +96,23 @@ body{
 @keyframes listenIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 .hidden{display:none!important}
-.screen{display:none;min-height:100vh}
+.screen{display:none;min-height:100vh;-webkit-text-size-adjust:100%}
 .screen.active{display:flex;flex-direction:column;align-items:center}
 
 /* ============================================================
    输入/报告（保持原样）
    ============================================================ */
-#input-screen{padding:60px 20px 80px;max-width:680px;margin:0 auto}
+#input-screen{padding:60px 20px 80px;max-width:680px;margin:0 auto;background:#F8F6F2}
 .hero{text-align:center;margin-bottom:40px}
 .brand{font-size:48px;font-weight:700;color:var(--gold-dark);letter-spacing:.05em;margin-bottom:8px}
 .subtitle{font-size:16px;color:var(--text-secondary);margin-bottom:24px;letter-spacing:.1em}
 .greeting{font-size:20px;color:var(--navy);font-weight:400}
-.input-card{width:100%;background:var(--warm-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:28px;margin-bottom:24px;border:1px solid var(--warm-border)}
+.input-card{width:100%;background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:28px;margin-bottom:24px;border:1px solid var(--warm-border)}
 .tab-bar{display:flex;gap:4px;margin-bottom:20px;background:var(--warm-bg);border-radius:8px;padding:4px}
-.tab{flex:1;padding:10px 16px;border:none;background:transparent;font-size:14px;color:var(--text-secondary);cursor:pointer;border-radius:6px;transition:all .2s;font-family:inherit}
+.tab{flex:1;padding:12px 14px;border:none;background:transparent;font-size:14px;color:var(--text-secondary);cursor:pointer;border-radius:6px;transition:all .2s;font-family:inherit}
 .tab.active{background:#fff;color:var(--navy);font-weight:500;box-shadow:var(--shadow-sm)}
 .tab-content{display:none}.tab-content.active{display:block}
-textarea{width:100%;border:1px solid var(--warm-border);border-radius:var(--radius);padding:16px;font-size:15px;font-family:inherit;line-height:1.8;resize:vertical;background:var(--warm-bg);transition:border-color .2s}
+textarea{width:100%;border:1px solid var(--warm-border);border-radius:var(--radius);padding:16px;font-size:16px;font-family:inherit;line-height:1.8;resize:vertical;background:var(--warm-bg);transition:border-color .2s}
 textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(212,168,83,.1)}
 .drop-zone{border:2px dashed var(--warm-border);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--warm-bg)}
 .drop-zone:hover,.drop-zone.dragover{border-color:var(--gold);background:#fdf8f0}
@@ -142,12 +142,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .audio-actions-coming{display:flex;gap:12px;justify-content:center;margin-bottom:16px}
 .audio-note{font-size:12px;color:var(--text-muted)}
 
-#loading-screen{justify-content:center;align-items:center;min-height:100vh}
-.loading-card{text-align:center}
-.loading-spinner{width:48px;height:48px;border:3px solid var(--warm-border);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-size:20px;color:var(--navy);margin-bottom:8px}
-.loading-sub{font-size:14px;color:var(--text-muted)}
 
 #report-screen{padding:0;max-width:100%}
 .report-container{width:100%;max-width:720px;margin:0 auto;padding:40px 20px 80px}
@@ -204,8 +198,8 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .what-if-flow{background:var(--warm-bg);border-radius:var(--radius);padding:20px}
 .flow-label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
 .what-if-table{background:var(--warm-bg);border-radius:var(--radius);overflow:hidden}
-.what-if-header{display:grid;grid-template-columns:40px 1fr 30px 1fr;gap:10px;padding:12px 16px;background:var(--navy);color:#fff;font-size:13px;font-weight:500}
-.what-if-row{display:grid;grid-template-columns:40px 1fr 30px 1fr;gap:10px;padding:14px 16px;border-bottom:1px solid var(--warm-border);align-items:start}
+.what-if-header{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px;background:var(--navy);color:#fff;font-size:13px;font-weight:500}
+.what-if-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px;border-bottom:1px solid var(--warm-border);align-items:start}
 .what-if-original{font-size:14px;color:#dc2626;font-style:italic;line-height:1.5}
 .what-if-arrow{font-size:18px;color:var(--gold);display:flex;align-items:flex-start;justify-content:center}
 .what-if-alt{font-size:14px;color:#16a34a;line-height:1.5}
@@ -254,3 +248,26 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   .dual-columns,.icebreaker-cards,.what-if-summary,.notes-grid,.emotion-grid{grid-template-columns:1fr}
   .report-screen{padding:24px 16px}.insight-title{font-size:22px}.report-container{padding:20px 12px 60px}
 }
+
+/* 重组文字 */
+.reform-text {
+  font-family: -apple-system,'PingFang SC',sans-serif;
+  font-size: 28px !important;
+  font-weight: 500 !important;
+  color: #F5F3EE !important;
+  line-height: 1.5 !important;
+  animation: reformIn 1s ease forwards;
+}
+@keyframes reformIn {
+  0% { opacity: 0; filter: blur(8px); transform: translateY(10px); }
+  100% { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+BROKEN
+BROKEN
+@keyframes loadPulse{0%,100%{opacity:0.6}50%{opacity:1}}
+.loading-msg.show{animation:loadPulse 2s ease-in-out infinite}
+#loading-screen{justify-content:center;align-items:center;min-height:100vh;background:#101521}
+.loading-card{text-align:center;max-width:340px;padding:0 24px}
+.loading-msg{font-family:-apple-system,'PingFang SC',sans-serif;font-size:24px;color:#F5F3EE;opacity:0;line-height:1.7;margin-bottom:28px;transition:opacity 1s ease}
+@keyframes loadPulse{0%,100%{opacity:0.55}50%{opacity:1}}
+.loading-msg.show{animation:loadPulse 2.5s ease-in-out infinite}
