@@ -730,3 +730,98 @@ window.goToSpace = function() {
   ];
   S.forEach(function(s) { setTimeout(function() { bg.style.background = s.c; }, s.t); });
 })();
+// 连接光点时间轴
+setTimeout(function() { if (window.starControl) window.starControl.showConnection(); }, 1500);
+setTimeout(function() { if (window.starControl) window.starControl.setConnectionPhase(0.6); }, 3500);
+// ============================================================
+// Canvas 星空粒子 + 双光点连接
+// ============================================================
+(function() {
+  var canvas = document.getElementById('starCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  // 粒子
+  var stars = [];
+  for (var i = 0; i < 35; i++) {
+    stars.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: 0.5 + Math.random() * 1.8,
+      baseAlpha: 0.08 + Math.random() * 0.25,
+      alpha: 0,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.003 + Math.random() * 0.008,
+      driftX: (Math.random() - 0.5) * 0.3,
+      driftY: (Math.random() - 0.5) * 0.3 - 0.1
+    });
+  }
+  // 连接光点
+  var conn = { cx: W * 0.48, cy: H * 0.42, cx2: W * 0.52, cy2: H * 0.42, alpha: 0, mergeProgress: 0 };
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    // 星空
+    stars.forEach(function(s) {
+      s.alpha = s.baseAlpha + Math.sin(t * s.speed + s.phase) * 0.08;
+      s.x += s.driftX * 0.02; s.y += s.driftY * 0.02;
+      if (s.x < 0) s.x = W; if (s.x > W) s.x = 0;
+      if (s.y < -20) s.y = H; if (s.y > H + 20) s.y = -20;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(200,200,240,' + Math.max(0, s.alpha) + ')';
+      ctx.fill();
+    });
+    // 连接光点
+    if (conn.alpha > 0) {
+      var p = Math.min(1, conn.mergeProgress);
+      var cx1 = conn.cx + (conn.cx2 - conn.cx) * p * 0.5;
+      var cx2 = conn.cx2 - (conn.cx2 - conn.cx) * p * 0.5;
+      // 左侧光点
+      var g1 = ctx.createRadialGradient(cx1, conn.cy, 0, cx1, conn.cy, 40 + p * 20);
+      g1.addColorStop(0, 'rgba(255,220,180,' + (0.5 + p * 0.3) * conn.alpha + ')');
+      g1.addColorStop(0.4, 'rgba(255,200,150,' + 0.2 * conn.alpha + ')');
+      g1.addColorStop(1, 'rgba(255,180,120,0)');
+      ctx.fillStyle = g1; ctx.fillRect(cx1 - 60, conn.cy - 60, 120, 120);
+      // 右侧光点
+      var g2 = ctx.createRadialGradient(cx2, conn.cy, 0, cx2, conn.cy, 40 + p * 20);
+      g2.addColorStop(0, 'rgba(255,220,180,' + (0.5 + p * 0.3) * conn.alpha + ')');
+      g2.addColorStop(0.4, 'rgba(255,200,150,' + 0.2 * conn.alpha + ')');
+      g2.addColorStop(1, 'rgba(255,180,120,0)');
+      ctx.fillStyle = g2; ctx.fillRect(cx2 - 60, conn.cy - 60, 120, 120);
+      // 连接光桥
+      if (p > 0.1) {
+        var grad = ctx.createLinearGradient(cx1, conn.cy, cx2, conn.cy);
+        grad.addColorStop(0, 'rgba(255,200,160,' + 0.08 * conn.alpha + ')');
+        grad.addColorStop(0.5, 'rgba(255,220,180,' + 0.15 * p * conn.alpha + ')');
+        grad.addColorStop(1, 'rgba(255,200,160,' + 0.08 * conn.alpha + ')');
+        ctx.strokeStyle = grad; ctx.lineWidth = 1 + p * 2;
+        ctx.beginPath(); ctx.moveTo(cx1, conn.cy); ctx.lineTo(cx2, conn.cy); ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  // 控制 API
+  window.starControl = {
+    showConnection: function() {
+      var start = performance.now();
+      function fadeIn(ts) {
+        var elapsed = (ts - start) / 1000;
+        conn.alpha = Math.min(0.7, elapsed * 0.4);
+        conn.mergeProgress = Math.min(0.6, Math.max(0, (elapsed - 0.5) * 0.3));
+        if (elapsed < 3) requestAnimationFrame(fadeIn);
+      }
+      requestAnimationFrame(fadeIn);
+    },
+    hideConnection: function() {
+      conn.alpha = 0; conn.mergeProgress = 0;
+    },
+    setConnectionPhase: function(phase) { // 0=separated, 1=merged
+      conn.alpha = 0.7;
+      conn.mergeProgress = phase;
+    }
+  };
+})();
