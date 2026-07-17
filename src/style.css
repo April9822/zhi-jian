@@ -120,7 +120,7 @@ body {
 .s3 { animation: Sfade 6s ease forwards; animation-delay: 9s; }
 .s4 { animation: Sfade 6s ease forwards; animation-delay: 15s; }
 .s5 { animation: Sfade 4s ease forwards; animation-delay: 21s; }
-.s6 { animation: Slast 5s ease forwards; animation-delay: 26.7s; pointer-events:auto; }
+.s6 { animation: Slast 5s ease forwards; animation-delay: 25s; pointer-events:auto; }
 
 /* 各线 delay（0.6s 间隔逐行） */
 .s1-l1 { animation-delay: 0s; }    .s1-l2 { animation-delay: 0.7s; }
@@ -130,12 +130,12 @@ body {
 .s4-l1 { animation-delay: 15s; } .s4-l2 { animation-delay: 15.6s; }
 .s4-l3 { animation-delay: 16.2s; } .s4-l4 { animation-delay: 16.8s; }
 .s5-l1 { animation-delay: 21s; } .s5-l2 { animation-delay: 21.6s; }
-.s6-l1 { animation-delay: 26.7s; } .s6-l2 { animation-delay: 25.6s; }
+.s6-l1 { animation-delay: 25s; } .s6-l2 { animation-delay: 25.6s; }
 
 /* 按钮 */
 .scene-buttons {
-  position:fixed; bottom:14vh; left:50%; transform:translateX(-50%);
-  display: flex; gap: 14px; margin-top: 6px;
+  position: fixed; bottom: 12vh; left: 50%; transform: translateX(-50%); z-index: 10;
+  display: flex; gap: 14px;
   opacity: 0;
   animation: btnIn 0.8s ease forwards;
   animation-delay: 26.5s;
