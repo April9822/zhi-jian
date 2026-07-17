@@ -36,7 +36,7 @@
 
 body {
   font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
-  background: #111111;
+  background: #F8F7F4;
   color: var(--text-primary);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
@@ -52,7 +52,7 @@ h1, h2, h3, h4 {
    🕯️ 开场 · 一封信（纯CSS动画，零JS依赖）
    ============================================================ */
 .intro-screen {
-  background: #111111;
+  background: #F8F7F4;
   min-height: 100vh;
   flex-direction: column;
   justify-content: center;
@@ -72,70 +72,100 @@ h1, h2, h3, h4 {
 .letter-page { display: none; }
 
 /* ============================================================
-   🎬 Welcome V4 · 暖白 + 透明度层级 + 呼吸位移动画
+   🕯️ Welcome Final · 书房 · 长者 · 落款
    ============================================================ */
+
+/* 空气光晕 */
+.halo {
+  position: fixed; top: 30%; left: 50%;
+  width: 360px; height: 360px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(180,160,130,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* 舞台：45% 高度 */
 .scene-stage {
   position: relative;
-  width: 100%;
-  max-width: 420px;
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%; max-width: 420px;
+  padding-top: 44vh;
   margin: 0 auto;
 }
 .scene {
-  position: absolute;
-  width: 100%;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+  position: absolute; top: 44vh;
+  width: 100%; text-align: left;
+  display: flex; flex-direction: column; gap: 28px;
   opacity: 0;
 }
 .scene-line {
   opacity: 0; margin: 0;
   font-family: -apple-system, 'SF Pro Display', 'PingFang SC', 'Noto Sans SC', sans-serif;
-  color: rgba(255,255,255,0.92);
+  color: #1a1a1a;
   line-height: 1.35; letter-spacing: 0.02em;
+  animation-duration: 0.6s; animation-timing-function: ease; animation-fill-mode: forwards;
 }
 
-/* 每行淡入 + 上浮（4个透明度级别） */
+/* 透明度动画 */
 @keyframes to100 { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-@keyframes to72  { from{opacity:0;transform:translateY(6px)} to{opacity:0.72;transform:translateY(0)} }
 @keyframes to68  { from{opacity:0;transform:translateY(6px)} to{opacity:0.68;transform:translateY(0)} }
 @keyframes to65  { from{opacity:0;transform:translateY(6px)} to{opacity:0.65;transform:translateY(0)} }
 @keyframes to60  { from{opacity:0;transform:translateY(6px)} to{opacity:0.6;transform:translateY(0)} }
 @keyframes to55  { from{opacity:0;transform:translateY(6px)} to{opacity:0.55;transform:translateY(0)} }
-.scene-line { animation-duration: 0.6s; animation-timing-function: ease; animation-fill-mode: forwards; }
 
-/* Scene 容器淡出:
-   S1:0→3.55  S2:3.80→8.20  S3:8.55→12.70  S4:13.10→18.05  S5:18.45+ */
+/* 呼吸动画 */
+@keyframes breathe {
+  0%,100% { transform:scale(1); }
+  50%     { transform:scale(1.012); }
+}
+
+/* 签名样式 */
+.signature {
+  padding-left: 0.8em;
+  opacity: 0;
+}
+.sign-off {
+  font-family: -apple-system, 'PingFang SC', sans-serif;
+  font-size: 13px; color: rgba(0,0,0,0.18);
+  margin-top: 18px; opacity: 0;
+  animation: to60 0.6s ease forwards;
+  animation-delay: 21.5s;
+}
+
+/* Scene 4 中 "委屈。" 呼吸 */
+.s4-l2 {
+  animation-name: to100, breathe;
+  animation-duration: 0.6s, 4s;
+  animation-delay: 14.45s, 15.05s;
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+}
+
+/* Scene 容器淡出 */
 @keyframes S1 { 0%,100%{opacity:0} 5%{opacity:1} 82%{opacity:1} 93%{opacity:0} }
-@keyframes S2 { 0%,100%{opacity:0} 3%{opacity:1} 78%{opacity:1} 90%{opacity:0} }
+@keyframes S2 { 0%,100%{opacity:0} 3%{opacity:1} 80%{opacity:1} 90%{opacity:0} }
 @keyframes S3 { 0%,100%{opacity:0} 3%{opacity:1} 80%{opacity:1} 90%{opacity:0} }
-@keyframes S4 { 0%,100%{opacity:0} 3%{opacity:1} 76%{opacity:1} 88%{opacity:0} }
-@keyframes S5 { 0%{opacity:0} 16%{opacity:1} 100%{opacity:1} }
+@keyframes S4 { 0%,100%{opacity:0} 2%{opacity:1} 77%{opacity:1} 88%{opacity:0} }
+@keyframes S5 { 0%{opacity:0} 12%{opacity:1} 100%{opacity:1} }
 
 .s1 { animation: S1 3.80s ease forwards; }
-.s2 { animation: S2 4.40s ease forwards; animation-delay: 3.80s; }
-.s3 { animation: S3 4.15s ease forwards; animation-delay: 8.20s; }
-.s4 { animation: S4 5.35s ease forwards; animation-delay: 12.70s; }
-.s5 { animation: S5 4s ease forwards; animation-delay: 18.45s; pointer-events:auto; }
+.s2 { animation: S2 4.50s ease forwards; animation-delay: 3.80s; }
+.s3 { animation: S3 4.30s ease forwards; animation-delay: 8.30s; }
+.s4 { animation: S4 6.20s ease forwards; animation-delay: 13.00s; }
+.s5 { animation: S5 4s ease forwards; animation-delay: 19.50s; pointer-events:auto; }
 
-/* 各线 delay（重新计算） */
-.s1-l1 { animation-delay: 0s; }      .s1-l2 { animation-delay: 1.35s; }
-.s2-l1 { animation-delay: 3.80s; }   .s2-l2 { animation-delay: 5.25s; }
-.s3-l1 { animation-delay: 8.55s; }   .s3-l2 { animation-delay: 9.80s; }
-.s4-l1 { animation-delay: 13.10s; }  .s4-l2 { animation-delay: 14.45s; }
-.s5-l1 { animation-delay: 18.45s; }  .s5-l2 { animation-delay: 19.80s; }
+/* 各线 delay */
+.s1-l1 { animation-delay: 0s; }       .s1-l2 { animation-delay: 1.35s; }
+.s2-l1 { animation-delay: 3.80s; }    .s2-l2 { animation-delay: 5.25s; }
+.s3-l1 { animation-delay: 8.55s; }    .s3-l2 { animation-delay: 9.80s; }
+.s4-l1 { animation-delay: 13.30s; }   .s4-l2 { animation-delay: 14.70s; } .s4-l3 { animation-delay: 16.10s; }
+.s5-l1 { animation-delay: 19.50s; }   .s5-l2 { animation-delay: 20.90s; }
 
 /* 按钮 */
 .scene-buttons {
-  display: flex; gap: 14px; margin-top: 8px;
+  display: flex; gap: 14px; margin-top: 6px;
   opacity: 0;
   animation: btnIn 0.45s ease forwards;
-  animation-delay: 21.60s;
+  animation-delay: 22.70s;
 }
 @keyframes btnIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
@@ -144,14 +174,14 @@ h1, h2, h3, h4 {
   padding: 12px 28px; border-radius: 24px; cursor: pointer;
   transition: all 0.3s; border: none; letter-spacing: 0.03em;
 }
-.intro-btn.primary { background: rgba(255,255,255,0.9); color: #111111; font-size: 20px; font-weight: 500; }
-.intro-btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.55); font-size: 17px; font-weight: 400; }
+.intro-btn.primary { background: #1a1a1a; color: white; font-size: 20px; font-weight: 500; }
+.intro-btn.secondary { background: transparent; border: 1px solid rgba(0,0,0,0.12); color: rgba(0,0,0,0.5); font-size: 17px; font-weight: 400; }
 
-/* 「我在听……」过渡 */
+/* 过渡 */
 .transition-msg { pointer-events: none; }
 .transition-msg p {
   font-family: -apple-system, 'PingFang SC', sans-serif;
-  font-size: 22px; color: rgba(255,255,255,0.7); opacity: 0;
+  font-size: 22px; color: rgba(0,0,0,0.6); opacity: 0;
 }
 .transition-msg.show p { animation: listenIn 0.6s ease forwards; }
 @keyframes listenIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
