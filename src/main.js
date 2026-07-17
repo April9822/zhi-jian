@@ -18,6 +18,8 @@ window.goToInput = function() {
 
   setTimeout(function() {
     intro.classList.add('fade-out');
+    document.body.style.background = '#F8F6F2';
+    document.body.style.color = '#2B2B2B';
     setTimeout(function() {
       intro.style.display = 'none';
       intro.classList.remove('active', 'fade-out');

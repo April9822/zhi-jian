@@ -31,8 +31,8 @@
 
 body {
   font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
-  background: #F8F6F2;
-  color: #2B2B2B;
+  background: #101827;
+  color: #F5F3EE;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
@@ -43,7 +43,7 @@ body {
    ============================================================ */
 
 .intro-screen {
-  background: #F8F6F2;
+  background: linear-gradient(180deg, #101827 0%, #26354A 50%, #52657A 100%);
   min-height: 100vh;
   flex-direction: column;
   justify-content: center;
@@ -57,7 +57,7 @@ body {
   position: fixed; top: 14%; left: 50%;
   width: 360px; height: 360px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(180,160,130,0.10) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(200,180,150,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -84,7 +84,7 @@ body {
 .scene-line {
   opacity: 0; margin: 0;
   font-family: -apple-system, 'SF Pro Display', 'PingFang SC', 'Noto Sans SC', sans-serif;
-  color: #2B2B2B;
+  color: #F5F3EE;
   line-height: 1.35; letter-spacing: 0.02em;
   white-space: nowrap;
   animation-duration: 0.6s; animation-timing-function: ease; animation-fill-mode: forwards;
@@ -112,7 +112,7 @@ body {
 /* 落款 */
 .sign-off {
   font-family: -apple-system, 'PingFang SC', sans-serif;
-  font-size: 13px; color: #8D867C; opacity: 0;
+  font-size: 13px; color: rgba(255,255,255,0.35); opacity: 0;
   margin-top: 14px;
   animation: to60 0.6s ease forwards;
   animation-delay: 21.5s;
@@ -152,14 +152,14 @@ body {
   padding: 12px 28px; border-radius: 24px; cursor: pointer;
   transition: all 0.3s; border: none; letter-spacing: 0.03em;
 }
-.intro-btn.primary { background: #2E2B29; color: #FFFFFF; font-size: 20px; font-weight: 500; }
-.intro-btn.secondary { background: transparent; border: 1px solid rgba(0,0,0,0.12); color: rgba(0,0,0,0.55); font-size: 17px; font-weight: 400; }
+.intro-btn.primary { background: #E8D7B5; color: #252525; font-size: 20px; font-weight: 500; }
+.intro-btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.55); font-size: 17px; font-weight: 400; }
 
 /* 过渡 */
 .transition-msg { pointer-events: none; }
 .transition-msg p {
   font-family: -apple-system, 'PingFang SC', sans-serif;
-  font-size: 22px; color: #2B2B2B; opacity: 0;
+  font-size: 22px; color: #F5F3EE; opacity: 0;
 }
 .transition-msg.show p { animation: listenIn 0.6s ease forwards; }
 @keyframes listenIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
