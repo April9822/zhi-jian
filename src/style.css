@@ -283,3 +283,73 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .preview-block{background:rgba(255,255,255,.6);border-radius:var(--radius);padding:18px;margin-top:12px;font-size:14px;line-height:2}
 .signup-card{text-align:center}
 .signup-card .btn-primary{width:auto;padding:14px 40px;display:inline-block}
+/* ============================================================
+   🌌 流动光晕背景
+   ============================================================ */
+.bg-layer{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;
+  background:linear-gradient(170deg,#11142F 0%,#2D1B3D 30%,#6B2A3A 55%,#D85A16 85%,#E87830 100%);
+  background-size:200% 200%;
+  animation:bgFlow 12s ease-in-out infinite;
+}
+@keyframes bgFlow{
+  0%,100%{background-position:0% 0%}
+  25%{background-position:100% 30%}
+  50%{background-position:50% 100%}
+  75%{background-position:0% 70%}
+}
+
+/* 中央光点 */
+.glow-center{
+  position:fixed;top:45%;left:50%;z-index:1;
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,200,150,.9);
+  box-shadow:0 0 40px 20px rgba(255,180,120,.4),0 0 80px 40px rgba(255,150,100,.15);
+  transform:translate(-50%,-50%);
+  animation:glowPulse 5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes glowPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7}
+  50%{transform:translate(-50%,-50%) scale(3);opacity:1}
+}
+
+/* 波纹 */
+.ripple-ring{
+  position:fixed;top:45%;left:50%;z-index:1;
+  border-radius:50%;border:1px solid rgba(255,200,150,.25);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.r1{width:80px;height:80px;animation:rippleOut 6s ease-out infinite}
+.r2{width:80px;height:80px;animation:rippleOut 6s ease-out 2s infinite}
+.r3{width:80px;height:80px;animation:rippleOut 6s ease-out 4s infinite}
+@keyframes rippleOut{
+  0%{width:40px;height:40px;opacity:.6;border-color:rgba(255,200,150,.35)}
+  100%{width:300px;height:300px;opacity:0;border-color:rgba(255,120,80,0)}
+}
+
+/* 粒子 */
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.particle{
+  position:absolute;border-radius:50%;
+  background:rgba(255,200,160,.5);
+  animation:floatUp 8s linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) scale(0);opacity:0}
+  10%{opacity:.8}
+  90%{opacity:.2}
+  100%{transform:translateY(-100vh) scale(1.5);opacity:0}
+}
+
+/* 移除旧 halo */
+.halo{display:none}
+
+/* 按钮增强：玻璃+发光 */
+.intro-btn.primary{
+  background:rgba(255,255,255,.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.2);color:#fff;
+  box-shadow:0 0 20px rgba(255,150,80,.15),inset 0 1px 0 rgba(255,255,255,.1);
+}
+.intro-btn.primary:hover{box-shadow:0 0 30px rgba(255,150,80,.3),inset 0 1px 0 rgba(255,255,255,.15)}

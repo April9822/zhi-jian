@@ -678,3 +678,24 @@ window.goToSpace = function() {
     }, 600);
   }
 };
+
+// ============================================================
+// 粒子生成
+// ============================================================
+(function initParticles() {
+  var container = document.getElementById('particles');
+  if (!container) return;
+  var count = 30;
+  for (var i = 0; i < count; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (60 + Math.random() * 40) + '%';
+    p.style.width = (2 + Math.random() * 4) + 'px';
+    p.style.height = p.style.width;
+    p.style.animationDelay = Math.random() * 8 + 's';
+    p.style.animationDuration = (6 + Math.random() * 8) + 's';
+    p.style.opacity = (0.3 + Math.random() * 0.5);
+    container.appendChild(p);
+  }
+})();
