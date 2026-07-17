@@ -65,22 +65,28 @@ body {
 .scene-stage {
   position: relative;
   width: 100%; max-width: 270px;
-  padding-top: 43vh;
+  padding-top: 45vh;
   margin: 0 auto;
 }
 
 .scene {
-  position: absolute; top: 43vh;
+  position: absolute; top: 45vh;
   width: 100%; text-align: left;
-  display: flex; flex-direction: column; gap: 34px;
+  display: flex; flex-direction: column;
   opacity: 0;
 }
+
+/* 动态行距 */
+.scene.tight  { gap: 36px; }
+.scene.wide   { gap: 32px; }
+.scene.close  { gap: 28px; }
 
 .scene-line {
   opacity: 0; margin: 0;
   font-family: -apple-system, 'SF Pro Display', 'PingFang SC', 'Noto Sans SC', sans-serif;
   color: #2B2B2B;
   line-height: 1.35; letter-spacing: 0.02em;
+  white-space: nowrap;
   animation-duration: 0.6s; animation-timing-function: ease; animation-fill-mode: forwards;
 }
 
@@ -89,11 +95,9 @@ body {
 
 /* 透明度动画 */
 @keyframes to100 { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-@keyframes to72  { from{opacity:0;transform:translateY(6px)} to{opacity:0.72;transform:translateY(0)} }
-@keyframes to68  { from{opacity:0;transform:translateY(6px)} to{opacity:0.68;transform:translateY(0)} }
+@keyframes to70  { from{opacity:0;transform:translateY(6px)} to{opacity:0.70;transform:translateY(0)} }
 @keyframes to65  { from{opacity:0;transform:translateY(6px)} to{opacity:0.65;transform:translateY(0)} }
 @keyframes to60  { from{opacity:0;transform:translateY(6px)} to{opacity:0.6;transform:translateY(0)} }
-@keyframes to55  { from{opacity:0;transform:translateY(6px)} to{opacity:0.55;transform:translateY(0)} }
 
 /* Scene 4 L2 呼吸 */
 .s4-l2 {
