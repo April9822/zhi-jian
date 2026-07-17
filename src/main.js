@@ -90,21 +90,14 @@ dom.dropZone.addEventListener('drop', (e) => {
 });
 
 function handleImageFile(file) {
-  state.imageFile = file;
-  state.inputMode = 'image';
-
-  // 显示已选文件
-  dom.dropZone.querySelector('.drop-icon').textContent = '✅';
-  dom.dropZone.querySelector('p').textContent = `已选择：${file.name}`;
-
-  // V1.0 引导用户使用粘贴方式
-  // OCR 功能将在 V1.1 接入真实 OCR API
-  dom.ocrPreview.classList.remove('hidden');
-  dom.ocrText.value = '[截图已上传]\n\nOCR 文字识别功能将在 V1.1 上线。\n现在请使用「粘贴对话」标签页，\n把聊天记录复制粘贴进来即可开始分析。';
-  dom.ocrText.style.color = '#64748b';
-
-  updateAnalyzeButton();
-  showToast('📸 截图已上传。OCR 功能 V1.1 上线，现在请使用「粘贴对话」');
+  showToast('📸 截图OCR功能V1.1上线。请切换到「粘贴对话」使用文字输入');
+  // 自动切回粘贴 tab
+  state.inputMode = 'paste';
+  dom.tabs.forEach(t => t.classList.remove('active'));
+  dom.tabs[0].classList.add('active');
+  dom.tabContents.forEach(c => c.classList.remove('active'));
+  $('#tab-paste').classList.add('active');
+  dom.textInput.focus();
 }
 
 // ============================================================
