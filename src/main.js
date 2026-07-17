@@ -16,24 +16,19 @@ function initIntro() {
   const btn = document.getElementById('open-letter-btn');
   if (!btn) return;
 
-  const goToInput = () => {
+  // 挂到全局——确保 HTML onclick 和 JS 都能调用
+  window.goToInput = () => {
     const intro = document.getElementById('intro-screen');
-    if (intro.classList.contains('fade-out')) return;
+    if (!intro || intro.classList.contains('fade-out')) return;
     intro.classList.add('fade-out');
     document.body.style.background = '#faf8f5';
     setTimeout(() => {
       intro.style.display = 'none';
       intro.classList.remove('active', 'fade-out');
       document.getElementById('input-screen').classList.add('active');
+      window.scrollTo({ top: 0 });
     }, 700);
   };
-
-  btn.addEventListener('click', goToInput);
-  // 点击任意空白处也可跳过
-  document.getElementById('intro-screen').addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') return;
-    goToInput();
-  });
 }
 
 // ============================================================
