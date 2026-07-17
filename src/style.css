@@ -67,7 +67,7 @@ body{
 .s4 { animation: Sfade 5.2s ease forwards; }
 .s5 { animation: Sfade 3.2s ease forwards; }
 .s6 { animation: Slast 4.5s ease forwards; pointer-events:auto; }
-@keyframes Sfade{0%,100%{opacity:0}8%{opacity:1}78%{opacity:1}96%{opacity:0}}
+@keyframes Sfade{0%,100%{opacity:0}12%{opacity:1}75%{opacity:1}92%{opacity:0}}
 @keyframes Slast{0%{opacity:0}6%{opacity:1}100%{opacity:1}}
 
 /* 按钮 */
@@ -329,3 +329,8 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   transition:all 2.5s ease;
 }
 /* 淡出旧光点 */
+
+/* 星辰 */
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.8}}

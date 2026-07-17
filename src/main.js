@@ -690,3 +690,49 @@ window.goToSpace = function() {
 // ============================================================
 // 情绪色彩时间轴
 // ============================================================
+
+// ============================================================
+// 星空 + 背景随场景变化
+// ============================================================
+(function initStars() {
+  var container = document.querySelector('.bg-layer');
+  if (!container) return;
+  // 添加星空容器
+  var starsEl = document.createElement('div');
+  starsEl.className = 'stars';
+  container.appendChild(starsEl);
+  for (var i = 0; i < 40; i++) {
+    var s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 60 + '%';
+    var size = 1 + Math.random() * 2;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.animationDuration = (2.5 + Math.random() * 4) + 's';
+    s.style.opacity = (0.15 + Math.random() * 0.4);
+    starsEl.appendChild(s);
+  }
+  // 背景随场景切换
+  var bg = container;
+  bg.style.transition = 'background 2.5s ease';
+  var palette = [
+    { t:0,    c:'linear-gradient(170deg,#071526 0%,#111A38 50%,#1A1F40 100%)' },
+    { t:1500, c:'linear-gradient(170deg,#111A38 0%,#211B45 50%,#302040 100%)' },
+    { t:4000, c:'linear-gradient(150deg,#302040 0%,#5A2530 50%,#402535 100%)' },
+    { t:5500, c:'linear-gradient(150deg,#402535 0%,#443044 50%,#332B55 100%)' },
+    { t:8000, c:'linear-gradient(150deg,#332B55 0%,#3A2840 50%,#4A2735 100%)' },
+    { t:10000,c:'linear-gradient(150deg,#552B38 0%,#4A2735 50%,#382535 100%)' },
+    { t:11000,c:'linear-gradient(140deg,#3A2840 0%,#6B4938 50%,#553535 100%)' },
+    { t:13500,c:'linear-gradient(150deg,#27304D 0%,#3A3545 50%,#403540 100%)' },
+    { t:15500,c:'linear-gradient(140deg,#1A2035 0%,#253040 45%,#3A3035 100%)' },
+    { t:16500,c:'linear-gradient(140deg,#17253B 0%,#553525 50%,#D09A55 100%)' },
+    { t:19000,c:'linear-gradient(140deg,#3A2540 0%,#9A6546 50%,#C28B52 100%)' },
+    { t:20000,c:'linear-gradient(140deg,#4A3040 0%,#C28B52 50%,#D4A065 100%)' },
+    { t:22500,c:'linear-gradient(150deg,#2A2040 0%,#8A5535 50%,#C89A45 70%)' },
+  ];
+  palette.forEach(function(p) {
+    setTimeout(function() { if (bg) bg.style.background = p.c; }, p.t);
+  });
+})();
