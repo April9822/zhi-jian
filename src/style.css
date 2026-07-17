@@ -31,8 +31,7 @@ body{
 }
 
 /* 舞台 */
-.scene-stage{
-  position:relative;width:270px;margin-left:18%;padding-top:44vh;
+.scene-stage{position:absolute;top:40vh;left:50%;transform:translateX(-50%);width:270px;
 }
 .scene{
   position:absolute;top:0;left:0;width:100%;text-align:left;
