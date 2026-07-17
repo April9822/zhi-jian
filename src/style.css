@@ -72,7 +72,7 @@ h1, h2, h3, h4 {
 .letter-page { display: none; }
 
 /* ============================================================
-   🎬 Scene 样式 + 独立动画
+   🎬 Scene 样式 · 精确 CSS animation-delay
    ============================================================ */
 .scene-stage {
   position: relative;
@@ -83,7 +83,6 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: center;
 }
-
 .scene {
   position: absolute;
   width: 100%;
@@ -94,112 +93,63 @@ h1, h2, h3, h4 {
   gap: 10px;
   opacity: 0;
 }
-
-/* ---- 每行基础 ---- */
 .scene-line {
-  opacity: 0;
-  margin: 0;
-}
-
-.scene-main {
+  opacity: 0; margin: 0;
   font-family: 'Noto Serif SC', 'STSong', serif;
-  font-size: 52px;
-  font-weight: 700;
   color: rgba(255,255,255,0.92);
-  line-height: 1.25;
-  letter-spacing: 0.03em;
+  line-height: 1.4; letter-spacing: 0.03em;
 }
 
-.scene-sub {
-  font-family: 'Noto Serif SC', 'STSong', serif;
-  font-size: 26px;
-  font-weight: 400;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.5;
-  letter-spacing: 0.04em;
-}
-
-/* ---- 每个 scene 的容器动画：淡入 → 停留 → 淡出 ---- */
-@keyframes s1-fade { 0%,100%{opacity:0} 3%{opacity:1} 70%{opacity:1} 88%{opacity:0} }
-@keyframes s2-fade { 0%,100%{opacity:0} 3%{opacity:1} 68%{opacity:1} 86%{opacity:0} }
-@keyframes s3-fade { 0%,100%{opacity:0} 3%{opacity:1} 68%{opacity:1} 86%{opacity:0} }
-@keyframes s4-fade { 0%,100%{opacity:0} 3%{opacity:1} 68%{opacity:1} 86%{opacity:0} }
-@keyframes s5-fade { 0%,100%{opacity:0} 3%{opacity:1} 66%{opacity:1} 84%{opacity:0} }
-@keyframes s6-fade { 0%{opacity:0} 15%{opacity:1} 100%{opacity:1} }
-
-.s1 { animation: s1-fade 4.8s ease forwards; animation-delay:0s; }
-.s2 { animation: s2-fade 5.8s ease forwards; animation-delay:5.0s; }
-.s3 { animation: s3-fade 5.2s ease forwards; animation-delay:11.0s; }
-.s4 { animation: s4-fade 5.4s ease forwards; animation-delay:16.4s; }
-.s5 { animation: s5-fade 7.0s ease forwards; animation-delay:22.0s; }
-.s6 { animation: s6-fade 4s ease forwards; animation-delay:29.2s; pointer-events:auto; }
-
-/* ---- 每行独立的淡入动画 ---- */
+/* 每行淡入 */
 @keyframes lineIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-.scene-line { animation: lineIn 0.6s ease forwards; }
+.scene-line { animation: lineIn 0.55s ease forwards; }
 
-/* Scene 1 各线 */
-.s1-l1 { animation-delay: 0s; }
-.s1-l2 { animation-delay: 1.2s; }
+/* Scene 容器淡出时间线:
+   S1:0-3.75  S2:3.75-8.30  S3:8.30-12.50  S4:12.50-17.50  S5:17.50+ */
+@keyframes S1 { 0%,100%{opacity:0} 6%{opacity:1} 81%{opacity:1} 94%{opacity:0} }
+@keyframes S2 { 0%,100%{opacity:0} 3%{opacity:1} 78%{opacity:1} 90%{opacity:0} }
+@keyframes S3 { 0%,100%{opacity:0} 4%{opacity:1} 78%{opacity:1} 90%{opacity:0} }
+@keyframes S4 { 0%,100%{opacity:0} 3%{opacity:1} 74%{opacity:1} 88%{opacity:0} }
+@keyframes S5 { 0%{opacity:0} 18%{opacity:1} 100%{opacity:1} }
 
-/* Scene 2 各线 */
-.s2-l1 { animation-delay: 5.0s; }
-.s2-l2 { animation-delay: 5.5s; }
-.s2-l3 { animation-delay: 6.1s; }
+.s1 { animation: S1 3.75s ease forwards; }
+.s2 { animation: S2 4.55s ease forwards; animation-delay: 3.75s; }
+.s3 { animation: S3 4.20s ease forwards; animation-delay: 8.30s; }
+.s4 { animation: S4 5.00s ease forwards; animation-delay: 12.50s; }
+.s5 { animation: S5 4s ease forwards; animation-delay: 17.50s; pointer-events:auto; }
 
-/* Scene 3 各线 */
-.s3-l1 { animation-delay: 11.0s; }
-.s3-l2 { animation-delay: 11.5s; }
+/* 各线 delay */
+.s1-l1 { animation-delay: 0s; }     .s1-l2 { animation-delay: 1.30s; }
+.s2-l1 { animation-delay: 3.75s; }  .s2-l2 { animation-delay: 5.20s; }
+.s3-l1 { animation-delay: 8.30s; }  .s3-l2 { animation-delay: 9.50s; }
+.s4-l1 { animation-delay: 12.50s; } .s4-l2 { animation-delay: 13.80s; }
+.s5-l1 { animation-delay: 17.50s; } .s5-l2 { animation-delay: 18.85s; }
 
-/* Scene 4 各线 */
-.s4-l1 { animation-delay: 16.4s; }
-.s4-l2 { animation-delay: 17.0s; }
-
-/* Scene 5 各线 */
-.s5-l1 { animation-delay: 22.0s; }
-.s5-l2 { animation-delay: 22.6s; }
-.s5-l3 { animation-delay: 23.2s; }
-
-/* Scene 6 各线 */
-.s6-l1 { animation-delay: 29.2s; }
-.s6-l2 { animation-delay: 29.8s; }
-
-/* ---- 按钮 ---- */
+/* 按钮 20.55s */
 .scene-buttons {
-  display: flex;
-  gap: 14px;
-  margin-top: 28px;
+  display: flex; gap: 14px; margin-top: 28px;
   opacity: 0;
-  animation: btnIn 0.8s ease forwards;
-  animation-delay: 30.6s;
+  animation: btnIn 0.45s ease forwards;
+  animation-delay: 20.55s;
 }
-
-@keyframes btnIn {
-  from { opacity: 0; transform: translateY(12px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
+@keyframes btnIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
 .intro-btn {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 17px;
-  padding: 13px 30px;
-  border-radius: 28px;
-  cursor: pointer;
-  transition: all 0.3s;
-  border: none;
-  letter-spacing: 0.04em;
+  font-family: 'Noto Serif SC', serif; font-size: 17px;
+  padding: 13px 30px; border-radius: 28px; cursor: pointer;
+  transition: all 0.3s; border: none; letter-spacing: 0.04em;
 }
+.intro-btn.primary { background: rgba(255,255,255,0.9); color: #1a1a1a; }
+.intro-btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.55); }
 
-.intro-btn.primary {
-  background: rgba(255,255,255,0.9);
-  color: #1a1a1a;
+/* 「我在听……」过渡 */
+.transition-msg { pointer-events: none; }
+.transition-msg p {
+  font-family: 'Noto Serif SC', serif; font-size: 28px;
+  color: rgba(255,255,255,0.7); opacity: 0;
 }
-
-.intro-btn.secondary {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.55);
-}
+.transition-msg.show p { animation: listenIn 0.6s ease forwards; }
+@keyframes listenIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
 .letter-brand {
   font-family: 'Noto Serif SC', serif;
