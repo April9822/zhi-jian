@@ -64,22 +64,22 @@ body {
 /* 舞台 */
 .scene-stage {
   position: relative;
-  width: 100%; max-width: 270px;
-  padding-top: 45vh;
+  width: 100%; max-width: 290px;
+  padding-top: 34vh;
   margin: 0 auto;
 }
 
 .scene {
-  position: absolute; top: 45vh;
+  position: absolute; top: 34vh;
   width: 100%; text-align: left;
   display: flex; flex-direction: column;
   opacity: 0;
 }
 
-/* 动态行距 */
-.scene.tight  { gap: 36px; }
-.scene.wide   { gap: 32px; }
-.scene.close  { gap: 28px; }
+/* 动态行距——娓娓道来的呼吸感 */
+.scene.tight  { gap: 42px; }
+.scene.wide   { gap: 38px; }
+.scene.close  { gap: 32px; }
 
 .scene-line {
   opacity: 0; margin: 0;
