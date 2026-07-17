@@ -9,13 +9,11 @@
   --accent-soft:#fef3c7;--red-soft:#fef2f2;--green-soft:#f0fdf4;--blue-soft:#eff6ff;
   --radius:12px;--radius-lg:20px;
   --shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);
-}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;
   background:linear-gradient(180deg, #080B14 0%, #182337 60%, #1E2D45 100%);color:#F5F3EE;line-height:1.7;
   -webkit-font-smoothing:antialiased;min-height:100vh;-webkit-text-size-adjust:100%;
-}
 
 /* ============================================================
    Welcome
@@ -28,15 +26,12 @@ body{
   transform:translate(-50%,-50%);
   background:radial-gradient(circle,rgba(200,155,101,.08) 0%,transparent 70%);
   pointer-events:none;
-}
 
 /* 舞台 */
 .scene-stage{position:absolute;top:19.8vh;left:60px;width:min(270px, 72vw);
-}
 .scene{
   position:absolute;top:0;left:0;width:100%;text-align:left;
   display:flex;flex-direction:column;gap:28px;opacity:0;
-}
 
 /* 每行淡入 */
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -45,20 +40,17 @@ body{
   font-family:-apple-system,'PingFang SC',sans-serif;color:#F5F3EE;
   line-height:1.4;letter-spacing:.02em;
   animation:fadeUp .55s ease forwards;
-}
 .sl span{display:inline-block;vertical-align:baseline;margin-right:.12em}
 
 /* 关键词浮起 */
 @keyframes kwFloat{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-2px)}
-}
 .kw{animation:kwFloat 2.5s ease-in-out infinite;animation-delay:1.5s}
 .kw.breathe{animation:kwBreathe 2s ease-in-out infinite;animation-delay:2.5s}
 @keyframes kwBreathe{
   0%,100%{transform:scale(1)}
   50%{transform:scale(1.05)}
-}
 
 /* 场景容器淡出 */
 .s1 { animation: Sfade 4s ease forwards; }
@@ -76,14 +68,12 @@ body{
   display:flex;gap:14px;opacity:0;
   animation:btnIn .8s ease forwards;
   animation-delay:24s;
-}
 @keyframes btnIn{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
 .intro-btn{
   font-family:-apple-system,'PingFang SC',sans-serif;
   padding:14px 36px;border-radius:26px;cursor:pointer;
   transition:all .3s;border:none;letter-spacing:.03em;white-space:nowrap;
-}
 .intro-btn.primary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500}
 .intro-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:16px;font-weight:400}
 
@@ -91,7 +81,6 @@ body{
 .transition-msg{pointer-events:none}
 .transition-msg p{
   font-family:-apple-system,'PingFang SC',sans-serif;font-size:22px;color:#F5F3EE;opacity:0
-}
 .transition-msg.show p{animation:listenIn .6s ease forwards}
 @keyframes listenIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
@@ -248,7 +237,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   .brand{font-size:36px}.greeting{font-size:17px}.input-card{padding:20px}
   .dual-columns,.icebreaker-cards,.what-if-summary,.notes-grid,.emotion-grid{grid-template-columns:1fr}
   .report-screen{padding:24px 16px}.insight-title{font-size:22px}.report-container{padding:20px 12px 60px}
-}
 
 /* 重组文字 */
 .reform-text {
@@ -258,11 +246,9 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   color: #F5F3EE !important;
   line-height: 1.5 !important;
   animation: reformIn 1s ease forwards;
-}
 @keyframes reformIn {
   0% { opacity: 0; filter: blur(8px); transform: translateY(10px); }
   100% { opacity: 1; filter: blur(0); transform: translateY(0); }
-}
 @keyframes loadPulse{0%,100%{opacity:0.6}50%{opacity:1}}
 .loading-msg.show{animation:loadPulse 2s ease-in-out infinite}
 #loading-screen{justify-content:center;align-items:center;min-height:100vh;animation:loadBgShift 20s ease forwards}
@@ -291,27 +277,20 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   background:linear-gradient(170deg,#11142F 0%,#2D1B3D 30%,#6B2A3A 55%,#D85A16 85%,#E87830 100%);
   background-size:200% 200%;
   animation:bgFlow 12s ease-in-out infinite;
-}
 @keyframes bgFlow{
   0%,100%{background-position:0% 0%}
   25%{background-position:100% 30%}
   50%{background-position:50% 100%}
   75%{background-position:0% 70%}
-}
 
 /* 中央光点 */
-}
   50%{transform:translate(-50%,-50%) scale(3);opacity:1}
-}
 
 /* 波纹 */
-}
   100%{width:300px;height:300px;opacity:0;border-color:rgba(255,120,80,0)}
-}
 
 /* 粒子 */
 .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-}
 
 /* 移除旧 halo */
 .halo{display:none}
@@ -321,41 +300,23 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   background:rgba(255,255,255,.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,.2);color:#fff;
   box-shadow:0 0 20px rgba(255,150,80,.15),inset 0 1px 0 rgba(255,255,255,.1);
-}
 .intro-btn.primary:hover{box-shadow:0 0 30px rgba(255,150,80,.3),inset 0 1px 0 rgba(255,255,255,.15)}
 /* 光点随场景变化 */
   transition:all 2s ease;
-}
   transition:all 2.5s ease;
-}
 /* 淡出旧光点 */
 
 /* 星辰 */
 .stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 5s ease-in-out infinite}
-@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.4}}
 
 /* 连接光点 */
-.conn-dots{position:fixed;top:50%;left:50%;z-index:2;transform:translate(-50%,-50%);pointer-events:none}
-.conn-dots .dot{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(255,200,160,.35)}
-.conn-dots .dot.a{left:-18px;animation:dotPulseA 5s ease-in-out infinite}
-.conn-dots .dot.b{left:18px;animation:dotPulseB 5s ease-in-out 1s infinite}
-.conn-dots .line{position:absolute;top:2px;left:-14px;width:28px;height:1px;background:linear-gradient(90deg,rgba(255,200,160,0),rgba(255,200,160,.2),rgba(255,200,160,0));animation:lineFade 6s ease-in-out infinite}
 @keyframes dotPulseA{0%,100%{opacity:.3}50%{opacity:.7;box-shadow:0 0 8px 4px rgba(255,180,120,.2)}}
 @keyframes dotPulseB{0%,100%{opacity:.5}50%{opacity:.2}}
 @keyframes lineFade{0%,100%{opacity:0;transform:scaleX(1)}50%{opacity:1;transform:scaleX(1.3)}}
 
 /* 右侧暖光雾 */
-.nebula{position:fixed;top:25%;right:-10%;width:55%;height:50%;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 60% 50%,rgba(200,140,80,.07) 0%,rgba(180,100,50,.03) 40%,transparent 75%);animation:nebulaBreathe 8s ease-in-out infinite}
-@keyframes nebulaBreathe{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
 
 /* 漂浮尘埃 */
-.dust-layer{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.dust{position:absolute;border-radius:50%;background:rgba(255,220,180,.2);animation:driftUp 12s linear infinite}
-@keyframes driftUp{0%{transform:translateY(0) rotate(0deg);opacity:0}10%{opacity:.5}90%{opacity:.1}100%{transform:translateY(-80vh) rotate(90deg);opacity:0}}
-
-/* 关键词发光 */
-.kw.gold{text-shadow:0 0 18px rgba(200,155,80,.4)}
 .kw.red{text-shadow:0 0 14px rgba(180,80,60,.35)}
 .kw.warm{text-shadow:0 0 22px rgba(210,160,100,.5)}
 .kw.glow{text-shadow:0 0 28px rgba(200,160,100,.6),0 0 50px rgba(180,140,80,.25)}
@@ -369,9 +330,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   transform:translate(-50%,-50%);
   transition:all 1.8s cubic-bezier(.4,0,.2,1);
   pointer-events:none;
-}
 .lamp-glow.spread{
   width:250vmax;height:250vmax;
   background:rgba(255,245,235,.95);
   box-shadow:0 0 80px 60px rgba(255,240,220,.7),0 0 200px 150px rgba(255,220,180,.3);
-}

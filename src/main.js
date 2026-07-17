@@ -709,63 +709,7 @@ window.goToSpace = function() {
 // ============================================================
 // 星空 + 背景随场景变化
 // ============================================================
-(function initStars() {
-  var container = document.querySelector('.bg-layer');
-  if (!container) return;
-  // 添加星空容器
-  var starsEl = document.createElement('div');
-  starsEl.className = 'stars';
-  container.appendChild(starsEl);
-  for (var i = 0; i < 15; i++) {
-    var s = document.createElement('div');
-    s.className = 'star';
-    s.style.left = Math.random() * 100 + '%';
-    s.style.top = Math.random() * 60 + '%';
-    var size = 1 + Math.random() * 2;
-    s.style.width = size + 'px';
-    s.style.height = size + 'px';
-    s.style.animationDelay = Math.random() * 3 + 's';
-    s.style.animationDuration = (2.5 + Math.random() * 4) + 's';
-    s.style.opacity = (0.15 + Math.random() * 0.4);
-    starsEl.appendChild(s);
-  }
-  // 背景随场景切换
-  var bg = container;
-  bg.style.transition = "background 5s ease";
-  var palette = [
-    { t:0,    c:"linear-gradient(170deg,#071526 0%,#0E1B30 40%,#111A38 100%)" },
-    { t:1500, c:"linear-gradient(170deg,#111A38 0%,#211B45 50%,#252040 100%)" },
-    { t:4000, c:"linear-gradient(150deg,#252040 0%,#3A1E30 50%,#552B38 100%)" },
-    { t:8000, c:"linear-gradient(150deg,#552B38 0%,#4A2530 50%,#3A2040 100%)" },
-    { t:11000,c:"linear-gradient(140deg,#3A2040 0%,#6B4938 50%,#C28B52 100%)" },
-    { t:13500,c:"linear-gradient(150deg,#2A1F40 0%,#403035 50%,#8A5535 100%)" },
-    { t:16500,c:"linear-gradient(140deg,#1A2540 0%,#553525 50%,#D09A55 100%)" },
-    { t:19000,c:"linear-gradient(140deg,#3A2540 0%,#C28B52 50%,#AFA58B 100%)" },
-    { t:22500,c:"linear-gradient(150deg,#2A2540 0%,#8A6040 50%,#AFA58B 70%)" },
-  ];
-  palette.forEach(function(p) {
-    setTimeout(function() { if (bg) bg.style.background = p.c; }, p.t);
-  });
-})();
 
 // ============================================================
 // 漂浮尘埃 + 星数精简
 // ============================================================
-(function initDust() {
-  var d = document.getElementById('dust');
-  if (!d) return;
-  for (var i = 0; i < 20; i++) {
-    var p = document.createElement('div');
-    p.className = 'dust';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.top = (50 + Math.random() * 50) + '%';
-    var s = 1.5 + Math.random() * 3;
-    p.style.width = s + 'px'; p.style.height = s + 'px';
-    p.style.animationDelay = Math.random() * 12 + 's';
-    p.style.animationDuration = (10 + Math.random() * 14) + 's';
-    d.appendChild(p);
-  }
-  // 精简星星：只保留更稀疏的
-  var stars = document.querySelectorAll('.star');
-  stars.forEach(function(s, i) { s.style.opacity = (0.08 + Math.random() * 0.25); });
-})();
