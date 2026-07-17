@@ -75,18 +75,18 @@ body {
   50%     { opacity: 1; }
 }
 
-/* 舞台 42vh 偏左 */
+/* 舞台：绝对定位，不受flex影响 */
 .scene-stage {
-  position: relative;
-  width: 100%; max-width: 270px;
-  margin-left: 37%;
-  margin-top: 42vh;
+  position: absolute;
+  top: 28vh;
+  left: 6vw;
+  width: 270px;
 }
 .scene {
   position: absolute;
-  top: 0;
+  top: 0; left: 0;
   width: 100%; text-align: left;
-  display: flex; flex-direction: column; gap: 38px;
+  display: flex; flex-direction: column; gap: 22px;
   opacity: 0;
 }
 
