@@ -16,32 +16,38 @@
          ================================================================ -->
     <main id="intro-screen" class="screen active intro-screen">
       <div class="scene-stage">
-        <div class="scene" id="scene-1">
-          <p class="scene-line scene-main">你好……</p>
-          <p class="scene-line scene-sub">我是「知间」</p>
+        <!-- Scene 1: 0s–4.3s -->
+        <div class="scene s1">
+          <p class="scene-line scene-main s1-l1">你好……</p>
+          <p class="scene-line scene-sub s1-l2">我是「知间」</p>
         </div>
-        <div class="scene" id="scene-2">
-          <p class="scene-line scene-main">今天</p>
-          <p class="scene-line scene-sub">是不是发生了一些</p>
-          <p class="scene-line scene-main">不开心的事？</p>
+        <!-- Scene 2: 5.1s–10.8s -->
+        <div class="scene s2">
+          <p class="scene-line scene-main s2-l1">今天</p>
+          <p class="scene-line scene-sub s2-l2">是不是发生了一些</p>
+          <p class="scene-line scene-main s2-l3">不开心的事？</p>
         </div>
-        <div class="scene" id="scene-3">
-          <p class="scene-line scene-sub">我不会站在</p>
-          <p class="scene-line scene-main">任何一方</p>
+        <!-- Scene 3: 11.6s–16.0s -->
+        <div class="scene s3">
+          <p class="scene-line scene-sub s3-l1">我不会站在</p>
+          <p class="scene-line scene-main s3-l2">任何一方</p>
         </div>
-        <div class="scene" id="scene-4">
-          <p class="scene-line scene-sub">我更想知道</p>
-          <p class="scene-line scene-main">真正发生了什么</p>
+        <!-- Scene 4: 16.9s–21.7s -->
+        <div class="scene s4">
+          <p class="scene-line scene-sub s4-l1">我更想知道</p>
+          <p class="scene-line scene-main s4-l2">真正发生了什么</p>
         </div>
-        <div class="scene" id="scene-5">
-          <p class="scene-line scene-sub">很多时候</p>
-          <p class="scene-line scene-sub">人与人的距离</p>
-          <p class="scene-line scene-main">只差一次理解</p>
+        <!-- Scene 5: 22.5s–28.8s (品牌理念，停留最长) -->
+        <div class="scene s5">
+          <p class="scene-line scene-sub s5-l1">很多时候</p>
+          <p class="scene-line scene-sub s5-l2">人与人的距离</p>
+          <p class="scene-line scene-main s5-l3">只差一次理解</p>
         </div>
-        <div class="scene" id="scene-6">
-          <p class="scene-line scene-main">愿意</p>
-          <p class="scene-line scene-main">和我聊聊吗？</p>
-          <div class="scene-buttons" style="opacity:0;transform:translateY(12px)">
+        <!-- Scene 6: 29.8s 起 (停留) -->
+        <div class="scene s6">
+          <p class="scene-line scene-main s6-l1">愿意</p>
+          <p class="scene-line scene-main s6-l2">和我聊聊吗？</p>
+          <div class="scene-buttons s6-btns">
             <button class="intro-btn primary" onclick="window.goToInput()">愿意聊聊</button>
             <button class="intro-btn secondary" onclick="window.goToInput()">暂时不用</button>
           </div>
