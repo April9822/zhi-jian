@@ -4,51 +4,26 @@
  */
 
 // ============================================================
-// 🕯️ 开场动画 · 一封信
+// 🕯️ 开场动画（纯CSS驱动，JS只处理按钮跳转）
 // ============================================================
 function initIntro() {
-  // 分享链接跳过开场动画
   if (window.location.search.includes('share=')) {
     document.getElementById('intro-screen').classList.remove('active');
     document.getElementById('input-screen').classList.add('active');
     return;
   }
 
-  const lines = document.querySelectorAll('.letter-line');
   const btn = document.getElementById('open-letter-btn');
+  if (!btn) return;
 
-  if (!lines.length) return;
-
-  lines.forEach((line) => {
-    const delay = parseInt(line.dataset.delay) || 0;
+  btn.addEventListener('click', () => {
+    const intro = document.getElementById('intro-screen');
+    intro.classList.add('fade-out');
+    document.body.style.background = '#faf8f5';
     setTimeout(() => {
-      line.classList.add('visible');
-    }, delay);
-  });
-
-  if (btn) {
-    const btnDelay = parseInt(btn.dataset.delay) || 8000;
-    setTimeout(() => {
-      btn.classList.add('visible');
-    }, btnDelay);
-
-    btn.addEventListener('click', () => {
-      const intro = document.getElementById('intro-screen');
-      intro.classList.add('fade-out');
-      document.body.style.background = '#faf8f5';
-      setTimeout(() => {
-        intro.classList.remove('active', 'fade-out');
-        document.getElementById('input-screen').classList.add('active');
-      }, 700);
-    });
-  }
-
-  // 用户点击任意位置也可跳过
-  document.getElementById('intro-screen').addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') return;
-    // 快速显示所有文字
-    lines.forEach(l => l.classList.add('visible'));
-    if (btn) btn.classList.add('visible');
+      intro.classList.remove('active', 'fade-out');
+      document.getElementById('input-screen').classList.add('active');
+    }, 700);
   });
 }
 
