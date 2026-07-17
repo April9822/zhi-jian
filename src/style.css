@@ -54,16 +54,15 @@ h1, h2, h3, h4 {
 .intro-screen {
   background: #1a1a1a;
   min-height: 100vh;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px 24px;
+  padding: 40px 24px 80px;
   position: relative;
 }
 
 .letter {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -80,27 +79,20 @@ h1, h2, h3, h4 {
 .letter-line {
   font-family: 'Noto Serif SC', 'STSong', serif;
   font-size: 24px;
-  color: rgba(255, 255, 255, 0);
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 1.4s ease, transform 1.4s ease;
   letter-spacing: 0.04em;
+  visibility: hidden;
 }
 
 .letter-line.visible {
-  opacity: 1;
-  transform: translateY(0);
-  color: rgba(255, 255, 255, 0.9);
-  animation: breathe 5s ease-in-out infinite;
+  visibility: visible;
+  animation: breatheIn 1.6s ease forwards, breathe 5s ease-in-out 1.6s infinite;
 }
 
-.letter-line.letter-line-soft {
-  font-size: 20px;
-}
-
-.letter-line.letter-line-soft.visible {
-  color: rgba(255, 255, 255, 0.6);
+@keyframes breatheIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes breathe {
@@ -108,27 +100,28 @@ h1, h2, h3, h4 {
   50% { opacity: 1; transform: scale(1.03); }
 }
 
+.letter-line-soft {
+  font-size: 20px;
+}
+
 .letter-btn {
   font-family: 'Noto Serif SC', serif;
   font-size: 18px;
-  color: rgba(255, 255, 255, 0);
+  color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 14px 40px;
   border-radius: 30px;
   cursor: pointer;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: all 0.3s ease, opacity 1.4s ease, transform 1.4s ease;
   align-self: flex-start;
   margin-top: 24px;
   letter-spacing: 0.06em;
+  visibility: hidden;
 }
 
 .letter-btn.visible {
-  opacity: 1;
-  transform: translateY(0);
-  color: rgba(255, 255, 255, 0.85);
+  visibility: visible;
+  animation: breatheIn 1.4s ease forwards;
 }
 
 .letter-btn:hover {
@@ -146,7 +139,6 @@ h1, h2, h3, h4 {
   letter-spacing: 0.1em;
 }
 
-/* 淡出过渡 */
 .intro-screen.fade-out {
   animation: fadeOut 0.8s ease forwards;
 }
