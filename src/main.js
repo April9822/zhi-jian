@@ -4,8 +4,73 @@
  */
 
 // ============================================================
-// 🕯️ 开场动画（纯CSS驱动，JS只处理按钮跳转）
+// 🎬 Scene 动画引擎
 // ============================================================
+
+const SCENES = [
+  {
+    id: 'scene-1',
+    lines: [
+      { el: null, text: '你好……', cls: 'scene-main' },
+      { el: null, text: '我是「知间」', cls: 'scene-sub' },
+    ],
+    lineDelays: [0, 600],      // ms between lines
+    holdAfter: 2200,            // all lines shown, hold
+  },
+  {
+    id: 'scene-2',
+    lines: [
+      { el: null, text: '今天', cls: 'scene-main' },
+      { el: null, text: '是不是发生了一些', cls: 'scene-sub' },
+      { el: null, text: '不开心的事？', cls: 'scene-main' },
+    ],
+    lineDelays: [0, 500, 1100],
+    holdAfter: 2800,
+  },
+  {
+    id: 'scene-3',
+    lines: [
+      { el: null, text: '我不会站在', cls: 'scene-sub' },
+      { el: null, text: '任何一方', cls: 'scene-main' },
+    ],
+    lineDelays: [0, 500],
+    holdAfter: 2400,
+  },
+  {
+    id: 'scene-4',
+    lines: [
+      { el: null, text: '我更想知道', cls: 'scene-sub' },
+      { el: null, text: '真正发生了什么', cls: 'scene-main' },
+    ],
+    lineDelays: [0, 600],
+    holdAfter: 2600,
+  },
+  {
+    id: 'scene-5',
+    lines: [
+      { el: null, text: '很多时候', cls: 'scene-sub' },
+      { el: null, text: '人与人的距离', cls: 'scene-sub' },
+      { el: null, text: '只差一次理解', cls: 'scene-main' },
+    ],
+    lineDelays: [0, 600, 1200],
+    holdAfter: 3500,
+  },
+  {
+    id: 'scene-6',
+    lines: [
+      { el: null, text: '愿意', cls: 'scene-main' },
+      { el: null, text: '和我聊聊吗？', cls: 'scene-main' },
+    ],
+    lineDelays: [0, 600],
+    holdAfter: 1800,
+    hasButtons: true,
+  },
+];
+
+const FADE_IN_MS = 600;
+const FADE_OUT_MS = 800;
+const GAP_MS = 600;
+
 function initIntro() {
   if (window.location.search.includes('share=')) {
     document.getElementById('intro-screen').classList.remove('active');
@@ -13,10 +78,18 @@ function initIntro() {
     return;
   }
 
-  const btn = document.getElementById('open-letter-btn');
-  if (!btn) return;
+  // 初始化每个 scene 的 line DOM 引用
+  for (const scene of SCENES) {
+    const el = document.getElementById(scene.id);
+    if (!el) continue;
+    const lineEls = el.querySelectorAll('.scene-line');
+    scene.lines.forEach((l, i) => { l.el = lineEls[i]; });
+    scene.root = el;
+  }
 
-  // 挂到全局——确保 HTML onclick 和 JS 都能调用
+  // 按钮出场
+  const btnBox = document.querySelector('#scene-6 .scene-buttons');
+
   window.goToInput = () => {
     const intro = document.getElementById('intro-screen');
     if (!intro || intro.classList.contains('fade-out')) return;
@@ -29,6 +102,57 @@ function initIntro() {
       window.scrollTo({ top: 0 });
     }, 700);
   };
+
+  playScene(0);
+
+  // ---- 动画函数 ----
+
+  function playScene(idx) {
+    if (idx >= SCENES.length) return;
+    const scene = SCENES[idx];
+    if (!scene.root) return;
+
+    // 所有 line 先隐藏
+    scene.lines.forEach(l => { if (l.el) l.el.style.opacity = '0'; });
+
+    // 显示 scene 容器
+    scene.root.style.opacity = '1';
+    scene.root.style.pointerEvents = 'none';
+
+    // 逐行淡入
+    scene.lines.forEach((line, li) => {
+      setTimeout(() => {
+        if (line.el) {
+          line.el.style.transition = `opacity ${FADE_IN_MS}ms ease`;
+          line.el.style.opacity = '1';
+        }
+      }, scene.lineDelays[li]);
+    });
+
+    // 全部出现后，停留
+    const totalAppear = Math.max(...scene.lineDelays) + FADE_IN_MS;
+    const holdStart = totalAppear + 200; // small buffer
+
+    setTimeout(() => {
+      // Scene 6：按钮浮现
+      if (scene.hasButtons && btnBox) {
+        scene.root.style.pointerEvents = 'auto';
+        setTimeout(() => {
+          btnBox.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+          btnBox.style.opacity = '1';
+          btnBox.style.transform = 'translateY(0)';
+        }, 400);
+        return; // Scene 6 不消失
+      }
+
+      // 整体淡出
+      scene.root.style.transition = `opacity ${FADE_OUT_MS}ms ease`;
+      scene.root.style.opacity = '0';
+
+      // 黑屏间隙后播下一个
+      setTimeout(() => playScene(idx + 1), FADE_OUT_MS + GAP_MS);
+    }, holdStart + scene.holdAfter);
+  }
 }
 
 // ============================================================

@@ -72,7 +72,7 @@ h1, h2, h3, h4 {
 .letter-page { display: none; }
 
 /* ============================================================
-   🎬 Scene 切换动画
+   🎬 Scene 样式（动画由 JS 控制）
    ============================================================ */
 .scene-stage {
   position: relative;
@@ -91,42 +91,21 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   opacity: 0;
-  animation: sceneFade 2.5s ease forwards;
-  pointer-events: none;
 }
 
-/* Scene 间隔 2.8s，动画 2.5s → 0.3s 纯黑过渡 */
-#scene-1 { animation-delay: 0s; }
-#scene-2 { animation-delay: 2.8s; }
-#scene-3 { animation-delay: 5.6s; }
-#scene-4 { animation-delay: 8.4s; }
-#scene-5 { animation-delay: 11.2s; }
-#scene-6 { animation-delay: 14s; animation-duration: 4s; pointer-events: auto; }
+/* 第一个 scene 初始可见 */
+#scene-1 { opacity: 1; }
 
-@keyframes sceneFade {
-  0%      { opacity: 0; transform: translateY(10px); }
-  14%     { opacity: 1; transform: translateY(0); }
-  72%     { opacity: 1; transform: translateY(0); }
-  100%    { opacity: 0; transform: translateY(-4px); }
+.scene-line {
+  opacity: 0;
+  margin: 0;
 }
 
-/* 最后一个scene停留 */
-#scene-6 {
-  animation-name: sceneFadeLast;
-}
-
-@keyframes sceneFadeLast {
-  0%      { opacity: 0; transform: translateY(10px); }
-  18%     { opacity: 1; transform: translateY(0); }
-  100%    { opacity: 1; transform: translateY(0); }
-}
-
-/* 字号层级 */
 .scene-main {
   font-family: 'Noto Serif SC', 'STSong', serif;
-  font-size: 56px;
+  font-size: 52px;
   font-weight: 700;
   color: rgba(255,255,255,0.92);
   line-height: 1.25;
@@ -135,19 +114,13 @@ h1, h2, h3, h4 {
 
 .scene-sub {
   font-family: 'Noto Serif SC', 'STSong', serif;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 400;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.55);
   line-height: 1.5;
   letter-spacing: 0.04em;
 }
 
-.scene-main em {
-  font-style: normal;
-  letter-spacing: 0.15em;
-}
-
-/* 按钮 */
 .scene-buttons {
   display: flex;
   gap: 14px;
