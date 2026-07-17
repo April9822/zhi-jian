@@ -11,12 +11,30 @@
 </head>
 <body>
   <div id="app">
+    <!-- ================================================================
+         开场：一封信
+         ================================================================ -->
+    <main id="intro-screen" class="screen active intro-screen">
+      <div class="letter">
+        <div class="letter-page" id="letter-page-1">
+          <p class="letter-line" data-delay="0">亲爱的你。</p>
+          <p class="letter-line" data-delay="1800">今天，是不是发生了一些</p>
+          <p class="letter-line" data-delay="3200">不开心的事？</p>
+          <p class="letter-line letter-line-soft" data-delay="5000">我不会站在任何一方。</p>
+          <p class="letter-line letter-line-soft" data-delay="6200">但我愿意陪你一起，</p>
+          <p class="letter-line letter-line-soft" data-delay="7400">看看真正发生了什么。</p>
+          <button id="open-letter-btn" class="letter-btn" data-delay="9000">一起看看</button>
+        </div>
+      </div>
+      <p class="letter-brand">知间</p>
+    </main>
+
     <!-- ====== 首页：输入区 ====== -->
-    <main id="input-screen" class="screen active">
+    <main id="input-screen" class="screen">
       <div class="hero">
         <h1 class="brand">知间</h1>
         <p class="subtitle">理解人与人之间</p>
-        <p class="greeting">发生了什么事？我在。</p>
+        <p class="greeting">我在听。把对话发给我。</p>
       </div>
 
       <div class="input-card">
