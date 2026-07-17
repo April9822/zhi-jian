@@ -43,6 +43,7 @@ window.goToInput = function() {
     intro.style.display = 'none';
     intro.classList.remove('active');
     document.getElementById('input-screen').classList.add('active');
+      document.body.classList.add("scrollable");
     window.scrollTo({ top: 0 });
     setTimeout(function() { if (glow) glow.remove(); }, 1000);
   }, 1500);
@@ -689,6 +690,7 @@ window.goToSpace = function() {
       intro.style.display = 'none';
       intro.classList.remove('active', 'fade-out');
       document.getElementById('space-screen').classList.add('active');
+      document.body.classList.add("scrollable");
       window.scrollTo({ top: 0 });
     }, 600);
   }
@@ -769,6 +771,58 @@ window.goToSpace = function() {
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(210,210,240,' + Math.max(0.02, s.alpha) + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ============================================================
+// Canvas 星空 · 动态漂浮呼吸
+// ============================================================
+(function() {
+  var canvas = document.getElementById('starCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  var stars = [];
+  for (var i = 0; i < 35; i++) {
+    stars.push({
+      x: Math.random() * W, y: Math.random() * H * 0.7,
+      r: 0.8 + Math.random() * 2.5,
+      baseAlpha: 0.08 + Math.random() * 0.35,
+      twinkleSpeed: 0.8 + Math.random() * 2.5,
+      twinkleAmp: 0.04 + Math.random() * 0.12,
+      driftX: (Math.random() - 0.5) * 0.4,
+      driftY: -0.05 - Math.random() * 0.2,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+
+  function draw(ms) {
+    ctx.clearRect(0, 0, W, H);
+    var t = ms * 0.001;
+    stars.forEach(function(s) {
+      var flicker = Math.sin(t * s.twinkleSpeed + s.phase) * s.twinkleAmp;
+      var alpha = Math.max(0.04, s.baseAlpha + flicker);
+      s.x += s.driftX * 0.02;
+      s.y += s.driftY * 0.02;
+      if (s.y < -10) { s.y = H * 0.7; s.x = Math.random() * W; }
+      if (s.x < -5) s.x = W + 5; if (s.x > W + 5) s.x = -5;
+      // 光晕
+      var glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 3);
+      glow.addColorStop(0, 'rgba(220,220,255,' + alpha + ')');
+      glow.addColorStop(0.3, 'rgba(200,200,240,' + alpha * 0.5 + ')');
+      glow.addColorStop(1, 'rgba(180,180,220,0)');
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 4, 0, Math.PI * 2);
+      ctx.fillStyle = glow; ctx.fill();
+      // 核心
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(235,235,255,' + alpha + ')';
       ctx.fill();
     });
     requestAnimationFrame(draw);
