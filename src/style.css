@@ -143,7 +143,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .audio-note{font-size:12px;color:var(--text-muted)}
 
 
-#report-screen{padding:0;max-width:100%}
+#report-screen{padding:0;background:linear-gradient(180deg,#E8E2D4 0%,#F3EFE7 40%,#F8F6F2 100%);max-width:100%}
 .report-container{width:100%;max-width:720px;margin:0 auto;padding:40px 20px 80px}
 .report-screen{background:var(--warm-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:36px 28px;margin-bottom:24px;border:1px solid var(--warm-border)}
 .section-label{font-size:13px;text-transform:uppercase;letter-spacing:.15em;color:var(--gold-dark);margin-bottom:20px;font-family:'Inter',sans-serif;font-weight:500}
@@ -236,7 +236,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .share-section .btn-primary{width:auto;padding:14px 32px}
 .share-hint{font-size:13px;color:var(--text-muted);margin-top:8px}
 .share-cta-hint{text-align:center;font-size:13px;color:var(--text-muted);margin-top:14px}
-.report-footer{text-align:center;padding:20px 0 40px}
+.report-footer{text-align:center;background:linear-gradient(180deg,#FFF6E8 0%,#F3E3C1 100%);border-radius:var(--radius-lg);padding:20px 0 40px}
 .register-teaser{font-size:14px;color:var(--text-muted);margin-bottom:24px}
 .register-teaser a{color:var(--gold-dark);text-decoration:underline}
 .footer-brand{font-size:14px;color:var(--text-muted)}
@@ -266,8 +266,10 @@ BROKEN
 BROKEN
 @keyframes loadPulse{0%,100%{opacity:0.6}50%{opacity:1}}
 .loading-msg.show{animation:loadPulse 2s ease-in-out infinite}
-#loading-screen{justify-content:center;align-items:center;min-height:100vh;background:#101521}
+#loading-screen{justify-content:center;align-items:center;min-height:100vh;animation:loadBgShift 20s ease forwards}
 .loading-card{text-align:center;max-width:340px;padding:0 24px}
 .loading-msg{font-family:-apple-system,'PingFang SC',sans-serif;font-size:24px;color:#F5F3EE;opacity:0;line-height:1.7;margin-bottom:28px;transition:opacity 1s ease}
 @keyframes loadPulse{0%,100%{opacity:0.55}50%{opacity:1}}
 .loading-msg.show{animation:loadPulse 2.5s ease-in-out infinite}
+@keyframes loadBgShift{0%{background:#101521}30%{background:#26354A}60%{background:#52657A}85%{background:#8EA5B5}100%{background:#D6DDD8}}
+.report-container{background:transparent}

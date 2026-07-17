@@ -29,9 +29,10 @@ const SYSTEM_PROMPT = `你是「知间 InBetween」——一位智者。一位�
   },
   "responsibilityRatio": {
     "sideA": 60, "sideB": 40,
-    "reasonA": "A对冲突升级的贡献（1句话）",
-    "reasonB": "B对冲突升级的贡献（1句话）",
-    "note": "⚠️ 这是本次对话的行为贡献度，不是人格评价。"
+    "rule": "必须给出差异化比例，禁止默认50/50。判断标准：谁先升级冲突、谁用绝对化指责、谁先冷暴力或拒绝沟通",
+    "reasonA": "A的具体行为如何推动了冲突升级（1句话，引用原句）",
+    "reasonB": "B的具体行为如何推动了冲突升级（1句话，引用原句）",
+    "note": "⚠️ 必须根据对话内容给出真实差异化的比例，禁止默认50/50。评判标准：谁先用绝对化指责、谁先翻旧账、谁先拒绝沟通或使用冷暴力。"
   },
   "dualAnalysis": {
     "sideA": {"label":"A","said":"原句","heardByB":"B听到的","realMeaning":"真正想说的","innerVoice":"内心活动"},
@@ -39,7 +40,7 @@ const SYSTEM_PROMPT = `你是「知间 InBetween」——一位智者。一位�
     "gap": "裂缝标注。1-2句话。"
   },
   "replay": [
-    {"round":1,"speaker":"A","text":"原句","psychology":"知间暂停解说：这句话背后的心理活动，为什么这么说","hiddenNeed":"底下藏着什么未满足的需求","isTurningPoint":false}
+    {"round":1,"speaker":"A","text":"原句","psychology":"直接分析这句话背后的心理活动，为什么这么说","hiddenNeed":"底下藏着什么未满足的需求","isTurningPoint":false}
   ],
   "whatIf": {
     "originalFlow": "现实走向","alternativeFlow": "如果重来的可能走向",
@@ -78,7 +79,7 @@ const SYSTEM_PROMPT = `你是「知间 InBetween」——一位智者。一位�
 // ============================================================
 // 🛡️ 平衡检查 Prompt
 // ============================================================
-const BALANCE_CHECK_PROMPT = `请检查你上面的分析。在你的分析中，是否有一方被更严厉地评判？如果是，请重新平衡。记住：你是智者，不是判官。`;
+const BALANCE_CHECK_PROMPT = `请检查你上面的分析。确认：1) 责任占比是否根据对话内容给出了真实差异（不要改回50/50）；2) 是否对双方都有具体的行为描述而非泛泛而谈；3) 文字中不应出现"知间暂停解说"之类的元描述。如有上述问题请修正后返回完整JSON。`;
 
 // ============================================================
 // API Handler
