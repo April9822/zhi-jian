@@ -100,9 +100,8 @@ export default async function handler(req, res) {
 
   const { conversation, userRole } = req.body;
 
-  if (!conversation || conversation.split("
-").filter(function(l){return l.trim().length>0}).length < 3) {
-    return res.status(400).json({ error: '对话内容太短，请至少输入3条有意义的对话' });
+  if (!conversation || conversation.trim().length < 20) {
+    return res.status(400).json({ error: '对话内容太短，请至少输入20个字' });
   }
 
   const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
