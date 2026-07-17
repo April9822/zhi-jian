@@ -690,28 +690,3 @@ window.goToSpace = function() {
 // ============================================================
 // 情绪色彩时间轴
 // ============================================================
-(function colorTimeline() {
-  var bg = document.querySelector('.bg-layer');
-  if (!bg) return;
-  // 初始深蓝
-  bg.style.background = 'linear-gradient(170deg,#071526 0%,#111A38 50%,#1A1F40 100%)';
-  // 场景切换时的颜色
-  var colors = [
-    { t: 0,    bg: 'linear-gradient(170deg,#071526 0%,#111A38 50%,#1A1F40 100%)' },           // S1 深夜蓝
-    { t: 1500, bg: 'linear-gradient(170deg,#111A38 0%,#211B45 50%,#2A1F45 100%)' },           // S1 紫雾
-    { t: 4000, bg: 'linear-gradient(150deg,#302040 0%,#5A2530 50%,#402535 100%)' },           // S2 暗酒红
-    { t: 8000, bg: 'linear-gradient(150deg,#332B55 0%,#443044 50%,#3A2840 100%)' },           // S3 灰紫
-    { t: 10000,bg: 'linear-gradient(150deg,#552B38 0%,#4A2735 50%,#382535 100%)' },           // S3 暗紫红
-    { t: 11000,bg: 'linear-gradient(140deg,#3A2840 0%,#6B4938 50%,#553535 100%)' },           // S3 暖金出现
-    { t: 13500,bg: 'linear-gradient(150deg,#27304D 0%,#3A3545 50%,#403540 100%)' },           // S4 冷静
-    { t: 15500,bg: 'linear-gradient(140deg,#1A2035 0%,#253040 45%,#3A3035 100%)' },           // S4 留白
-    { t: 16500,bg: 'linear-gradient(140deg,#17253B 0%,#553525 50%,#D09A55 100%)' },           // S4 理解✨
-    { t: 19000,bg: 'linear-gradient(140deg,#3A2540 0%,#9A6546 50%,#C28B52 100%)' },           // S5 暖金
-    { t: 20000,bg: 'linear-gradient(140deg,#4A3040 0%,#C28B52 50%,#D4A065 100%)' },           // S5 晨光
-    { t: 22500,bg: 'linear-gradient(150deg,#2A2040 0%,#8A5535 50%,#C89A45 70%)' },            // S6 微亮
-    { t: 24000,bg: 'linear-gradient(150deg,#1A2040 0%,#6B4040 50%,#C89A45 65%)' },            // 最终
-  ];
-  colors.forEach(function(c) {
-    setTimeout(function() { if (bg) bg.style.background = c.bg; }, c.t);
-  });
-})();
