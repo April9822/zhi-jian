@@ -24,6 +24,7 @@
         <div class="tab-bar">
           <button class="tab active" data-tab="paste">✏️ 粘贴对话</button>
           <button class="tab" data-tab="image">📸 上传截图 <span class="coming-soon-tag">即将上线</span></button>
+          <button class="tab" data-tab="audio">🎙️ 录制对话 <span class="coming-soon-tag">即将上线</span></button>
         </div>
 
         <!-- 粘贴文字 -->
@@ -42,11 +43,27 @@
             <p>点击或拖拽上传聊天截图</p>
             <p class="drop-hint">支持 JPG、PNG。分析后立即删除。</p>
             <input type="file" id="image-input" accept="image/*" hidden />
-            <button id="upload-btn" class="btn-secondary">选择图片</button>
+            <button id="upload-btn" class="btn-secondary" type="button">选择图片</button>
           </div>
-          <div id="ocr-preview" class="hidden">
-            <p class="ocr-label">🔍 AI 识别的内容（可编辑修改）：</p>
-            <textarea id="ocr-text" rows="8"></textarea>
+        </div>
+
+        <!-- 录制对话（即将上线） -->
+        <div id="tab-audio" class="tab-content">
+          <div class="audio-placeholder">
+            <div class="audio-icon">🎙️</div>
+            <h3>实时录制或上传已有录音</h3>
+            <div class="audio-features">
+              <div class="audio-feature-item">🎯 自动识别不同说话人</div>
+              <div class="audio-feature-item">📝 转写语音内容</div>
+              <div class="audio-feature-item">🎭 分析语气、情绪变化</div>
+              <div class="audio-feature-item">🔍 还原冲突过程</div>
+              <div class="audio-feature-item">📋 生成完整冲突分析报告</div>
+            </div>
+            <div class="audio-actions-coming">
+              <button class="btn-secondary" disabled type="button">🎤 开始录制</button>
+              <button class="btn-secondary" disabled type="button">📁 上传录音</button>
+            </div>
+            <p class="audio-note">支持实时录音，也支持上传已有录音文件。</p>
           </div>
         </div>
 

@@ -52,6 +52,8 @@ dom.tabs.forEach((tab) => {
     dom.tabContents.forEach((c) => c.classList.remove('active'));
     if (target === 'paste') {
       $('#tab-paste').classList.add('active');
+    } else if (target === 'audio') {
+      $('#tab-audio').classList.add('active');
     } else {
       $('#tab-image').classList.add('active');
     }
