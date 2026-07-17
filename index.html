@@ -15,38 +15,49 @@
          开场：一封信
          ================================================================ -->
     <main id="intro-screen" class="screen active intro-screen">
+      <div class="lamp"></div>
       <div class="halo"></div>
       <div class="scene-stage">
 
         <!-- Scene 1 -->
-        <div class="scene s1 tight">
-          <p class="scene-line s1-l1" style="font-size:34px;font-weight:500;animation-name:to100">你好……</p>
-          <p class="scene-line s1-l2 offset" style="font-size:24px;font-weight:400;animation-name:to70">我是「知间」</p>
+        <div class="scene s1">
+          <p class="scene-line s1-l1" style="font-size:34px;font-weight:500;animation-name:to100">你来了……</p>
+          <p class="scene-line s1-l2 offset" style="font-size:22px;font-weight:400;animation-name:to70">我是「知间」</p>
         </div>
 
         <!-- Scene 2 -->
-        <div class="scene s2 wide">
-          <p class="scene-line s2-l1" style="font-size:24px;font-weight:400;animation-name:to65">今天……</p>
-          <p class="scene-line s2-l2" style="font-size:32px;font-weight:500;animation-name:to100">发生什么事了吗？</p>
+        <div class="scene s2">
+          <p class="scene-line s2-l1" style="font-size:22px;font-weight:400;animation-name:to65">刚才那场争吵</p>
+          <p class="scene-line s2-l2" style="font-size:36px;font-weight:500;animation-name:to100">是不是还留在心里</p>
         </div>
 
-        <!-- Scene 3 -->
-        <div class="scene s3 wide">
-          <p class="scene-line s3-l1" style="font-size:22px;font-weight:400;animation-name:to70">不用急着解释</p>
-          <p class="scene-line s3-l2 offset" style="font-size:32px;font-weight:500;animation-name:to100">我会认真听</p>
+        <!-- Scene 3 (4行逐行出现) -->
+        <div class="scene s3">
+          <p class="scene-line s3-l1" style="font-size:22px;font-weight:400;animation-name:to65">有些话</p>
+          <p class="scene-line s3-l2" style="font-size:22px;font-weight:400;animation-name:to65">说出口以后</p>
+          <p class="scene-line s3-l3" style="font-size:22px;font-weight:400;animation-name:to65">留下的是伤害</p>
+          <p class="scene-line s3-l4" style="font-size:30px;font-weight:500;animation-name:to100">也藏着没有说出的在乎</p>
         </div>
 
-        <!-- Scene 4 -->
-        <div class="scene s4 close">
-          <p class="scene-line s4-l1" style="font-size:22px;font-weight:400;animation-name:to60">很多时候</p>
-          <p class="scene-line s4-l2" style="font-size:34px;font-weight:500;animation-name:to100">我们都只是想被理解</p>
+        <!-- Scene 4（品牌高潮） -->
+        <div class="scene s4">
+          <p class="scene-line s4-l1" style="font-size:20px;font-weight:400;animation-name:to55">很多冲突</p>
+          <p class="scene-line s4-l1b" style="font-size:20px;font-weight:400;animation-name:to55">都不是从争吵开始</p>
+          <p class="scene-line s4-l2" style="font-size:38px;font-weight:600;animation-name:to100">而是从一次</p>
+          <p class="scene-line s4-l3" style="font-size:38px;font-weight:600;animation-name:to100">没有被理解开始</p>
         </div>
 
         <!-- Scene 5 -->
-        <div class="scene s5 wide">
-          <p class="scene-line s5-l1" style="font-size:22px;font-weight:400;animation-name:to65">如果你愿意……</p>
-          <p class="scene-line s5-l2 offset" style="font-size:32px;font-weight:500;animation-name:to100">我陪你看看</p>
-          <div class="scene-buttons s5-btns">
+        <div class="scene s5">
+          <p class="scene-line s5-l1" style="font-size:22px;font-weight:400;animation-name:to65">让我陪你</p>
+          <p class="scene-line s5-l2" style="font-size:36px;font-weight:500;animation-name:to100">把这段经历重新看清</p>
+        </div>
+
+        <!-- Scene 6 -->
+        <div class="scene s6">
+          <p class="scene-line s6-l1" style="font-size:22px;font-weight:400;animation-name:to65">准备好了的话</p>
+          <p class="scene-line s6-l2" style="font-size:34px;font-weight:500;animation-name:to100">把它交给我</p>
+          <div class="scene-buttons s6-btns">
             <button class="intro-btn primary" onclick="window.goToInput()">开始倾诉</button>
             <button class="intro-btn secondary" onclick="window.goToInput()">以后再说</button>
           </div>
