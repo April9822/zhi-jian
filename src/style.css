@@ -147,6 +147,7 @@ body {
   padding: 12px 28px; border-radius: 24px; cursor: pointer;
   transition: all 0.3s; border: none; letter-spacing: 0.03em;
   white-space: nowrap;
+}
 .intro-btn.primary { background: #E8D7B5; color: #252525; font-size: 20px; font-weight: 500; }
 .intro-btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.55); font-size: 17px; font-weight: 400; }
 
