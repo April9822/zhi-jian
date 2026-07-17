@@ -10,27 +10,42 @@ window.goToInput = function() {
   var intro = document.getElementById('intro-screen');
   if (!intro || intro.classList.contains('fade-out')) return;
 
+  // 路灯扩散光
+  var glow = document.createElement('div');
+  glow.className = 'lamp-glow';
+  document.body.appendChild(glow);
+
+  // 文字逐个消散（像写在空气中化开）
   var s6 = document.querySelector('.s6');
   if (s6) {
     var elts = s6.querySelectorAll('span, .scene-buttons');
-    elts.forEach(function(el) {
-      el.style.transition = 'opacity 0.6s ease, filter 0.6s ease';
-      el.style.opacity = '0';
-      el.style.filter = 'blur(3px)';
+    elts.forEach(function(el, i) {
+      setTimeout(function() {
+        el.style.transition = 'opacity 1.2s ease, filter 1.2s ease';
+        el.style.opacity = '0';
+        el.style.filter = 'blur(4px)';
+      }, i * 80);
     });
   }
 
+  // 光晕扩散
+  setTimeout(function() { glow.classList.add('spread'); }, 100);
+
+  // 背景渐变照亮
   setTimeout(function() {
-    intro.classList.add('fade-out');
-    document.body.style.background = '#F8F6F2';
+    var bg = document.querySelector('.bg-layer');
+    if (bg) { bg.style.transition = 'background 2s ease'; bg.style.background = '#F8F6F2'; }
     document.body.style.color = '#2B2B2B';
-    setTimeout(function() {
-      intro.style.display = 'none';
-      intro.classList.remove('active', 'fade-out');
-      document.getElementById('input-screen').classList.add('active');
-      window.scrollTo({ top: 0 });
-    }, 600);
-  }, 700);
+  }, 500);
+
+  // 切换页面
+  setTimeout(function() {
+    intro.style.display = 'none';
+    intro.classList.remove('active');
+    document.getElementById('input-screen').classList.add('active');
+    window.scrollTo({ top: 0 });
+    setTimeout(function() { if (glow) glow.remove(); }, 1000);
+  }, 1500);
 };
 
 // ============================================================
@@ -701,7 +716,7 @@ window.goToSpace = function() {
   var starsEl = document.createElement('div');
   starsEl.className = 'stars';
   container.appendChild(starsEl);
-  for (var i = 0; i < 40; i++) {
+  for (var i = 0; i < 15; i++) {
     var s = document.createElement('div');
     s.className = 'star';
     s.style.left = Math.random() * 100 + '%';
@@ -716,23 +731,41 @@ window.goToSpace = function() {
   }
   // 背景随场景切换
   var bg = container;
-  bg.style.transition = 'background 2.5s ease';
+  bg.style.transition = "background 5s ease";
   var palette = [
-    { t:0,    c:'linear-gradient(170deg,#071526 0%,#111A38 50%,#1A1F40 100%)' },
-    { t:1500, c:'linear-gradient(170deg,#111A38 0%,#211B45 50%,#302040 100%)' },
-    { t:4000, c:'linear-gradient(150deg,#302040 0%,#5A2530 50%,#402535 100%)' },
-    { t:5500, c:'linear-gradient(150deg,#402535 0%,#443044 50%,#332B55 100%)' },
-    { t:8000, c:'linear-gradient(150deg,#332B55 0%,#3A2840 50%,#4A2735 100%)' },
-    { t:10000,c:'linear-gradient(150deg,#552B38 0%,#4A2735 50%,#382535 100%)' },
-    { t:11000,c:'linear-gradient(140deg,#3A2840 0%,#6B4938 50%,#553535 100%)' },
-    { t:13500,c:'linear-gradient(150deg,#27304D 0%,#3A3545 50%,#403540 100%)' },
-    { t:15500,c:'linear-gradient(140deg,#1A2035 0%,#253040 45%,#3A3035 100%)' },
-    { t:16500,c:'linear-gradient(140deg,#17253B 0%,#553525 50%,#D09A55 100%)' },
-    { t:19000,c:'linear-gradient(140deg,#3A2540 0%,#9A6546 50%,#C28B52 100%)' },
-    { t:20000,c:'linear-gradient(140deg,#4A3040 0%,#C28B52 50%,#D4A065 100%)' },
-    { t:22500,c:'linear-gradient(150deg,#2A2040 0%,#8A5535 50%,#C89A45 70%)' },
+    { t:0,    c:"linear-gradient(170deg,#071526 0%,#0E1B30 40%,#111A38 100%)" },
+    { t:1500, c:"linear-gradient(170deg,#111A38 0%,#211B45 50%,#252040 100%)" },
+    { t:4000, c:"linear-gradient(150deg,#252040 0%,#3A1E30 50%,#552B38 100%)" },
+    { t:8000, c:"linear-gradient(150deg,#552B38 0%,#4A2530 50%,#3A2040 100%)" },
+    { t:11000,c:"linear-gradient(140deg,#3A2040 0%,#6B4938 50%,#C28B52 100%)" },
+    { t:13500,c:"linear-gradient(150deg,#2A1F40 0%,#403035 50%,#8A5535 100%)" },
+    { t:16500,c:"linear-gradient(140deg,#1A2540 0%,#553525 50%,#D09A55 100%)" },
+    { t:19000,c:"linear-gradient(140deg,#3A2540 0%,#C28B52 50%,#AFA58B 100%)" },
+    { t:22500,c:"linear-gradient(150deg,#2A2540 0%,#8A6040 50%,#AFA58B 70%)" },
   ];
   palette.forEach(function(p) {
     setTimeout(function() { if (bg) bg.style.background = p.c; }, p.t);
   });
+})();
+
+// ============================================================
+// 漂浮尘埃 + 星数精简
+// ============================================================
+(function initDust() {
+  var d = document.getElementById('dust');
+  if (!d) return;
+  for (var i = 0; i < 20; i++) {
+    var p = document.createElement('div');
+    p.className = 'dust';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (50 + Math.random() * 50) + '%';
+    var s = 1.5 + Math.random() * 3;
+    p.style.width = s + 'px'; p.style.height = s + 'px';
+    p.style.animationDelay = Math.random() * 12 + 's';
+    p.style.animationDuration = (10 + Math.random() * 14) + 's';
+    d.appendChild(p);
+  }
+  // 精简星星：只保留更稀疏的
+  var stars = document.querySelectorAll('.star');
+  stars.forEach(function(s, i) { s.style.opacity = (0.08 + Math.random() * 0.25); });
 })();
