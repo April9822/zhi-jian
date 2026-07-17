@@ -252,10 +252,14 @@ async function startAnalysis() {
       throw new Error(data.error || '分析失败');
     }
 
-    renderReport(data.analysis);
+    stopLoadingMessages();
     dom.loadingScreen.classList.remove('active');
-      stopLoadingMessages();
-    dom.reportScreen.classList.add('active');
+    // 显示角色选择
+    showRolePicker(data.analysis, function() {
+      renderReport(data.analysis);
+      dom.reportScreen.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
   } catch (err) {
@@ -729,4 +733,77 @@ window.goToSpace = function() {
     { t:22500,c:"linear-gradient(150deg,#2A2840 0%,#9A7040 50%,#AFA58B 100%)" },
   ];
   S.forEach(function(s) { setTimeout(function() { bg.style.background = s.c; }, s.t); });
+})();
+
+// ============================================================
+// 角色选择
+// ============================================================
+function showRolePicker(analysis, callback) {
+  var dual = analysis.dualAnalysis;
+  var sideA = dual ? dual.sideA : null;
+  var sideB = dual ? dual.sideB : null;
+
+  // 创建选择界面
+  var picker = document.createElement('div');
+  picker.id = 'role-picker';
+  picker.innerHTML = '<div class="picker-card">'+
+    '<h2>👥 AI 识别到这段对话中有两个人</h2>'+
+    '<p class="picker-sub">请选择你更像哪一方，知间会从你的视角展开报告</p>'+
+    '<div class="picker-options">'+
+      '<button class="picker-btn picker-a">'+
+        '<span class="picker-label">🙋 角色 A</span>'+
+        '<span class="picker-desc">'+(sideA ? (sideA.realMeaning || sideA.innerVoice || '更主动表达的一方') : '')+'</span>'+
+      '</button>'+
+      '<button class="picker-btn picker-b">'+
+        '<span class="picker-label">💬 角色 B</span>'+
+        '<span class="picker-desc">'+(sideB ? (sideB.realMeaning || sideB.innerVoice || '更多回应的一方') : '')+'</span>'+
+      '</button>'+
+    '</div>'+
+    '<button class="picker-btn picker-both" style="margin-top:8px;width:100%;background:transparent;border:1px dashed #ccc;color:#94a3b8;padding:12px;border-radius:12px;font-size:14px">👀 我只是旁观者，都看看</button>'+
+  '</div>';
+  picker.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:20px';
+  picker.querySelector('.picker-a').onclick = function(){ picker.remove(); callback(); };
+  picker.querySelector('.picker-b').onclick = function(){ picker.remove(); callback(); };
+  picker.querySelector('.picker-both').onclick = function(){ picker.remove(); callback(); };
+  document.body.appendChild(picker);
+}
+
+// ============================================================
+// Canvas 星空
+// ============================================================
+(function(){
+  var c=document.getElementById("starCanvas");
+  if(!c)return;
+  var x=c.getContext("2d"),W=innerWidth,H=innerHeight;
+  c.width=W;c.height=H;
+  addEventListener("resize",function(){W=c.width=innerWidth;H=c.height=innerHeight});
+  var S=[];
+  for(var i=0;i<38;i++){
+    S.push({
+      x:Math.random()*W, y:Math.random()*H*0.75,
+      r:0.5+Math.random()*2.2,
+      b:0.04+Math.random()*0.22,
+      p:Math.random()*6.28,
+      s:0.3+Math.random()*2,
+      dx:(Math.random()-0.5)*0.3,
+      dy:-0.03-Math.random()*0.15
+    });
+  }
+  function D(t){
+    x.clearRect(0,0,W,H);
+    S.forEach(function(s){
+      var a=s.b+Math.sin(t*0.001*s.s+s.p)*0.05;
+      s.x+=s.dx*0.01; s.y+=s.dy*0.01;
+      if(s.y<-10){s.y=H*0.75;s.x=Math.random()*W}
+      if(s.x<-5)s.x=W+5; if(s.x>W+5)s.x=-5;
+      var g=x.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3);
+      g.addColorStop(0,"rgba(220,220,255,"+Math.max(0.02,a)+")");
+      g.addColorStop(0.4,"rgba(200,200,240,"+Math.max(0,a*0.4)+")");
+      g.addColorStop(1,"rgba(180,180,220,0)");
+      x.beginPath();x.arc(s.x,s.y,s.r*4,0,6.28);x.fillStyle=g;x.fill();
+      x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fillStyle="rgba(235,235,255,"+Math.max(0.02,a)+")";x.fill();
+    });
+    requestAnimationFrame(D);
+  }
+  requestAnimationFrame(D);
 })();

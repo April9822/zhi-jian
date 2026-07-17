@@ -30,6 +30,7 @@ body{
   pointer-events:none;
 }
 
+canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
 /* 舞台 */
 .scene-stage{position:absolute;top:19.8vh;left:60px;width:min(270px, 72vw);
 }
@@ -370,3 +371,11 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   background:rgba(255,245,235,.95);
   box-shadow:0 0 80px 60px rgba(255,240,220,.7),0 0 200px 150px rgba(255,220,180,.3);
 }
+.picker-card{background:#fff;border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.picker-card h2{font-size:20px;color:var(--navy);margin-bottom:8px}
+.picker-sub{font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+.picker-options{display:flex;flex-direction:column;gap:12px}
+.picker-btn{background:var(--warm-bg);border:2px solid transparent;border-radius:14px;padding:16px 20px;cursor:pointer;text-align:left;transition:all .2s}
+.picker-btn:hover{border-color:var(--gold);background:#fffdf7}
+.picker-label{display:block;font-size:16px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.picker-desc{display:block;font-size:13px;color:var(--text-secondary);line-height:1.5}
