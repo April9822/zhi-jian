@@ -22,6 +22,7 @@ function initIntro() {
     intro.classList.add('fade-out');
     document.body.style.background = '#faf8f5';
     setTimeout(() => {
+      intro.style.display = 'none';
       intro.classList.remove('active', 'fade-out');
       document.getElementById('input-screen').classList.add('active');
     }, 700);
