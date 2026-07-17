@@ -15,21 +15,33 @@
          开场：一封信
          ================================================================ -->
     <main id="intro-screen" class="screen active intro-screen">
-      <div class="letter">
-        <div class="letter-page">
-          <p class="intro-line" style="animation-delay:0s;font-size:44px;font-weight:600">你好。</p>
-          <p class="intro-line" style="animation-delay:1.5s;font-size:32px;font-weight:500">我是「知间」。</p>
-          <p class="intro-line intro-breathe" style="animation-delay:3.2s;font-size:54px;font-weight:700">今天……</p>
-          <p class="intro-line intro-slow-zoom" style="animation-delay:4.2s;font-size:56px;font-weight:700">发生什么事了吗？</p>
-          <p class="intro-line" style="animation-delay:6.8s;font-size:26px;font-weight:400;color:rgba(255,255,255,0.55)">我不会急着判断谁对谁错。</p>
-          <p class="intro-line intro-breathe" style="animation-delay:8.8s;font-size:34px;font-weight:500">我想先听听你的故事。</p>
-          <p class="intro-line" style="animation-delay:11.5s;font-size:30px;font-weight:400;color:rgba(255,255,255,0.5)">很多时候。</p>
-          <p class="intro-line intro-slow-appear" style="animation-delay:12.8s;font-size:42px;font-weight:400">我们以为自己是在争吵。</p>
-          <p class="intro-line intro-pause" style="animation-delay:15.2s;font-size:58px;font-weight:700">其实。</p>
-          <p class="intro-line intro-slow-appear" style="animation-delay:16.5s;font-size:48px;font-weight:500">只是没有被理解。</p>
-          <p class="intro-line" style="animation-delay:20s;font-size:36px;font-weight:400;color:rgba(255,255,255,0.5)">今天。</p>
-          <p class="intro-line intro-breathe" style="animation-delay:21.2s;font-size:52px;font-weight:700">想和我聊聊吗？</p>
-          <div class="intro-buttons" style="animation-delay:23s">
+      <div class="scene-stage">
+        <div class="scene" id="scene-1">
+          <p class="scene-main">你好<em>……</em></p>
+          <p class="scene-sub">我是「知间」</p>
+        </div>
+        <div class="scene" id="scene-2">
+          <p class="scene-main">今天</p>
+          <p class="scene-sub">是不是发生了一些</p>
+          <p class="scene-sub">不开心的事？</p>
+        </div>
+        <div class="scene" id="scene-3">
+          <p class="scene-sub">我不会站在</p>
+          <p class="scene-main">任何一方</p>
+        </div>
+        <div class="scene" id="scene-4">
+          <p class="scene-sub">我更想知道</p>
+          <p class="scene-main">真正发生了什么</p>
+        </div>
+        <div class="scene" id="scene-5">
+          <p class="scene-sub">很多时候</p>
+          <p class="scene-sub">人与人的距离</p>
+          <p class="scene-main">只差一次理解</p>
+        </div>
+        <div class="scene" id="scene-6">
+          <p class="scene-main">愿意</p>
+          <p class="scene-main">和我聊聊吗？</p>
+          <div class="scene-buttons">
             <button class="intro-btn primary" onclick="window.goToInput()">愿意聊聊</button>
             <button class="intro-btn secondary" onclick="window.goToInput()">以后吧</button>
           </div>

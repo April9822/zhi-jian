@@ -69,97 +69,97 @@ h1, h2, h3, h4 {
   width: 100%;
 }
 
-.letter-page {
+.letter-page { display: none; }
+
+/* ============================================================
+   🎬 Scene 切换动画
+   ============================================================ */
+.scene-stage {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scene {
+  position: absolute;
+  width: 100%;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-/* 公共动画入口 */
-.intro-line, .intro-buttons {
+  align-items: center;
+  gap: 8px;
   opacity: 0;
-  animation: fadeIn 0.8s ease forwards;
-  animation-play-state: running;
+  animation: sceneFade 18s ease forwards;
+  pointer-events: none;
 }
 
-.intro-line {
+/* 每个 Scene 的时间窗口 */
+#scene-1 { animation-delay: 0s; }
+#scene-2 { animation-delay: 2.8s; }
+#scene-3 { animation-delay: 5.6s; }
+#scene-4 { animation-delay: 8.4s; }
+#scene-5 { animation-delay: 11.2s; }
+#scene-6 { animation-delay: 14s; pointer-events: auto; }
+
+@keyframes sceneFade {
+  0%      { opacity: 0; transform: translateY(12px); }
+  8%      { opacity: 1; transform: translateY(0); }
+  84%     { opacity: 1; transform: translateY(0); }
+  100%    { opacity: 0; transform: translateY(-8px); }
+}
+
+/* 最后一个scene停在可见状态 */
+#scene-6 {
+  animation-name: sceneFadeLast;
+  animation-duration: 4s;
+}
+
+@keyframes sceneFadeLast {
+  0%      { opacity: 0; transform: translateY(12px); }
+  25%     { opacity: 1; transform: translateY(0); }
+  100%    { opacity: 1; transform: translateY(0); }
+}
+
+/* 字号层级 */
+.scene-main {
   font-family: 'Noto Serif SC', 'STSong', serif;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 56px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.25;
+  letter-spacing: 0.03em;
+}
+
+.scene-sub {
+  font-family: 'Noto Serif SC', 'STSong', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
   line-height: 1.5;
   letter-spacing: 0.04em;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+.scene-main em {
+  font-style: normal;
+  letter-spacing: 0.15em;
 }
 
-/* 呼吸一次 */
-.intro-breathe {
-  animation-name: breatheOnce;
-  animation-duration: 2s;
-}
-
-@keyframes breatheOnce {
-  0%   { opacity: 0; transform: scale(0.97); }
-  40%  { opacity: 1; transform: scale(1); }
-  55%  { opacity: 1; transform: scale(1.03); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* 缓慢放大 100%→103% */
-.intro-slow-zoom {
-  animation-name: slowZoom;
-  animation-duration: 1.6s;
-}
-
-@keyframes slowZoom {
-  from { opacity: 0; transform: scale(1); }
-  to   { opacity: 1; transform: scale(1.03); }
-}
-
-/* 缓慢浮现 */
-.intro-slow-appear {
-  animation-name: slowAppear;
-  animation-duration: 2s;
-}
-
-@keyframes slowAppear {
-  0%   { opacity: 0; }
-  60%  { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-/* 独立停顿 */
-.intro-pause {
-  animation-name: strongPause;
-  animation-duration: 1.2s;
-}
-
-@keyframes strongPause {
-  0%   { opacity: 0; transform: scale(0.9); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* 按钮组 */
-.intro-buttons {
+/* 按钮 */
+.scene-buttons {
   display: flex;
   gap: 14px;
-  margin-top: 32px;
-  animation-name: fadeUp;
-  animation-duration: 1s;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  margin-top: 28px;
 }
 
 .intro-btn {
   font-family: 'Noto Serif SC', serif;
   font-size: 17px;
-  padding: 14px 32px;
-  border-radius: 30px;
+  padding: 13px 30px;
+  border-radius: 28px;
   cursor: pointer;
   transition: all 0.3s;
   border: none;
@@ -173,8 +173,8 @@ h1, h2, h3, h4 {
 
 .intro-btn.secondary {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.25);
-  color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.55);
 }
 
 .letter-brand {
@@ -184,6 +184,11 @@ h1, h2, h3, h4 {
   position: absolute;
   bottom: 32px;
   letter-spacing: 0.1em;
+}
+
+@media (max-width: 640px) {
+  .scene-main { font-size: 44px; }
+  .scene-sub { font-size: 24px; }
 }
 
 .intro-screen.fade-out {
