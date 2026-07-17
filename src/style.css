@@ -13,20 +13,20 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;
-  background:#101521;color:#F5F3EE;line-height:1.7;
+  background:linear-gradient(180deg, #080B14 0%, #182337 60%, #1E2D45 100%);color:#F5F3EE;line-height:1.7;
   -webkit-font-smoothing:antialiased;min-height:100vh;
 }
 
 /* ============================================================
    Welcome
    ============================================================ */
-.intro-screen{background:#101521;min-height:100vh;padding:0;position:relative;overflow:hidden}
+.intro-screen{background:linear-gradient(180deg, #080B14 0%, #182337 60%, #1E2D45 100%);min-height:100vh;padding:0;position:relative;overflow:hidden}
 
 /* 光晕 */
 .halo{
   position:fixed;top:30%;left:50%;width:300px;height:300px;
   transform:translate(-50%,-50%);
-  background:radial-gradient(circle,rgba(232,215,181,.06) 0%,transparent 70%);
+  background:radial-gradient(circle,rgba(200,155,101,.08) 0%,transparent 70%);
   pointer-events:none;
 }
 
@@ -62,6 +62,12 @@ body{
 }
 
 /* 场景容器淡出 */
+.s1 { animation: Sfade 5s ease forwards; }
+.s2 { animation: Sfade 4.2s ease forwards; }
+.s3 { animation: Sfade 5.6s ease forwards; }
+.s4 { animation: Sfade 5.5s ease forwards; }
+.s5 { animation: Sfade 4.5s ease forwards; }
+.s6 { animation: Slast 5s ease forwards; pointer-events:auto; }
 @keyframes Sfade{0%,100%{opacity:0}4%{opacity:1}80%{opacity:1}94%{opacity:0}}
 @keyframes Slast{0%{opacity:0}6%{opacity:1}100%{opacity:1}}
 
@@ -79,8 +85,8 @@ body{
   padding:14px 36px;border-radius:26px;cursor:pointer;
   transition:all .3s;border:none;letter-spacing:.03em;white-space:nowrap;
 }
-.intro-btn.primary{background:#E8D7B5;color:#252525;font-size:20px;font-weight:500}
-.intro-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.55);font-size:16px;font-weight:400}
+.intro-btn.primary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500}
+.intro-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:16px;font-weight:400}
 
 /* 过渡 */
 .transition-msg{pointer-events:none}
