@@ -10,18 +10,14 @@ window.goToInput = function() {
   const intro = document.getElementById('intro-screen');
   if (!intro || intro.classList.contains('fade-out')) return;
 
-  // 隐藏所有 scene 和按钮
   const allScenes = document.querySelectorAll('.scene');
   allScenes.forEach(function(s) { s.style.display = 'none'; });
 
-  // 显示「我在听……」
   const msg = document.getElementById('transition-msg');
   msg.classList.add('show');
 
-  // 0.8s 后进入输入页
   setTimeout(function() {
     intro.classList.add('fade-out');
-    document.body.style.background = '#faf8f5';
     setTimeout(function() {
       intro.style.display = 'none';
       intro.classList.remove('active', 'fade-out');
