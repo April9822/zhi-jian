@@ -711,5 +711,22 @@ window.goToSpace = function() {
 // ============================================================
 
 // ============================================================
-// 漂浮尘埃 + 星数精简
+// 背景随引导语情绪变化
 // ============================================================
+(function bgTimeline() {
+  var bg = document.querySelector(".bg-layer");
+  if (!bg) return;
+  bg.style.transition = "background 5s ease";
+  var S = [
+    { t:0,    c:"linear-gradient(170deg,#071526 0%,#0E1B30 50%,#111A38 100%)" },
+    { t:1500, c:"linear-gradient(170deg,#111A38 0%,#1A1540 50%,#252040 100%)" },
+    { t:4000, c:"linear-gradient(150deg,#252040 0%,#351E3A 50%,#552B38 100%)" },
+    { t:8000, c:"linear-gradient(150deg,#552B38 0%,#452538 50%,#3A2040 100%)" },
+    { t:11000,c:"linear-gradient(140deg,#3A2040 0%,#5A3535 50%,#C28B52 100%)" },
+    { t:13500,c:"linear-gradient(145deg,#2A1F3E 0%,#4A3035 50%,#A07045 100%)" },
+    { t:16500,c:"linear-gradient(140deg,#1A2540 0%,#4A3030 50%,#D09A55 100%)" },
+    { t:19000,c:"linear-gradient(140deg,#2A2540 0%,#8A5535 50%,#C89850 100%)" },
+    { t:22500,c:"linear-gradient(150deg,#2A2840 0%,#9A7040 50%,#AFA58B 100%)" },
+  ];
+  S.forEach(function(s) { setTimeout(function() { bg.style.background = s.c; }, s.t); });
+})();
