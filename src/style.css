@@ -285,35 +285,11 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .signup-card{text-align:center}
 .signup-card .btn-primary{width:auto;padding:14px 40px;display:inline-block}
 /* ============================================================
-   🌌 极光流动背景 — 从午夜蓝到黎明的连续渐变
+   🌙 静态深色背景
    ============================================================ */
 .bg-layer{
   position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;
-  background:linear-gradient(170deg,
-    /* Scene1 午夜蓝 */
-    #080B14 0%, #101827 8%, #182337 12%,
-    /* Scene2 暗紫红 */
-    #1E1B3D 18%, #2D1B35 22%, #3D1B2E 28%,
-    /* Scene3 暖色初现 */
-    #4B2A35 32%, #6B3A3A 38%, #8A4A35 42%,
-    /* Scene4 冷暖融合·黎明 */
-    #A06A4A 48%, #B8957A 52%, #C2A58B 58%,
-    /* Scene5 稳定温暖 */
-    #D4BFA0 65%, #E8D7B5 72%,
-    /* Scene6 暖灰 */
-    #E8E2D4 82%, #F5F3EE 92%, #F8F6F2 100%
-  );
-  background-size:600% 100%;
-  animation:auroraFlow 28s ease-in-out forwards;
-}
-@keyframes auroraFlow{
-  0%{background-position:0% 50%}
-  15%{background-position:12% 50%}
-  30%{background-position:25% 50%}
-  50%{background-position:42% 50%}
-  70%{background-position:60% 50%}
-  85%{background-position:78% 50%}
-  100%{background-position:100% 50%}
+  background:linear-gradient(180deg, #080B14 0%, #182337 60%, #1E2D45 100%);
 }
 
 /* 粒子 */
