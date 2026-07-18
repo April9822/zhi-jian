@@ -342,19 +342,19 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .kw.warm{text-shadow:0 0 22px rgba(210,160,100,.5)}
 .kw.glow{text-shadow:0 0 28px rgba(200,160,100,.6),0 0 50px rgba(180,140,80,.25)}
 
-/* 涟漪吞没转场 — 水滴波纹 + 渐进模糊 + 下一页从模糊到清晰 */
+/* 涟漪吞没转场 — 水滴波纹层层荡开 + 柔和过渡 */
 .swallower{
   position:fixed;z-index:200;border-radius:50%;pointer-events:none;
   width:250vmax;height:250vmax;
   transform:translate(-50%,-50%) scale(0);
   background:radial-gradient(circle,
-    rgba(255,210,140,.25) 0%,
-    rgba(255,220,160,.15) 30%,
-    rgba(248,240,220,.06) 60%,
+    rgba(255,210,140,.12) 0%,
+    rgba(255,220,160,.07) 30%,
+    rgba(248,240,220,.03) 60%,
     transparent 100%
   );
-  -webkit-backdrop-filter:blur(6px);
-  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(4px);
+  backdrop-filter:blur(4px);
   transition:transform 2.8s cubic-bezier(.4,0,.25,1),
               opacity 1.5s ease 2.5s;
 }
@@ -363,45 +363,48 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   opacity:0;
 }
 
-/* 波纹圈 — 像水滴荡开，带模糊 */
+/* 波纹圈 — 层层荡开，有明显边界 */
 .wave-ring{
   position:fixed;z-index:199;border-radius:50%;pointer-events:none;
-  border:2px solid rgba(255,210,150,.5);
-  background:rgba(255,220,160,.04);
-  -webkit-backdrop-filter:blur(3px);
-  backdrop-filter:blur(3px);
+  border:2.5px solid rgba(255,210,145,.55);
+  box-shadow:0 0 12px rgba(255,200,130,.15), inset 0 0 8px rgba(255,200,130,.06);
+  background:transparent;
+  -webkit-backdrop-filter:blur(2px);
+  backdrop-filter:blur(2px);
   transform:translate(-50%,-50%) scale(0);
   opacity:0;
 }
 .wave-ring.w1{
-  width:260vmax;height:260vmax;
-  transition:transform 2.2s cubic-bezier(.35,0,.3,1) .4s,
-              opacity .5s ease 2.2s;
+  width:250vmax;height:250vmax;
+  border-color:rgba(255,210,145,.6);
+  border-width:3px;
+  transition:transform 2s cubic-bezier(.3,0,.35,1) .35s,
+              opacity .4s ease 2s;
 }
 .wave-ring.w2{
-  width:290vmax;height:290vmax;
-  border-width:1.8px;
-  border-color:rgba(255,210,150,.4);
-  transition:transform 2.2s cubic-bezier(.35,0,.3,1) .8s,
-              opacity .5s ease 2.5s;
+  width:270vmax;height:270vmax;
+  border-color:rgba(255,210,145,.45);
+  border-width:2.5px;
+  transition:transform 2s cubic-bezier(.3,0,.35,1) .75s,
+              opacity .4s ease 2.3s;
 }
 .wave-ring.w3{
-  width:320vmax;height:320vmax;
-  border-width:1.5px;
-  border-color:rgba(255,210,150,.3);
-  transition:transform 2.2s cubic-bezier(.35,0,.3,1) 1.2s,
-              opacity .5s ease 2.8s;
+  width:290vmax;height:290vmax;
+  border-color:rgba(255,210,145,.35);
+  border-width:2px;
+  transition:transform 2s cubic-bezier(.3,0,.35,1) 1.15s,
+              opacity .4s ease 2.6s;
 }
 .wave-ring.w4{
-  width:350vmax;height:350vmax;
-  border-width:1px;
-  border-color:rgba(255,210,150,.2);
-  transition:transform 2.2s cubic-bezier(.35,0,.3,1) 1.6s,
-              opacity .5s ease 3.1s;
+  width:310vmax;height:310vmax;
+  border-color:rgba(255,210,145,.2);
+  border-width:1.5px;
+  transition:transform 2s cubic-bezier(.3,0,.35,1) 1.55s,
+              opacity .4s ease 2.9s;
 }
 .wave-ring.go{transform:translate(-50%,-50%) scale(1);opacity:1}
 
-/* 全屏遮罩 — 波纹覆盖后接棒，过渡到下一页背景色 */
+/* 全屏遮罩 — 接棒波纹，过渡到下一页 */
 .full-veil{
   position:fixed;z-index:210;top:0;left:0;width:100%;height:100%;pointer-events:none;
   background:rgba(248,246,242,0);
@@ -412,9 +415,9 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
               backdrop-filter 1.5s ease 1.8s;
 }
 .full-veil.active{
-  background:rgba(248,246,242,.6);
-  -webkit-backdrop-filter:blur(12px);
-  backdrop-filter:blur(12px);
+  background:rgba(248,246,242,.35);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
 }
 
 /* 新页面 — 与涟漪同步呼吸浮现 */
