@@ -342,24 +342,36 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .kw.warm{text-shadow:0 0 22px rgba(210,160,100,.5)}
 .kw.glow{text-shadow:0 0 28px rgba(200,160,100,.6),0 0 50px rgba(180,140,80,.25)}
 
-/* 涟漪吞没转场 — 暖光从按钮扩散吞没全屏 */
+/* 涟漪吞没转场 — 呼吸节奏：慢吸→停顿→呼出 */
 .swallower{
   position:fixed;z-index:200;border-radius:50%;pointer-events:none;
   width:250vmax;height:250vmax;
   transform:translate(-50%,-50%) scale(0);
   background:radial-gradient(circle,
-    rgba(255,210,140,.25) 0%,
-    rgba(255,220,160,.18) 25%,
-    rgba(248,235,210,.1) 50%,
-    rgba(248,246,242,.05) 75%,
+    rgba(255,210,140,.2) 0%,
+    rgba(255,220,160,.14) 25%,
+    rgba(248,235,210,.08) 50%,
+    rgba(248,246,242,.04) 75%,
     transparent 100%
   );
-  transition:transform 1.6s cubic-bezier(.45,0,.2,1),
-              opacity .8s ease 1s;
+  transition:transform 2s cubic-bezier(.55,0,.15,1),
+              opacity .6s ease 2.2s;
 }
 .swallower.expand{
   transform:translate(-50%,-50%) scale(1);
   opacity:0;
+}
+
+/* 新页面淡入 */
+#input-screen.active{
+  animation:pageFadeIn .8s ease .2s forwards;
+}
+#space-screen.active{
+  animation:pageFadeIn .8s ease .2s forwards;
+}
+@keyframes pageFadeIn{
+  from{opacity:0}
+  to{opacity:1}
 }
 .picker-card{background:#fff;border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .picker-card h2{font-size:20px;color:var(--navy);margin-bottom:8px}

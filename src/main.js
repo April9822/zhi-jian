@@ -4,11 +4,18 @@
  */
 
 // ============================================================
-// 按钮涟漪效果
+// 按钮涟漪效果 + 记录点击位置供页面切换使用
 // ============================================================
+var lastClickX = window.innerWidth / 2;
+var lastClickY = window.innerHeight * 0.85;
+
 document.addEventListener('click', function(e) {
   var btn = e.target.closest('.intro-btn');
   if (!btn) return;
+
+  // 记录点击在屏幕上的位置（供吞没涟漪使用）
+  lastClickX = e.clientX;
+  lastClickY = e.clientY;
 
   // 计算涟漪起点（相对按钮）
   var rect = btn.getBoundingClientRect();
@@ -39,35 +46,34 @@ window.goToInput = function() {
   if (!intro || intro.classList.contains('transitioning')) return;
   intro.classList.add('transitioning');
 
-  // 创建吞没涟漪
+  // 涟漪从用户实际点击的按钮位置扩散
   var sw = document.createElement('div');
   sw.className = 'swallower';
-  // 涟漪起点：按钮区域中心偏下（模拟从手指点击处扩散）
-  sw.style.left = '50%';
-  sw.style.top = '85%';
+  sw.style.left = lastClickX + 'px';
+  sw.style.top = lastClickY + 'px';
   document.body.appendChild(sw);
 
-  // 文字先轻轻模糊（跟随呼吸节奏）
+  // 文字轻柔消散
   var s6 = document.querySelector('.s6');
   if (s6) {
     var elts = s6.querySelectorAll('span');
     elts.forEach(function(el, i) {
       setTimeout(function() {
-        el.style.transition = 'opacity .8s ease, filter .8s ease';
+        el.style.transition = 'opacity 1s ease, filter 1s ease';
         el.style.opacity = '0';
         el.style.filter = 'blur(2px)';
-      }, i * 80);
+      }, i * 100);
     });
   }
 
-  // 触发放大（略延迟，让文字先开始消散）
+  // 微延迟后涟漪开始扩散
   setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
     });
-  }, 200);
+  }, 300);
 
-  // 涟漪扩散到全屏时切换页面（呼应呼吸的停顿）
+  // 呼吸节奏：2s 扩散 → 2.2s 停顿顶点 → 2.4s 页面静默切换 → 涟漪自然消散
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
@@ -75,9 +81,10 @@ window.goToInput = function() {
     document.body.style.color = '#2B2B2B';
     document.getElementById('input-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-    // 涟漪自然消散后清理
-    setTimeout(function() { if (sw.parentNode) sw.remove(); }, 1000);
-  }, 1400);
+  }, 2200);
+
+  // 清理
+  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3000);
 };
 
 // ============================================================
@@ -720,34 +727,30 @@ window.goToSpace = function() {
   if (!intro || intro.classList.contains('transitioning')) return;
   intro.classList.add('transitioning');
 
-  // 创建吞没涟漪
   var sw = document.createElement('div');
   sw.className = 'swallower';
-  sw.style.left = '50%';
-  sw.style.top = '85%';
+  sw.style.left = lastClickX + 'px';
+  sw.style.top = lastClickY + 'px';
   document.body.appendChild(sw);
 
-  // 文字消散
   var s6 = document.querySelector('.s6');
   if (s6) {
     var elts = s6.querySelectorAll('span');
     elts.forEach(function(el, i) {
       setTimeout(function() {
-        el.style.transition = 'opacity .8s ease, filter .8s ease';
+        el.style.transition = 'opacity 1s ease, filter 1s ease';
         el.style.opacity = '0';
         el.style.filter = 'blur(2px)';
-      }, i * 80);
+      }, i * 100);
     });
   }
 
-  // 触发放大
   setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
     });
-  }, 200);
+  }, 300);
 
-  // 切换页面
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
@@ -755,8 +758,9 @@ window.goToSpace = function() {
     document.body.style.color = '#2B2B2B';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-    setTimeout(function() { if (sw.parentNode) sw.remove(); }, 1000);
-  }, 1400);
+  }, 2200);
+
+  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3000);
 };
 
 // ============================================================
