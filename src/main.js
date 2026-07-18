@@ -95,6 +95,7 @@ window.goToInput = function(e) {
     intro.classList.remove('active', 'transitioning');
     document.body.style.background = '#F8F6F2';
     document.body.style.color = '#2B2B2B';
+    document.body.style.overflow = 'auto';
     var input = document.getElementById('input-screen');
     input.classList.add('active');
     window.scrollTo({ top: 0 });
@@ -790,7 +791,7 @@ window.goToSpace = function(e) {
     intro.classList.remove('active', 'transitioning');
     document.body.style.background = '#1E1B18';
     document.body.style.color = '#C4A88B';
-    document.body.style.overflow = '';
+    document.body.style.overflow = 'auto';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
   }, 2200);

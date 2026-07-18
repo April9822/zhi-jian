@@ -296,7 +296,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .space-subtitle{font-size:16px;color:#C8A882;margin-bottom:18px}
 .space-desc{font-size:15px;color:#A89078;line-height:1.8}
 .space-card{background:rgba(255,255,255,.05);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:14px;padding:26px 24px;margin-bottom:16px;text-align:left;border:1px solid rgba(240,200,150,.1)}
-.space-card-icon{width:32px;height:32px;margin-bottom:14px;mix-blend-mode:lighten;opacity:.85}
+.space-card-icon{width:32px;height:32px;margin-bottom:14px}
 .space-card h2{font-size:17px;color:#EDC794;margin-bottom:12px;font-weight:500}
 .space-card p{font-size:14px;color:#B89878;line-height:1.75}
 .space-steps{display:flex;flex-direction:column;gap:12px}
