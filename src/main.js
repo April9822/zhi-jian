@@ -888,7 +888,7 @@ function showRolePicker(analysis, callback) {
 })();
 
 // ============================================================
-// Canvas 星空 — 闪烁 + 漂浮 + 冷暖双色星星
+// Canvas 星空 — 呼吸感闪烁 + 固定星 + 漂浮星
 // ============================================================
 (function(){
   var c=document.getElementById("starCanvas");
@@ -897,72 +897,86 @@ function showRolePicker(analysis, callback) {
   c.width=W;c.height=H;
   addEventListener("resize",function(){W=c.width=innerWidth;H=c.height=innerHeight});
 
-  // 冷暖两种星星颜色
   var coolColors = [
-    {r:210,g:215,b:255}, // 冷白偏蓝
-    {r:190,g:200,b:250}, // 淡蓝
-    {r:230,g:235,b:255}, // 纯冷白
+    {r:210,g:215,b:255},
+    {r:190,g:200,b:250},
+    {r:230,g:235,b:255},
   ];
   var warmColors = [
-    {r:255,g:230,b:200}, // 暖白偏黄
-    {r:255,g:220,b:180}, // 淡金
-    {r:255,g:210,b:170}, // 暖金
+    {r:255,g:230,b:200},
+    {r:255,g:220,b:180},
   ];
 
   var S=[];
-  for(var i=0;i<70;i++){
-    var isWarm = Math.random() < 0.25; // 25% 暖色星星
+  // 固定星星：只在原位闪烁
+  for(var i=0;i<24;i++){
+    var isWarm = Math.random() < 0.2;
     var palette = isWarm ? warmColors : coolColors;
     var color = palette[Math.floor(Math.random() * palette.length)];
-
     S.push({
+      type:'fixed',
       x:Math.random()*W,
-      y:Math.random()*H*0.8,
-      r:0.3+Math.random()*2.8,          // 大小范围更大
-      b:0.03+Math.random()*0.35,         // 基础亮度范围更大
-      p:Math.random()*6.28,              // 闪烁相位
-      sp:0.6+Math.random()*3.5,          // 闪烁速度
-      sa:0.08+Math.random()*0.3,         // 闪烁振幅
-      dx:(Math.random()-0.5)*0.5,        // 水平漂移
-      dy:-0.02-Math.random()*0.25,       // 垂直漂浮速度
+      y:Math.random()*H*0.75,
+      r:0.3+Math.random()*2.2,
+      b:0.04+Math.random()*0.28,
+      p:Math.random()*6.28,
+      sp:0.15+Math.random()*0.5,       // 慢速闪烁
+      sa:0.05+Math.random()*0.18,
       color:color,
-      flashTimer:Math.random()*10,       // 偶尔闪亮计时器
-      flashChance:0.002+Math.random()*0.006
+      ox:0, oy:0  // 原始位置不变
+    });
+  }
+  // 漂浮星星：上下缓慢浮动
+  for(var j=0;j<16;j++){
+    var isWarm2 = Math.random() < 0.25;
+    var palette2 = isWarm2 ? warmColors : coolColors;
+    var color2 = palette2[Math.floor(Math.random() * palette2.length)];
+    S.push({
+      type:'floating',
+      x:Math.random()*W,
+      y:Math.random()*H*0.7,
+      ox:Math.random()*W,
+      oy:Math.random()*H*0.7,
+      r:0.4+Math.random()*2.0,
+      b:0.04+Math.random()*0.25,
+      p:Math.random()*6.28,
+      sp:0.12+Math.random()*0.4,       // 更慢
+      sa:0.05+Math.random()*0.15,
+      color:color2,
+      floatAmp:15+Math.random()*40,    // 浮动幅度(px)
+      floatSp:0.08+Math.random()*0.2,  // 浮动速度
+      floatPhase:Math.random()*6.28
     });
   }
 
   function D(t){
     x.clearRect(0,0,W,H);
-    var ms = t * 0.001; // 秒为单位
+    var ms = t * 0.001;
     S.forEach(function(s){
-      // 闪烁：正弦波动 + 偶尔爆闪
-      var twinkle = Math.sin(ms * s.sp + s.p) * s.sa;
-      s.flashTimer += s.flashChance;
-      var flash = 0;
-      if (s.flashTimer > 1) {
-        flash = Math.max(0, 0.6 - (s.flashTimer - 1) * 3); // 快速衰减的爆闪
-        if (s.flashTimer > 1.2) s.flashTimer = 0;
-      }
-      var a = Math.max(0.02, s.b + twinkle + flash);
+      var a = Math.max(0.02, s.b + Math.sin(ms * s.sp + s.p) * s.sa);
 
-      // 漂浮移动
-      s.x += s.dx * 0.015;
-      s.y += s.dy * 0.015;
-      if (s.y < -10) { s.y = H * 0.8; s.x = Math.random() * W; }
-      if (s.y > H * 0.85) s.y = H * 0.85;
-      if (s.x < -5) s.x = W + 5;
-      if (s.x > W + 5) s.x = -5;
+      if (s.type === 'floating') {
+        // 上下缓慢浮动
+        s.y = s.oy + Math.sin(ms * s.floatSp + s.floatPhase) * s.floatAmp;
+        s.x = s.ox + Math.cos(ms * s.floatSp * 0.6 + s.floatPhase) * s.floatAmp * 0.3;
+        // 边界回卷
+        if (s.y < -20) s.y = H + 20;
+        if (s.y > H + 20) s.y = -20;
+      } else {
+        // 固定星星：极微弱的呼吸位移
+        s.y = s.oy + Math.sin(ms * 0.08 + s.p) * 0.5;
+      }
 
       // 光晕
-      var g = x.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5);
-      g.addColorStop(0, 'rgba('+s.color.r+','+s.color.g+','+s.color.b+','+Math.min(1,a)+')');
-      g.addColorStop(0.3, 'rgba('+s.color.r+','+s.color.g+','+s.color.b+','+Math.max(0,a*0.5)+')');
+      var g = x.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4);
+      g.addColorStop(0, 'rgba('+s.color.r+','+s.color.g+','+s.color.b+','+Math.min(0.8, a)+')');
+      g.addColorStop(0.4, 'rgba('+s.color.r+','+s.color.g+','+s.color.b+','+Math.max(0, a*0.35)+')');
       g.addColorStop(1, 'rgba('+s.color.r+','+s.color.g+','+s.color.b+',0)');
-      x.beginPath();x.arc(s.x, s.y, s.r * 6, 0, 6.28);x.fillStyle=g;x.fill();
+      x.beginPath();x.arc(s.x, s.y, s.r * 5, 0, 6.28);x.fillStyle=g;x.fill();
 
-      // 核心亮点
-      x.beginPath();x.arc(s.x, s.y, s.r * 0.7, 0, 6.28);
-      x.fillStyle = 'rgba(255,255,255,'+Math.min(0.9, a*1.3)+')';
+      // 核心
+      x.beginPath();x.arc(s.x, s.y, s.r * 0.6, 0, 6.28);
+      x.fillStyle = 'rgba(255,255,255,'+Math.min(0.7, a*1.2)+')';
       x.fill();
     });
     requestAnimationFrame(D);
