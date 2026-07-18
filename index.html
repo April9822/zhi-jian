@@ -111,55 +111,63 @@
     <main id="space-screen" class="screen">
       <canvas id="warmCanvas"></canvas>
       <div class="space-container">
-        <!-- Hero -->
+        <!-- ① 品牌 Hero -->
         <div class="space-hero">
           <h1 class="space-brand">知间</h1>
           <p class="space-subtitle">理解人与人之间</p>
           <p class="space-desc">一个中立、温暖的空间，<br>帮你看见争吵背后，那些没有说出口的话。</p>
         </div>
 
-        <!-- 怎么做 -->
-        <div class="space-card">
-          <img class="space-card-icon" src="/icon-chat.png" alt="" width="32" height="32">
-          <h2>三步开始</h2>
-          <div class="space-steps">
-            <div class="step"><span class="step-num">1</span><span>把聊天记录粘贴进来</span></div>
-            <div class="step"><span class="step-num">2</span><span>AI 帮你逐句分析双方真实想法</span></div>
-            <div class="step"><span class="step-num">3</span><span>拿到报告 + 破冰话术 + 改善建议</span></div>
+        <!-- ② 你能收获什么 -->
+        <div class="space-section">
+          <h2 class="space-section-title">你能收获什么</h2>
+          <div class="benefit-grid">
+            <div class="benefit-card">
+              <img class="space-card-icon" src="/icon-insight.png" alt="" width="32" height="32">
+              <h3>看见模式</h3>
+              <p>不是一次分析，而是发现「我每次都在这种时候失控」</p>
+            </div>
+            <div class="benefit-card">
+              <img class="space-card-icon" src="/icon-space.png" alt="" width="32" height="32">
+              <h3>理解对方</h3>
+              <p>看到对方没说出口的真实需求</p>
+            </div>
+            <div class="benefit-card">
+              <img class="space-card-icon" src="/icon-track.png" alt="" width="32" height="32">
+              <h3>追踪成长</h3>
+              <p>冲突频率、情绪强度、沟通方式的变化曲线</p>
+            </div>
+            <div class="benefit-card">
+              <img class="space-card-icon" src="/icon-profile.png" alt="" width="32" height="32">
+              <h3>获得方向</h3>
+              <p>不是泛泛的「好好沟通」，而是针对你的具体行动建议</p>
+            </div>
           </div>
         </div>
 
-        <!-- 信任 -->
-        <div class="space-card">
-          <img class="space-card-icon" src="/icon-lock.png" alt="" width="32" height="32">
-          <h2>你的对话是安全的</h2>
-          <p>分析完成后立即删除原始对话。不存储、不训练、不与任何第三方共享。</p>
-        </div>
-
-        <!-- 报告预览 -->
-        <div class="space-card preview-card">
-          <img class="space-card-icon" src="/icon-report.png" alt="" width="32" height="32">
-          <h2>你会得到这样一份报告</h2>
-          <div class="preview-block">
-            <p><span class="pv-dot"></span> 核心洞察 — 你们真正在吵什么</p>
-            <p><span class="pv-dot"></span> 双方心理分析 — 各自的世界长什么样</p>
-            <p><span class="pv-dot"></span> 情绪画像 — 愤怒、委屈、疲惫各占多少</p>
-            <p><span class="pv-dot"></span> 破冰话术 — 3 种风格，可直接复制</p>
-            <p><span class="pv-dot"></span> 调节建议 — 来自不同心理学流派</p>
+        <!-- ③ 你的成长轨迹 -->
+        <div class="space-section">
+          <h2 class="space-section-title">你的成长轨迹</h2>
+          <div class="space-card growth-card">
+            <img class="space-card-icon" src="/icon-lock.png" alt="" width="32" height="32">
+            <p>每次分析都被安全保存——<strong>不是为了评判你，而是帮你看见自己的变化。</strong></p>
+            <div class="growth-features">
+              <div class="gf-item"><span class="gf-dot"></span> 定期生成心理状态评估，告诉你最近需要放松、运动、还是和朋友聊聊</div>
+              <div class="gf-item"><span class="gf-dot"></span> 学习你的沟通模式，发现容易触发冲突的情境</div>
+              <div class="gf-item"><span class="gf-dot"></span> 所有数据加密存储，只有你能访问</div>
+              <div class="gf-item"><span class="gf-dot"></span> 随时可以导出或一键删除</div>
+            </div>
           </div>
         </div>
 
-        <!-- 注册 -->
-        <div class="space-card signup-card">
-          <img class="space-card-icon" src="/icon-growth.png" alt="" width="32" height="32">
-          <h2>留下成长的印记</h2>
-          <p>创建账号后，每次分析都会被记录。你可以看到自己的沟通模式如何变化——不是在评判你，而是陪你看见自己的进步。</p>
+        <!-- ④ 加入知间 -->
+        <div class="space-section signup-section">
+          <h2 class="space-section-title">加入知间</h2>
+          <p class="signup-desc">开始记录你的成长，看见自己一步步变得更好</p>
           <button class="btn-primary btn-signup" onclick="showToast('账号功能即将上线，敬请期待')">创建知间账号</button>
           <p class="signup-link">已有账号？<a href="#" onclick="showToast('登录功能即将上线')">登录</a></p>
         </div>
 
-        <!-- CTA -->
-        <button class="btn-primary btn-start" onclick="document.getElementById('space-screen').classList.remove('active');document.getElementById('input-screen').classList.add('active')">开始倾诉</button>
         <p class="footer-brand">知间 InBetween</p>
       </div>
     </main>
