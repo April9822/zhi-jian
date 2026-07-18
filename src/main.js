@@ -788,8 +788,8 @@ window.goToSpace = function(e) {
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
-    document.body.style.background = '#FFF6E8';
-    document.body.style.color = '#2B2B2B';
+    document.body.style.background = '#211A1A';
+    document.body.style.color = '#C4A88B';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
   }, 2200);
@@ -987,6 +987,110 @@ function showRolePicker(analysis, callback) {
   }
 
   requestAnimationFrame(renderSky);
+})();
+
+// ============================================================
+// 🌅 知间空间 — 温暖呼吸背景 + 光尘粒子
+// ============================================================
+(function(){
+  var wc = document.getElementById('warmCanvas');
+  if (!wc) return;
+  var ctx2 = wc.getContext('2d');
+  var W2 = innerWidth, H2 = innerHeight;
+  wc.width = W2; wc.height = H2;
+  addEventListener('resize', function(){ W2 = wc.width = innerWidth; H2 = wc.height = innerHeight; });
+
+  // 光尘粒子
+  var dust = [];
+  for (var i = 0; i < 35; i++) {
+    dust.push({
+      x: Math.random() * W2,
+      y: Math.random() * H2,
+      r: 1 + Math.random() * 3,
+      ox: Math.random() * W2,
+      oy: Math.random() * H2,
+      b: 0.08 + Math.random() * 0.25,
+      sp: 0.3 + Math.random() * 1.2,
+      ph: Math.random() * 6.28,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: -0.1 - Math.random() * 0.3
+    });
+  }
+
+  // 柔光粒子（情绪粒子）
+  var glowDots = [];
+  for (var j = 0; j < 8; j++) {
+    glowDots.push({
+      x: Math.random() * W2,
+      y: Math.random() * H2,
+      r: 15 + Math.random() * 40,
+      ox: Math.random() * W2,
+      oy: Math.random() * H2,
+      b: 0.03 + Math.random() * 0.08,
+      sp: 0.2 + Math.random() * 0.5,
+      ph: Math.random() * 6.28,
+      dx: (Math.random() - 0.5) * 0.15,
+      dy: -0.05 - Math.random() * 0.15
+    });
+  }
+
+  function renderWarm(ts) {
+    var ms = ts * 0.001;
+    ctx2.clearRect(0, 0, W2, H2);
+
+    // 基底渐变：暖黑褐 → 暖棕 → 柔琥珀
+    var bgGrad = ctx2.createLinearGradient(0, 0, 0, H2);
+    bgGrad.addColorStop(0, '#211A1A');
+    bgGrad.addColorStop(0.45, '#362520');
+    bgGrad.addColorStop(0.75, '#4A3028');
+    bgGrad.addColorStop(1, '#5A3A2E');
+    ctx2.fillStyle = bgGrad;
+    ctx2.fillRect(0, 0, W2, H2);
+
+    // 中央偏上柔光 — 呼吸节奏
+    var breathe = 1 + Math.sin(ms * 0.15) * 0.15;
+    var glowSize = H2 * 0.7 * breathe;
+    var glowOpacity = 0.18 + Math.sin(ms * 0.12) * 0.05;
+    var glowGrad = ctx2.createRadialGradient(
+      W2 * 0.5, H2 * 0.32,
+      glowSize * 0.1,
+      W2 * 0.5, H2 * 0.4,
+      glowSize
+    );
+    glowGrad.addColorStop(0, 'rgba(231,185,138,' + glowOpacity + ')');
+    glowGrad.addColorStop(0.4, 'rgba(200,150,110,' + (glowOpacity * 0.5) + ')');
+    glowGrad.addColorStop(0.8, 'rgba(150,100,70,' + (glowOpacity * 0.12) + ')');
+    glowGrad.addColorStop(1, 'rgba(80,50,30,0)');
+    ctx2.fillStyle = glowGrad;
+    ctx2.fillRect(0, 0, W2, H2);
+
+    // 光尘粒子
+    dust.forEach(function(d) {
+      d.x = d.ox + Math.sin(ms * d.sp + d.ph) * 30;
+      d.y = d.oy + Math.cos(ms * d.sp * 0.7 + d.ph) * 20 + ms * d.dy * 3;
+      if (d.y < -20) { d.y = H2 + 20; d.oy = H2 + 20; d.ox = Math.random() * W2; }
+      if (d.y > H2 + 20) { d.y = -20; d.oy = -20; d.ox = Math.random() * W2; }
+      var a = d.b + Math.sin(ms * 0.8 + d.ph) * 0.06;
+      var g = ctx2.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 3);
+      g.addColorStop(0, 'rgba(255,225,185,' + Math.max(0.02, a) + ')');
+      g.addColorStop(1, 'rgba(255,200,150,0)');
+      ctx2.beginPath(); ctx2.arc(d.x, d.y, d.r * 3, 0, 6.28); ctx2.fillStyle = g; ctx2.fill();
+    });
+
+    // 柔光粒子
+    glowDots.forEach(function(gd) {
+      gd.x = gd.ox + Math.sin(ms * gd.sp + gd.ph) * 40;
+      gd.y = gd.oy + Math.cos(ms * gd.sp * 0.6 + gd.ph) * 25;
+      var ga = gd.b + Math.sin(ms * 0.6 + gd.ph) * 0.03;
+      var gg = ctx2.createRadialGradient(gd.x, gd.y, 0, gd.x, gd.y, gd.r);
+      gg.addColorStop(0, 'rgba(231,185,138,' + Math.max(0.01, ga) + ')');
+      gg.addColorStop(1, 'rgba(200,150,110,0)');
+      ctx2.beginPath(); ctx2.arc(gd.x, gd.y, gd.r, 0, 6.28); ctx2.fillStyle = gg; ctx2.fill();
+    });
+
+    requestAnimationFrame(renderWarm);
+  }
+  requestAnimationFrame(renderWarm);
 })();
 
 // ============================================================
