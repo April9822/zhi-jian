@@ -32,11 +32,11 @@ body{overflow:hidden;
 
 canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
 /* 舞台 */
-.scene-stage{position:absolute;top:19.8vh;left:60px;width:min(270px, 72vw);
+.scene-stage{position:absolute;top:24vh;left:50%;transform:translateX(-50%);width:280px;text-align:center;
 }
 .scene{
-  position:absolute;top:0;left:0;width:100%;text-align:left;
-  display:flex;flex-direction:column;gap:28px;opacity:0;
+  position:absolute;top:0;left:0;width:100%;text-align:center;
+  display:flex;flex-direction:column;gap:30px;opacity:0;
 }
 
 /* 每行淡入 */
@@ -73,7 +73,7 @@ canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;p
 
 /* 按钮 */
 .scene-buttons{
-  position:fixed;bottom:max(120px, calc(env(safe-area-inset-bottom) + 90px));left:50%;transform:translateX(-50%);z-index:10;
+  position:fixed;bottom:121px;left:50%;transform:translateX(-50%);z-index:10;
   display:flex;gap:14px;opacity:0;
   animation:btnIn .8s ease forwards;
   animation-delay:24s;
@@ -287,7 +287,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 /* ============================================================
    🌌 流动光晕背景
    ============================================================ */
-.bg-layer{background:linear-gradient(170deg,#11142F 0%,#2D1B3D 40%,#6B2A3A 65%,#D85A16 90%,#E87830 100%);transition:background 6s ease}
+.bg-layer{transition:background 6s ease}
   position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;
   background:linear-gradient(170deg,#11142F 0%,#2D1B3D 30%,#6B2A3A 55%,#D85A16 85%,#E87830 100%);
   background-size:200% 200%;
@@ -379,3 +379,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .picker-btn:hover{border-color:var(--gold);background:#fffdf7}
 .picker-label{display:block;font-size:16px;font-weight:600;color:var(--navy);margin-bottom:4px}
 .picker-desc{display:block;font-size:13px;color:var(--text-secondary);line-height:1.5}
+.scene-stage::before{content:"";display:block;width:40px;height:1px;background:rgba(255,255,255,0);margin-bottom:0}
+.force-refresh{}
+/* fix */
