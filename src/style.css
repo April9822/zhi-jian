@@ -342,21 +342,20 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .kw.warm{text-shadow:0 0 22px rgba(210,160,100,.5)}
 .kw.glow{text-shadow:0 0 28px rgba(200,160,100,.6),0 0 50px rgba(180,140,80,.25)}
 
-/* 涟漪吞没转场 — 一圈自然扩散，从模糊到清晰 */
+/* 涟漪吞没转场 — 半透明涟漪扩散 → 下一页从半透明到清晰 */
 .swallower{
   position:fixed;z-index:200;border-radius:50%;pointer-events:none;
   width:250vmax;height:250vmax;
   transform:translate(-50%,-50%) scale(0);
-  /* 从温暖的涟漪色渐变到下一页的纸色 */
+  /* 极淡暖色，让下一页能透过涟漪被看到 */
   background:radial-gradient(circle,
-    rgba(255,210,140,.2) 0%,
-    rgba(255,220,160,.1) 20%,
-    rgba(248,242,230,.06) 45%,
-    rgba(248,246,242,.03) 70%,
-    transparent 95%
+    rgba(255,210,140,.14) 0%,
+    rgba(255,220,160,.07) 25%,
+    rgba(248,242,230,.03) 50%,
+    transparent 75%
   );
-  -webkit-backdrop-filter:blur(3px);
-  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(2px);
+  backdrop-filter:blur(2px);
   transition:transform 2.8s cubic-bezier(.4,0,.2,1),
               opacity 2s cubic-bezier(.4,0,.2,1) 2.2s;
 }
@@ -373,8 +372,8 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   animation:pageEmerge 2.2s cubic-bezier(.45,0,.2,1) forwards;
 }
 @keyframes pageEmerge{
-  0%{opacity:0;filter:blur(8px);transform:translateY(16px)}
-  40%{opacity:.3;filter:blur(5px)}
+  0%{opacity:.35;filter:blur(6px);transform:translateY(12px)}
+  30%{opacity:.55;filter:blur(3.5px)}
   100%{opacity:1;filter:blur(0);transform:translateY(0)}
 }
 .picker-card{background:#fff;border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
