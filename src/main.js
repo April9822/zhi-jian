@@ -36,43 +36,48 @@ document.addEventListener('click', function(e) {
 // ============================================================
 window.goToInput = function() {
   var intro = document.getElementById('intro-screen');
-  if (!intro || intro.classList.contains('fade-out')) return;
+  if (!intro || intro.classList.contains('transitioning')) return;
+  intro.classList.add('transitioning');
 
-  // 路灯扩散光
-  var glow = document.createElement('div');
-  glow.className = 'lamp-glow';
-  document.body.appendChild(glow);
+  // 创建吞没涟漪
+  var sw = document.createElement('div');
+  sw.className = 'swallower';
+  // 涟漪起点：按钮区域中心偏下（模拟从手指点击处扩散）
+  sw.style.left = '50%';
+  sw.style.top = '85%';
+  document.body.appendChild(sw);
 
-  // 文字逐个消散（像写在空气中化开）
+  // 文字先轻轻模糊
   var s6 = document.querySelector('.s6');
   if (s6) {
-    var elts = s6.querySelectorAll('span, .scene-buttons');
+    var elts = s6.querySelectorAll('span');
     elts.forEach(function(el, i) {
       setTimeout(function() {
-        el.style.transition = 'opacity 1.2s ease, filter 1.2s ease';
+        el.style.transition = 'opacity .6s ease, filter .6s ease';
         el.style.opacity = '0';
-        el.style.filter = 'blur(4px)';
-      }, i * 80);
+        el.style.filter = 'blur(2px)';
+      }, i * 50);
     });
   }
 
-  // 光晕扩散
-  setTimeout(function() { glow.classList.add('spread'); }, 100);
+  // 触发放大
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      sw.classList.add('expand');
+    });
+  });
 
-  // 背景渐变照亮
-  setTimeout(function() {
-    if (bg) { bg.style.transition = 'background 2s ease'; bg.style.background = '#F8F6F2'; }
-    document.body.style.color = '#2B2B2B';
-  }, 500);
-
-  // 切换页面
+  // 涟漪覆盖屏幕后，切换页面
   setTimeout(function() {
     intro.style.display = 'none';
-    intro.classList.remove('active');
+    intro.classList.remove('active', 'transitioning');
+    document.body.style.background = '#F8F6F2';
+    document.body.style.color = '#2B2B2B';
     document.getElementById('input-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-    setTimeout(function() { if (glow) glow.remove(); }, 1000);
-  }, 1500);
+    // 清理
+    setTimeout(function() { if (sw.parentNode) sw.remove(); }, 600);
+  }, 800);
 };
 
 // ============================================================
@@ -712,17 +717,46 @@ function stopLoadingMessages() {
 // ============================================================
 window.goToSpace = function() {
   var intro = document.getElementById('intro-screen');
-  if (intro) {
-    intro.classList.add('fade-out');
+  if (!intro || intro.classList.contains('transitioning')) return;
+  intro.classList.add('transitioning');
+
+  // 创建吞没涟漪
+  var sw = document.createElement('div');
+  sw.className = 'swallower';
+  sw.style.left = '50%';
+  sw.style.top = '85%';
+  document.body.appendChild(sw);
+
+  // 文字消散
+  var s6 = document.querySelector('.s6');
+  if (s6) {
+    var elts = s6.querySelectorAll('span');
+    elts.forEach(function(el, i) {
+      setTimeout(function() {
+        el.style.transition = 'opacity .6s ease, filter .6s ease';
+        el.style.opacity = '0';
+        el.style.filter = 'blur(2px)';
+      }, i * 50);
+    });
+  }
+
+  // 触发放大
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      sw.classList.add('expand');
+    });
+  });
+
+  // 切换页面
+  setTimeout(function() {
+    intro.style.display = 'none';
+    intro.classList.remove('active', 'transitioning');
     document.body.style.background = '#FFF6E8';
     document.body.style.color = '#2B2B2B';
-    setTimeout(function() {
-      intro.style.display = 'none';
-      intro.classList.remove('active', 'fade-out');
-      document.getElementById('space-screen').classList.add('active');
-      window.scrollTo({ top: 0 });
-    }, 600);
-  }
+    document.getElementById('space-screen').classList.add('active');
+    window.scrollTo({ top: 0 });
+    setTimeout(function() { if (sw.parentNode) sw.remove(); }, 600);
+  }, 800);
 };
 
 // ============================================================
