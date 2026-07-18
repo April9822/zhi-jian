@@ -77,8 +77,8 @@ canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;p
   padding:14px 36px;border-radius:26px;cursor:pointer;
   transition:all .3s;border:none;letter-spacing:.03em;white-space:nowrap;
 }
-.intro-btn.primary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500}animation:btnFloat 3s ease-in-out 24.5s infinite;}
-.intro-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:16px;font-weight:400;animation:btnFloat 3s ease-in-out 24.5s infinite}
+.intro-btn.primary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500;animation:btnFloat 3s ease-in-out 24.5s infinite}
+.intro-btn.secondary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500;animation:btnFloat 3s ease-in-out 24.5s infinite}
 
 /* 过渡 */
 .transition-msg{pointer-events:none}
