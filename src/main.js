@@ -41,16 +41,21 @@ document.addEventListener('click', function(e) {
 // ============================================================
 // 全局跳转函数
 // ============================================================
-window.goToInput = function() {
+window.goToInput = function(e) {
   var intro = document.getElementById('intro-screen');
   if (!intro || intro.classList.contains('transitioning')) return;
   intro.classList.add('transitioning');
 
-  // 涟漪从用户实际点击的按钮位置扩散
+  // 涟漪从按钮中心扩散
+  var btn = e ? e.target : null;
+  var rect = btn ? btn.getBoundingClientRect() : null;
+  var cx = rect ? rect.left + rect.width / 2 : lastClickX;
+  var cy = rect ? rect.top + rect.height / 2 : lastClickY;
+
   var sw = document.createElement('div');
   sw.className = 'swallower';
-  sw.style.left = lastClickX + 'px';
-  sw.style.top = lastClickY + 'px';
+  sw.style.left = cx + 'px';
+  sw.style.top = cy + 'px';
   document.body.appendChild(sw);
 
   // 文字轻柔消散
@@ -722,15 +727,20 @@ function stopLoadingMessages() {
 // ============================================================
 // 知间空间
 // ============================================================
-window.goToSpace = function() {
+window.goToSpace = function(e) {
   var intro = document.getElementById('intro-screen');
   if (!intro || intro.classList.contains('transitioning')) return;
   intro.classList.add('transitioning');
 
+  var btn = e ? e.target : null;
+  var rect = btn ? btn.getBoundingClientRect() : null;
+  var cx = rect ? rect.left + rect.width / 2 : lastClickX;
+  var cy = rect ? rect.top + rect.height / 2 : lastClickY;
+
   var sw = document.createElement('div');
   sw.className = 'swallower';
-  sw.style.left = lastClickX + 'px';
-  sw.style.top = lastClickY + 'px';
+  sw.style.left = cx + 'px';
+  sw.style.top = cy + 'px';
   document.body.appendChild(sw);
 
   var s6 = document.querySelector('.s6');
