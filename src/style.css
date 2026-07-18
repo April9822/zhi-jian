@@ -348,14 +348,14 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   width:250vmax;height:250vmax;
   transform:translate(-50%,-50%) scale(0);
   background:radial-gradient(circle,
-    rgba(255,220,150,.95) 0%,
-    rgba(255,230,180,.7) 20%,
-    rgba(248,240,220,.4) 45%,
-    rgba(248,246,242,.15) 70%,
+    rgba(255,210,140,.25) 0%,
+    rgba(255,220,160,.18) 25%,
+    rgba(248,235,210,.1) 50%,
+    rgba(248,246,242,.05) 75%,
     transparent 100%
   );
-  transition:transform .85s cubic-bezier(.35,0,.15,1),
-              opacity .5s ease .65s;
+  transition:transform 1.6s cubic-bezier(.45,0,.2,1),
+              opacity .8s ease 1s;
 }
 .swallower.expand{
   transform:translate(-50%,-50%) scale(1);

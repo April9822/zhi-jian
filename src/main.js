@@ -47,27 +47,27 @@ window.goToInput = function() {
   sw.style.top = '85%';
   document.body.appendChild(sw);
 
-  // 文字先轻轻模糊
+  // 文字先轻轻模糊（跟随呼吸节奏）
   var s6 = document.querySelector('.s6');
   if (s6) {
     var elts = s6.querySelectorAll('span');
     elts.forEach(function(el, i) {
       setTimeout(function() {
-        el.style.transition = 'opacity .6s ease, filter .6s ease';
+        el.style.transition = 'opacity .8s ease, filter .8s ease';
         el.style.opacity = '0';
         el.style.filter = 'blur(2px)';
-      }, i * 50);
+      }, i * 80);
     });
   }
 
-  // 触发放大
-  requestAnimationFrame(function() {
+  // 触发放大（略延迟，让文字先开始消散）
+  setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
     });
-  });
+  }, 200);
 
-  // 涟漪覆盖屏幕后，切换页面
+  // 涟漪扩散到全屏时切换页面（呼应呼吸的停顿）
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
@@ -75,9 +75,9 @@ window.goToInput = function() {
     document.body.style.color = '#2B2B2B';
     document.getElementById('input-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-    // 清理
-    setTimeout(function() { if (sw.parentNode) sw.remove(); }, 600);
-  }, 800);
+    // 涟漪自然消散后清理
+    setTimeout(function() { if (sw.parentNode) sw.remove(); }, 1000);
+  }, 1400);
 };
 
 // ============================================================
@@ -733,19 +733,19 @@ window.goToSpace = function() {
     var elts = s6.querySelectorAll('span');
     elts.forEach(function(el, i) {
       setTimeout(function() {
-        el.style.transition = 'opacity .6s ease, filter .6s ease';
+        el.style.transition = 'opacity .8s ease, filter .8s ease';
         el.style.opacity = '0';
         el.style.filter = 'blur(2px)';
-      }, i * 50);
+      }, i * 80);
     });
   }
 
   // 触发放大
-  requestAnimationFrame(function() {
+  setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
     });
-  });
+  }, 200);
 
   // 切换页面
   setTimeout(function() {
@@ -755,8 +755,8 @@ window.goToSpace = function() {
     document.body.style.color = '#2B2B2B';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-    setTimeout(function() { if (sw.parentNode) sw.remove(); }, 600);
-  }, 800);
+    setTimeout(function() { if (sw.parentNode) sw.remove(); }, 1000);
+  }, 1400);
 };
 
 // ============================================================
