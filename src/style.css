@@ -287,11 +287,12 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 /* ============================================================
    🌌 流动光晕背景
    ============================================================ */
-.bg-layer{transition:background 6s ease}
+.bg-layer{
   position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;
   background:linear-gradient(170deg,#11142F 0%,#2D1B3D 30%,#6B2A3A 55%,#D85A16 85%,#E87830 100%);
   background-size:200% 200%;
   animation:bgFlow 12s ease-in-out infinite;
+  transition:background 6s ease;
 }
 @keyframes bgFlow{
   0%,100%{background-position:0% 0%}
@@ -300,19 +301,8 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   75%{background-position:0% 70%}
 }
 
-/* 中央光点 */
-}
-  50%{transform:translate(-50%,-50%) scale(3);opacity:1}
-}
-
-/* 波纹 */
-}
-  100%{width:300px;height:300px;opacity:0;border-color:rgba(255,120,80,0)}
-}
-
 /* 粒子 */
 .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-}
 
 /* 移除旧 halo */
 .halo{display:none}
@@ -324,12 +314,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   box-shadow:0 0 20px rgba(255,150,80,.15),inset 0 1px 0 rgba(255,255,255,.1);
 }
 .intro-btn.primary:hover{box-shadow:0 0 30px rgba(255,150,80,.3),inset 0 1px 0 rgba(255,255,255,.15)}
-/* 光点随场景变化 */
-  transition:all 2s ease;
-}
-  transition:all 2.5s ease;
-}
-/* 淡出旧光点 */
 
 /* 星辰 */
 .stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
