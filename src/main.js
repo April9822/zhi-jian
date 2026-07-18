@@ -46,7 +46,6 @@ window.goToInput = function(e) {
   if (!intro || intro.classList.contains('transitioning')) return;
   intro.classList.add('transitioning');
 
-  // 涟漪从按钮中心扩散
   var btn = e ? e.target : null;
   var rect = btn ? btn.getBoundingClientRect() : null;
   var cx = rect ? rect.left + rect.width / 2 : lastClickX;
@@ -60,11 +59,22 @@ window.goToInput = function(e) {
     otherBtn.style.pointerEvents = 'none';
   }
 
+  // 创建吞没涟漪 + 3圈波纹
   var sw = document.createElement('div');
   sw.className = 'swallower';
   sw.style.left = cx + 'px';
   sw.style.top = cy + 'px';
   document.body.appendChild(sw);
+
+  var waves = [];
+  for (var w = 1; w <= 3; w++) {
+    var ring = document.createElement('div');
+    ring.className = 'wave-ring w' + w;
+    ring.style.left = cx + 'px';
+    ring.style.top = cy + 'px';
+    document.body.appendChild(ring);
+    waves.push(ring);
+  }
 
   // 全部文字 + 当前按钮轻柔消散
   var s6 = document.querySelector('.s6');
@@ -82,14 +92,15 @@ window.goToInput = function(e) {
     }, i * 100);
   });
 
-  // 涟漪开始扩散
+  // 涟漪 + 波纹开始扩散
   setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
+      waves.forEach(function(r) { r.classList.add('go'); });
     });
   }, 300);
 
-  // 涟漪接近全覆盖 → 页面静默切换 → 涟漪与页面同步呼吸交叉溶解
+  // 涟漪全覆盖后页面切换
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
@@ -98,9 +109,13 @@ window.goToInput = function(e) {
     var input = document.getElementById('input-screen');
     input.classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 1900);
+  }, 2400);
 
-  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 4400);
+  // 清理
+  setTimeout(function() {
+    if (sw.parentNode) sw.remove();
+    waves.forEach(function(r) { if (r.parentNode) r.remove(); });
+  }, 5000);
 };
 
 // ============================================================
@@ -748,7 +763,6 @@ window.goToSpace = function(e) {
   var cx = rect ? rect.left + rect.width / 2 : lastClickX;
   var cy = rect ? rect.top + rect.height / 2 : lastClickY;
 
-  // 另一个按钮立即透明化
   var otherBtn = document.querySelector('.intro-btn.primary');
   if (otherBtn) {
     otherBtn.style.transition = 'opacity .5s ease';
@@ -761,6 +775,16 @@ window.goToSpace = function(e) {
   sw.style.left = cx + 'px';
   sw.style.top = cy + 'px';
   document.body.appendChild(sw);
+
+  var waves = [];
+  for (var w = 1; w <= 3; w++) {
+    var ring = document.createElement('div');
+    ring.className = 'wave-ring w' + w;
+    ring.style.left = cx + 'px';
+    ring.style.top = cy + 'px';
+    document.body.appendChild(ring);
+    waves.push(ring);
+  }
 
   var s6 = document.querySelector('.s6');
   var allElts = [];
@@ -780,6 +804,7 @@ window.goToSpace = function(e) {
   setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
+      waves.forEach(function(r) { r.classList.add('go'); });
     });
   }, 300);
 
@@ -790,9 +815,12 @@ window.goToSpace = function(e) {
     document.body.style.color = '#2B2B2B';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 1900);
+  }, 2400);
 
-  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 4400);
+  setTimeout(function() {
+    if (sw.parentNode) sw.remove();
+    waves.forEach(function(r) { if (r.parentNode) r.remove(); });
+  }, 5000);
 };
 
 // ============================================================
