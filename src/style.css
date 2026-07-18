@@ -32,7 +32,7 @@ body{overflow:hidden;
 
 canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
 /* 舞台 */
-.scene-stage{position:absolute;top:24vh;left:32px;width:280px;text-align:left;
+.scene-stage{position:absolute;top:0;left:32px;width:280px;text-align:left;
 }
 .scene{
   position:absolute;top:0;left:0;width:100%;text-align:left;
@@ -62,18 +62,18 @@ canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;p
 }
 
 /* 场景容器淡出 */
-.s1 { animation: Sfade 4s ease forwards; }
-.s2 { animation: Sfade 4s ease forwards; }
-.s3 { animation: Sfade 5.2s ease forwards; }
-.s4 { animation: Sfade 5.2s ease forwards; }
-.s5 { animation: Sfade 3.2s ease forwards; }
-.s6 { animation: Slast 4.5s ease forwards; pointer-events:auto; }
+.s1 { top:14vh; animation: Sfade 4s ease forwards; }
+.s2 { top:20vh; animation: Sfade 4s ease forwards; }
+.s3 { top:20vh; animation: Sfade 5.2s ease forwards; }
+.s4 { top:20vh; animation: Sfade 5.2s ease forwards; }
+.s5 { top:20vh; animation: Sfade 3.2s ease forwards; }
+.s6 { top:20vh; animation: Slast 4.5s ease forwards; pointer-events:auto; }
 @keyframes Sfade{0%,100%{opacity:0}12%{opacity:1}75%{opacity:1}92%{opacity:0}}
 @keyframes Slast{0%{opacity:0}6%{opacity:1}100%{opacity:1}}
 
 /* 按钮 */
 .scene-buttons{
-  position:fixed;bottom:calc(32px + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%);z-index:10;
+  position:fixed;bottom:calc(77px + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%);z-index:10;
   display:flex;gap:14px;opacity:0;
   animation:btnIn .8s ease forwards;
   animation-delay:24s;
