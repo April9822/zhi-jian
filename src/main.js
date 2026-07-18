@@ -788,8 +788,9 @@ window.goToSpace = function(e) {
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
-    document.body.style.background = '#211A1A';
+    document.body.style.background = '#1E1B18';
     document.body.style.color = '#C4A88B';
+    document.body.style.overflow = '';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
   }, 2200);
@@ -1012,46 +1013,46 @@ function showRolePicker(analysis, callback) {
     var ms = ts * 0.001;
     ctx2.clearRect(0, 0, W2, H2);
 
-    // 基底渐变：暖黑褐 → 暖棕 → 柔琥珀
+    // 基底渐变：暖深灰 → 暖褐 → 琥珀
     var bgGrad = ctx2.createLinearGradient(0, 0, 0, H2);
-    bgGrad.addColorStop(0, '#211A1A');
-    bgGrad.addColorStop(0.45, '#362520');
-    bgGrad.addColorStop(0.75, '#4A3028');
-    bgGrad.addColorStop(1, '#5A3A2E');
+    bgGrad.addColorStop(0, '#1C1916');
+    bgGrad.addColorStop(0.4, '#2E2620');
+    bgGrad.addColorStop(0.7, '#3D3028');
+    bgGrad.addColorStop(1, '#4A382C');
     ctx2.fillStyle = bgGrad;
     ctx2.fillRect(0, 0, W2, H2);
 
-    // 中央偏上柔光 — 呼吸节奏
-    var breathe = 1 + Math.sin(ms * 0.15) * 0.15;
-    var glowSize = H2 * 0.65 * breathe;
-    var glowOpacity = 0.14 + Math.sin(ms * 0.12) * 0.04;
+    // 中央偏上柔光 — 呼吸
+    var breathe = 1 + Math.sin(ms * 0.18) * 0.2;
+    var glowSize = H2 * 0.7 * breathe;
+    var glowOpacity = 0.2 + Math.sin(ms * 0.14) * 0.06;
     var glowGrad = ctx2.createRadialGradient(
-      W2 * 0.5, H2 * 0.3,
-      glowSize * 0.1,
-      W2 * 0.5, H2 * 0.4,
+      W2 * 0.5, H2 * 0.28,
+      glowSize * 0.08,
+      W2 * 0.5 + Math.sin(ms * 0.08) * W2 * 0.05, H2 * 0.38,
       glowSize
     );
-    glowGrad.addColorStop(0, 'rgba(231,185,138,' + glowOpacity + ')');
-    glowGrad.addColorStop(0.4, 'rgba(200,150,110,' + (glowOpacity * 0.45) + ')');
-    glowGrad.addColorStop(0.8, 'rgba(150,100,70,' + (glowOpacity * 0.1) + ')');
-    glowGrad.addColorStop(1, 'rgba(80,50,30,0)');
+    glowGrad.addColorStop(0, 'rgba(245,205,155,' + glowOpacity + ')');
+    glowGrad.addColorStop(0.3, 'rgba(231,185,138,' + (glowOpacity * 0.55) + ')');
+    glowGrad.addColorStop(0.7, 'rgba(180,140,105,' + (glowOpacity * 0.15) + ')');
+    glowGrad.addColorStop(1, 'rgba(120,80,50,0)');
     ctx2.fillStyle = glowGrad;
     ctx2.fillRect(0, 0, W2, H2);
 
-    // 丁达尔光柱 — 阳光从左上斜射，轻微呼吸
-    var beamBreathe = 1 + Math.sin(ms * 0.1) * 0.12;
+    // 丁达尔光柱 — 动态呼吸 + 微摆动
+    var beamBreathe = 1 + Math.sin(ms * 0.15) * 0.2;
+    var beamSway = Math.sin(ms * 0.06) * 0.8;
     beams.forEach(function(b) {
       ctx2.save();
-      // 以光束起点为旋转中心
-      var rad = b.tilt * Math.PI / 180;
+      var rad = (b.tilt + beamSway) * Math.PI / 180;
       ctx2.translate(b.x, b.y);
       ctx2.rotate(rad);
       var grad = ctx2.createLinearGradient(0, 0, 0, b.len);
       var ba = b.a * beamBreathe;
-      grad.addColorStop(0, 'rgba(255,225,185,' + ba + ')');
-      grad.addColorStop(0.3, 'rgba(231,185,138,' + (ba * 0.65) + ')');
-      grad.addColorStop(0.7, 'rgba(200,150,110,' + (ba * 0.2) + ')');
-      grad.addColorStop(1, 'rgba(180,130,100,0)');
+      grad.addColorStop(0, 'rgba(255,235,200,' + (ba * 1.4) + ')');
+      grad.addColorStop(0.25, 'rgba(245,205,155,' + ba + ')');
+      grad.addColorStop(0.6, 'rgba(210,165,120,' + (ba * 0.4) + ')');
+      grad.addColorStop(1, 'rgba(170,130,95,0)');
       ctx2.fillStyle = grad;
       ctx2.fillRect(-b.w/2, 0, b.w, b.len);
       ctx2.restore();
