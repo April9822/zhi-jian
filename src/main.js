@@ -59,27 +59,12 @@ window.goToInput = function(e) {
     otherBtn.style.pointerEvents = 'none';
   }
 
-  // 涟漪主体 + 4圈波纹
+  // 一圈涟漪
   var sw = document.createElement('div');
   sw.className = 'swallower';
   sw.style.left = cx + 'px';
   sw.style.top = cy + 'px';
   document.body.appendChild(sw);
-
-  var waves = [];
-  for (var w = 1; w <= 4; w++) {
-    var ring = document.createElement('div');
-    ring.className = 'wave-ring w' + w;
-    ring.style.left = cx + 'px';
-    ring.style.top = cy + 'px';
-    document.body.appendChild(ring);
-    waves.push(ring);
-  }
-
-  // 全屏遮罩（波纹后的接棒者）
-  var veil = document.createElement('div');
-  veil.className = 'full-veil';
-  document.body.appendChild(veil);
 
   // 文字 + 当前按钮消散
   var s6 = document.querySelector('.s6');
@@ -91,26 +76,20 @@ window.goToInput = function(e) {
   if (btn) allElts.push(btn);
   allElts.forEach(function(el, i) {
     setTimeout(function() {
-      el.style.transition = 'opacity .8s ease, filter .8s ease';
+      el.style.transition = 'opacity 1s ease, filter 1s ease';
       el.style.opacity = '0';
       el.style.filter = 'blur(2px)';
-    }, i * 80);
+    }, i * 90);
   });
 
-  // 启动：涟漪 + 波纹扩散
+  // 涟漪扩散
   setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
-      waves.forEach(function(r) { r.classList.add('go'); });
     });
   }, 300);
 
-  // 波纹覆盖大半 → 激活全屏遮罩（模糊+过渡到下一页背景色）
-  setTimeout(function() {
-    veil.classList.add('active');
-  }, 2200);
-
-  // 遮罩到位 → 页面切换
+  // 涟漪覆盖到 80% 时页面静默切换
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
@@ -119,18 +98,11 @@ window.goToInput = function(e) {
     var input = document.getElementById('input-screen');
     input.classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 3000);
+  }, 2200);
 
-  // 遮罩淡出 → 涟漪+波纹+遮罩清理
-  setTimeout(function() {
-    veil.style.transition = 'opacity 1.2s ease';
-    veil.style.opacity = '0';
-  }, 3400);
-
+  // 清理
   setTimeout(function() {
     if (sw.parentNode) sw.remove();
-    waves.forEach(function(r) { if (r.parentNode) r.remove(); });
-    if (veil.parentNode) veil.remove();
   }, 5000);
 };
 
@@ -792,20 +764,6 @@ window.goToSpace = function(e) {
   sw.style.top = cy + 'px';
   document.body.appendChild(sw);
 
-  var waves = [];
-  for (var w = 1; w <= 4; w++) {
-    var ring = document.createElement('div');
-    ring.className = 'wave-ring w' + w;
-    ring.style.left = cx + 'px';
-    ring.style.top = cy + 'px';
-    document.body.appendChild(ring);
-    waves.push(ring);
-  }
-
-  var veil = document.createElement('div');
-  veil.className = 'full-veil';
-  document.body.appendChild(veil);
-
   var s6 = document.querySelector('.s6');
   var allElts = [];
   if (s6) {
@@ -815,22 +773,17 @@ window.goToSpace = function(e) {
   if (btn) allElts.push(btn);
   allElts.forEach(function(el, i) {
     setTimeout(function() {
-      el.style.transition = 'opacity .8s ease, filter .8s ease';
+      el.style.transition = 'opacity 1s ease, filter 1s ease';
       el.style.opacity = '0';
       el.style.filter = 'blur(2px)';
-    }, i * 80);
+    }, i * 90);
   });
 
   setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
-      waves.forEach(function(r) { r.classList.add('go'); });
     });
   }, 300);
-
-  setTimeout(function() {
-    veil.classList.add('active');
-  }, 2200);
 
   setTimeout(function() {
     intro.style.display = 'none';
@@ -839,17 +792,10 @@ window.goToSpace = function(e) {
     document.body.style.color = '#2B2B2B';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 3000);
-
-  setTimeout(function() {
-    veil.style.transition = 'opacity 1.2s ease';
-    veil.style.opacity = '0';
-  }, 3400);
+  }, 2200);
 
   setTimeout(function() {
     if (sw.parentNode) sw.remove();
-    waves.forEach(function(r) { if (r.parentNode) r.remove(); });
-    if (veil.parentNode) veil.remove();
   }, 5000);
 };
 
