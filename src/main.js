@@ -52,43 +52,54 @@ window.goToInput = function(e) {
   var cx = rect ? rect.left + rect.width / 2 : lastClickX;
   var cy = rect ? rect.top + rect.height / 2 : lastClickY;
 
+  // 另一个按钮立即透明化
+  var otherBtn = document.querySelector('.intro-btn.secondary');
+  if (otherBtn) {
+    otherBtn.style.transition = 'opacity .5s ease';
+    otherBtn.style.opacity = '0';
+    otherBtn.style.pointerEvents = 'none';
+  }
+
   var sw = document.createElement('div');
   sw.className = 'swallower';
   sw.style.left = cx + 'px';
   sw.style.top = cy + 'px';
   document.body.appendChild(sw);
 
-  // 文字轻柔消散
+  // 全部文字 + 当前按钮轻柔消散
   var s6 = document.querySelector('.s6');
+  var allElts = [];
   if (s6) {
-    var elts = s6.querySelectorAll('span');
-    elts.forEach(function(el, i) {
-      setTimeout(function() {
-        el.style.transition = 'opacity 1s ease, filter 1s ease';
-        el.style.opacity = '0';
-        el.style.filter = 'blur(2px)';
-      }, i * 100);
-    });
+    var spans = s6.querySelectorAll('span');
+    spans.forEach(function(s) { allElts.push(s); });
   }
+  if (btn) allElts.push(btn);
+  allElts.forEach(function(el, i) {
+    setTimeout(function() {
+      el.style.transition = 'opacity 1s ease, filter 1s ease';
+      el.style.opacity = '0';
+      el.style.filter = 'blur(2px)';
+    }, i * 100);
+  });
 
-  // 微延迟后涟漪开始扩散
+  // 涟漪开始扩散
   setTimeout(function() {
     requestAnimationFrame(function() {
       sw.classList.add('expand');
     });
   }, 300);
 
-  // 呼吸节奏：2s 扩散 → 2.2s 停顿顶点 → 2.4s 页面静默切换 → 涟漪自然消散
+  // 涟漪覆盖后，新页面浮现
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
     document.body.style.background = '#F8F6F2';
     document.body.style.color = '#2B2B2B';
-    document.getElementById('input-screen').classList.add('active');
+    var input = document.getElementById('input-screen');
+    input.classList.add('active');
     window.scrollTo({ top: 0 });
   }, 2200);
 
-  // 清理
   setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3000);
 };
 
@@ -737,6 +748,14 @@ window.goToSpace = function(e) {
   var cx = rect ? rect.left + rect.width / 2 : lastClickX;
   var cy = rect ? rect.top + rect.height / 2 : lastClickY;
 
+  // 另一个按钮立即透明化
+  var otherBtn = document.querySelector('.intro-btn.primary');
+  if (otherBtn) {
+    otherBtn.style.transition = 'opacity .5s ease';
+    otherBtn.style.opacity = '0';
+    otherBtn.style.pointerEvents = 'none';
+  }
+
   var sw = document.createElement('div');
   sw.className = 'swallower';
   sw.style.left = cx + 'px';
@@ -744,16 +763,19 @@ window.goToSpace = function(e) {
   document.body.appendChild(sw);
 
   var s6 = document.querySelector('.s6');
+  var allElts = [];
   if (s6) {
-    var elts = s6.querySelectorAll('span');
-    elts.forEach(function(el, i) {
-      setTimeout(function() {
-        el.style.transition = 'opacity 1s ease, filter 1s ease';
-        el.style.opacity = '0';
-        el.style.filter = 'blur(2px)';
-      }, i * 100);
-    });
+    var spans = s6.querySelectorAll('span');
+    spans.forEach(function(s) { allElts.push(s); });
   }
+  if (btn) allElts.push(btn);
+  allElts.forEach(function(el, i) {
+    setTimeout(function() {
+      el.style.transition = 'opacity 1s ease, filter 1s ease';
+      el.style.opacity = '0';
+      el.style.filter = 'blur(2px)';
+    }, i * 100);
+  });
 
   setTimeout(function() {
     requestAnimationFrame(function() {

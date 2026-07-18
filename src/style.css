@@ -362,16 +362,16 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   opacity:0;
 }
 
-/* 新页面淡入 */
+/* 新页面自然浮现（上浮+淡入） */
 #input-screen.active{
-  animation:pageFadeIn .8s ease .2s forwards;
+  animation:pageEmerge .9s cubic-bezier(.25,.1,.25,1) .15s forwards;
 }
 #space-screen.active{
-  animation:pageFadeIn .8s ease .2s forwards;
+  animation:pageEmerge .9s cubic-bezier(.25,.1,.25,1) .15s forwards;
 }
-@keyframes pageFadeIn{
-  from{opacity:0}
-  to{opacity:1}
+@keyframes pageEmerge{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
 }
 .picker-card{background:#fff;border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .picker-card h2{font-size:20px;color:var(--navy);margin-bottom:8px}
