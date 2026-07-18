@@ -33,7 +33,6 @@ window.goToInput = function() {
 
   // 背景渐变照亮
   setTimeout(function() {
-    var bg = document.querySelector('.bg-layer');
     if (bg) { bg.style.transition = 'background 2s ease'; bg.style.background = '#F8F6F2'; }
     document.body.style.color = '#2B2B2B';
   }, 500);
