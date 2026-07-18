@@ -62,12 +62,12 @@ canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;p
 }
 
 /* 场景容器淡出 */
-.s1 { top:14vh; animation: Sfade 4s ease forwards; }
-.s2 { top:20vh; animation: Sfade 4s ease forwards; }
-.s3 { top:20vh; animation: Sfade 5.2s ease forwards; }
-.s4 { top:20vh; animation: Sfade 5.2s ease forwards; }
-.s5 { top:20vh; animation: Sfade 3.2s ease forwards; }
-.s6 { top:20vh; animation: Slast 4.5s ease forwards; pointer-events:auto; }
+.s1 { top:15vh; animation: Sfade 4s ease forwards; }
+.s2 { top:15vh; animation: Sfade 4s ease forwards; }
+.s3 { top:15vh; animation: Sfade 5.2s ease forwards; }
+.s4 { top:15vh; animation: Sfade 5.2s ease forwards; }
+.s5 { top:15vh; animation: Sfade 3.2s ease forwards; }
+.s6 { top:15vh; animation: Slast 4.5s ease forwards; pointer-events:auto; }
 @keyframes Sfade{0%,100%{opacity:0}12%{opacity:1}75%{opacity:1}92%{opacity:0}}
 @keyframes Slast{0%{opacity:0}6%{opacity:1}100%{opacity:1}}
 
