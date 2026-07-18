@@ -89,7 +89,7 @@ window.goToInput = function(e) {
     });
   }, 300);
 
-  // 涟漪覆盖后，新页面浮现
+  // 涟漪接近全覆盖时，页面已在下方就位，等待云散月出
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
@@ -98,9 +98,9 @@ window.goToInput = function(e) {
     var input = document.getElementById('input-screen');
     input.classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 2200);
+  }, 1800);
 
-  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3000);
+  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3600);
 };
 
 // ============================================================
@@ -790,9 +790,9 @@ window.goToSpace = function(e) {
     document.body.style.color = '#2B2B2B';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 2200);
+  }, 1800);
 
-  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3000);
+  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3600);
 };
 
 // ============================================================
@@ -1006,43 +1006,47 @@ function showRolePicker(analysis, callback) {
   ];
 
   var S=[];
-  // 固定星星：只在原位闪烁
+  // 固定星星：只在原位闪烁，均匀分布全屏
   for(var i=0;i<24;i++){
     var isWarm = Math.random() < 0.2;
     var palette = isWarm ? warmColors : coolColors;
     var color = palette[Math.floor(Math.random() * palette.length)];
+    var fy = Math.random()*H*0.88;
     S.push({
       type:'fixed',
       x:Math.random()*W,
-      y:Math.random()*H*0.75,
+      y:fy,
       r:0.3+Math.random()*2.2,
       b:0.04+Math.random()*0.28,
       p:Math.random()*6.28,
-      sp:0.15+Math.random()*0.5,       // 慢速闪烁
+      sp:0.15+Math.random()*0.5,
       sa:0.05+Math.random()*0.18,
       color:color,
-      ox:0, oy:0  // 原始位置不变
+      ox:Math.random()*W,
+      oy:fy  // 正确存储初始 Y 坐标
     });
   }
-  // 漂浮星星：上下缓慢浮动
+  // 漂浮星星：上下缓慢浮动，均匀分布全屏
   for(var j=0;j<16;j++){
     var isWarm2 = Math.random() < 0.25;
     var palette2 = isWarm2 ? warmColors : coolColors;
     var color2 = palette2[Math.floor(Math.random() * palette2.length)];
+    var fy2 = Math.random()*H*0.85;
+    var fx2 = Math.random()*W;
     S.push({
       type:'floating',
-      x:Math.random()*W,
-      y:Math.random()*H*0.7,
-      ox:Math.random()*W,
-      oy:Math.random()*H*0.7,
+      x:fx2,
+      y:fy2,
+      ox:fx2,
+      oy:fy2,
       r:0.4+Math.random()*2.0,
       b:0.04+Math.random()*0.25,
       p:Math.random()*6.28,
-      sp:0.12+Math.random()*0.4,       // 更慢
+      sp:0.12+Math.random()*0.4,
       sa:0.05+Math.random()*0.15,
       color:color2,
-      floatAmp:15+Math.random()*40,    // 浮动幅度(px)
-      floatSp:0.08+Math.random()*0.2,  // 浮动速度
+      floatAmp:15+Math.random()*40,
+      floatSp:0.08+Math.random()*0.2,
       floatPhase:Math.random()*6.28
     });
   }
