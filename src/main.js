@@ -714,27 +714,6 @@ window.goToSpace = function() {
 // ============================================================
 
 // ============================================================
-// 背景随引导语情绪变化
-// ============================================================
-(function bgTimeline() {
-  var bg = document.querySelector(".bg-layer");
-  if (!bg) return;
-  bg.style.transition = "background 5s ease";
-  var S = [
-    { t:0,    c:"linear-gradient(170deg,#071526 0%,#0E1B30 50%,#111A38 100%)" },
-    { t:1500, c:"linear-gradient(170deg,#111A38 0%,#1A1540 50%,#252040 100%)" },
-    { t:4000, c:"linear-gradient(150deg,#252040 0%,#351E3A 50%,#552B38 100%)" },
-    { t:8000, c:"linear-gradient(150deg,#552B38 0%,#452538 50%,#3A2040 100%)" },
-    { t:11000,c:"linear-gradient(140deg,#3A2040 0%,#5A3535 50%,#C28B52 100%)" },
-    { t:13500,c:"linear-gradient(145deg,#2A1F3E 0%,#4A3035 50%,#A07045 100%)" },
-    { t:16500,c:"linear-gradient(140deg,#1A2540 0%,#4A3030 50%,#D09A55 100%)" },
-    { t:19000,c:"linear-gradient(140deg,#2A2540 0%,#8A5535 50%,#C89850 100%)" },
-    { t:22500,c:"linear-gradient(150deg,#2A2840 0%,#9A7040 50%,#AFA58B 100%)" },
-  ];
-  S.forEach(function(s) { setTimeout(function() { bg.style.background = s.c; }, s.t); });
-})();
-
-// ============================================================
 // 角色选择
 // ============================================================
 function showRolePicker(analysis, callback) {
@@ -766,6 +745,147 @@ function showRolePicker(analysis, callback) {
   picker.querySelector('.picker-both').onclick = function(){ picker.remove(); callback(); };
   document.body.appendChild(picker);
 }
+
+// ============================================================
+// 🌌 连续时间函数天空渲染器
+// 颜色随时间连续流动，不可察觉的自然渐变
+// ============================================================
+(function(){
+  var sky = document.getElementById('skyCanvas');
+  if (!sky) return;
+  var ctx = sky.getContext('2d');
+  var W = innerWidth, H = innerHeight;
+  sky.width = W; sky.height = H;
+  addEventListener('resize', function(){ W = sky.width = innerWidth; H = sky.height = innerHeight; });
+
+  // 颜色插值 (RGB 通道分别 lerp)
+  function lerpColor(c1, c2, t) {
+    return [
+      Math.round(c1[0] + (c2[0] - c1[0]) * t),
+      Math.round(c1[1] + (c2[1] - c1[1]) * t),
+      Math.round(c1[2] + (c2[2] - c1[2]) * t)
+    ];
+  }
+
+  // easeInOutCubic
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  // easeInOutSine
+  function easeInOutSine(t) {
+    return -(Math.cos(Math.PI * t) - 1) / 2;
+  }
+
+  // 获取某时刻的天空色 (返回 [topR,topG,topB], [midR,midG,midB], [horizonR,horizonG,horizonB])
+  function skyColorsAt(elapsed) {
+    var t = Math.min(elapsed, 30); // 0-30秒
+
+    // Phase 1: 0-8s 深夜 → #050816 → #111936
+    var p1 = Math.min(Math.max((t - 0) / 8, 0), 1);
+    p1 = easeInOutSine(p1);
+    var deepNight = [5, 8, 22];
+    var lateNight = [17, 25, 54];
+
+    // Phase 2: 8-18s 夜色苏醒 → blue indigo → soft purple gray
+    var p2 = Math.min(Math.max((t - 8) / 10, 0), 1);
+    p2 = easeInOutCubic(p2);
+    var indigoBlue = [25, 30, 65];
+    var softPurple = [45, 35, 75];
+
+    // Phase 3: 18-26s 黎明前暖意
+    var p3 = Math.min(Math.max((t - 18) / 8, 0), 1);
+    p3 = easeInOutCubic(p3);
+    var dawnBlue = [60, 55, 90];
+    var dawnWarm = [80, 68, 95];
+
+    // Phase 4: 26-30s 稳定黎明前
+    var p4 = Math.min(Math.max((t - 26) / 4, 0), 1);
+    p4 = easeInOutSine(p4);
+    var finalSky = [75, 68, 95];
+
+    var top, mid, horizon;
+    if (t < 8) {
+      top = lerpColor(deepNight, lateNight, p1);
+      mid = top;
+      horizon = top;
+    } else if (t < 18) {
+      top = lerpColor(lateNight, indigoBlue, p2);
+      mid = lerpColor(lateNight, softPurple, p2);
+      horizon = mid;
+    } else if (t < 26) {
+      top = lerpColor(indigoBlue, dawnBlue, p3);
+      mid = lerpColor(softPurple, dawnBlue, p3);
+      horizon = lerpColor(softPurple, dawnWarm, p3);
+    } else {
+      top = lerpColor(dawnBlue, finalSky, p4);
+      mid = lerpColor(dawnBlue, finalSky, p4);
+      horizon = lerpColor(dawnWarm, finalSky, p4);
+    }
+
+    return { top: top, mid: mid, horizon: horizon };
+  }
+
+  // 低频噪声 (让天空有微弱的自然波动)
+  function noise(t) {
+    return Math.sin(t * 0.05) * 0.02 + Math.sin(t * 0.13) * 0.01;
+  }
+
+  var startTime = performance.now() / 1000;
+  function renderSky(now) {
+    var elapsed = now / 1000 - startTime;
+    var colors = skyColorsAt(elapsed);
+    var n = noise(elapsed);
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Layer 1: 深空基底
+    var g1 = ctx.createLinearGradient(0, 0, 0, H);
+    var tR = Math.min(255, Math.max(0, colors.top[0] + Math.round(n * 40)));
+    var tG = Math.min(255, Math.max(0, colors.top[1] + Math.round(n * 30)));
+    var tB = Math.min(255, Math.max(0, colors.top[2] + Math.round(n * 20)));
+    g1.addColorStop(0, 'rgb(' + tR + ',' + tG + ',' + tB + ')');
+    g1.addColorStop(0.5, 'rgb(' + colors.mid[0] + ',' + colors.mid[1] + ',' + colors.mid[2] + ')');
+    g1.addColorStop(1, 'rgb(' + colors.horizon[0] + ',' + colors.horizon[1] + ',' + colors.horizon[2] + ')');
+    ctx.fillStyle = g1;
+    ctx.fillRect(0, 0, W, H);
+
+    // Layer 2: 缓慢移动的大气层 (indigo atmosphere)
+    if (elapsed > 2) {
+      var g2 = ctx.createRadialGradient(
+        W * 0.5 + Math.sin(elapsed * 0.02) * W * 0.15, H * 0.6,
+        H * 0.1,
+        W * 0.5, H * 0.4,
+        H * 1.2
+      );
+      var opacity2 = Math.min(0.25, elapsed / 30 * 0.3);
+      g2.addColorStop(0, 'rgba(40,45,90,' + opacity2 + ')');
+      g2.addColorStop(1, 'rgba(20,25,60,0)');
+      ctx.fillStyle = g2;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    // Layer 3: 底部暖光 (只在18s后出现)
+    if (elapsed > 14) {
+      var warmOpacity = Math.min(0.18, Math.max(0, (elapsed - 14) / 16 * 0.18));
+      var g3 = ctx.createRadialGradient(
+        W * 0.5 + Math.sin(elapsed * 0.03) * W * 0.1, H * 0.85,
+        H * 0.02,
+        W * 0.5, H * 0.55,
+        H * 0.8
+      );
+      g3.addColorStop(0, 'rgba(180,140,100,' + warmOpacity + ')');
+      g3.addColorStop(0.4, 'rgba(140,100,70,' + (warmOpacity * 0.5) + ')');
+      g3.addColorStop(1, 'rgba(80,60,50,0)');
+      ctx.fillStyle = g3;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    requestAnimationFrame(renderSky);
+  }
+
+  requestAnimationFrame(renderSky);
+})();
 
 // ============================================================
 // Canvas 星空

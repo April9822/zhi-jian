@@ -77,8 +77,8 @@ canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;p
   padding:14px 36px;border-radius:26px;cursor:pointer;
   transition:all .3s;border:none;letter-spacing:.03em;white-space:nowrap;
 }
-.intro-btn.primary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500}
-.intro-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:16px;font-weight:400}
+.intro-btn.primary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500}animation:btnFloat 3s ease-in-out 24.5s infinite;}
+.intro-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:16px;font-weight:400;animation:btnFloat 3s ease-in-out 24.5s infinite}
 
 /* 过渡 */
 .transition-msg{pointer-events:none}
@@ -279,10 +279,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 /* ============================================================
    🌙 静态深色背景
    ============================================================ */
-.bg-layer{
-  position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;
-  background:linear-gradient(180deg, #080B14 0%, #182337 60%, #1E2D45 100%);
-}
 
 /* 粒子 */
 .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
@@ -291,7 +287,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .halo{display:none}
 
 /* 按钮增强：玻璃+发光 */
-.intro-btn.primary{
+.intro-btn.primary{animation:btnFloat 3s ease-in-out 24.5s infinite;}
   background:rgba(255,255,255,.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,.2);color:#fff;
   box-shadow:0 0 20px rgba(255,150,80,.15),inset 0 1px 0 rgba(255,255,255,.1);
@@ -349,3 +345,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .scene-stage::before{content:"";display:block;width:40px;height:1px;background:rgba(255,255,255,0);margin-bottom:0}
 .force-refresh{}
 /* fix */
+@keyframes bgFlow{0%,100%{background-position:0% 0%}25%{background-position:100% 30%}50%{background-position:50% 100%}75%{background-position:0% 70%}}
+@keyframes btnFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.intro-btn.primary:active{transform:scale(.95)!important;transition:transform .15s ease}
