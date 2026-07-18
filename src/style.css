@@ -75,7 +75,30 @@ canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;p
 .intro-btn{
   font-family:-apple-system,'PingFang SC',sans-serif;
   padding:14px 36px;border-radius:26px;cursor:pointer;
-  transition:all .3s;border:none;letter-spacing:.03em;white-space:nowrap;
+  transition:transform .35s cubic-bezier(.25,.8,.25,1.4), box-shadow .35s ease, background .35s ease;
+  border:none;letter-spacing:.03em;white-space:nowrap;
+  position:relative;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;
+}
+/* 按压：放大 + 发光增强 */
+.intro-btn:active{
+  transform:scale(1.08);
+  box-shadow:0 0 32px rgba(255,220,170,.35), 0 0 8px rgba(255,255,255,.15);
+  background:rgba(255,255,255,.22);
+}
+/* 涟漪 */
+.intro-btn .ripple{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,240,210,.6) 0%,rgba(255,220,170,0) 70%);
+  transform:translate(-50%,-50%) scale(0);
+  animation:rippleOut .7s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes rippleOut{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:1}
+  70%{opacity:.5}
+  100%{transform:translate(-50%,-50%) scale(4);opacity:0}
 }
 .intro-btn.primary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500;animation:btnFloat 3s ease-in-out 24.5s infinite}
 .intro-btn.secondary{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#F5F3EE;font-size:20px;font-weight:500;animation:btnFloat 3s ease-in-out 24.5s infinite}

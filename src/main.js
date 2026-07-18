@@ -4,6 +4,34 @@
  */
 
 // ============================================================
+// 按钮涟漪效果
+// ============================================================
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.intro-btn');
+  if (!btn) return;
+
+  // 计算涟漪起点（相对按钮）
+  var rect = btn.getBoundingClientRect();
+  var x = e.clientX - rect.left;
+  var y = e.clientY - rect.top;
+  var size = Math.max(rect.width, rect.height) * 2.5;
+
+  var ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.left = x + 'px';
+  ripple.style.top = y + 'px';
+  ripple.style.width = size + 'px';
+  ripple.style.height = size + 'px';
+
+  btn.appendChild(ripple);
+
+  // 动画结束后清理
+  ripple.addEventListener('animationend', function() {
+    ripple.remove();
+  });
+});
+
+// ============================================================
 // 全局跳转函数
 // ============================================================
 window.goToInput = function() {
