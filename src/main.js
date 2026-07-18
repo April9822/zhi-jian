@@ -89,7 +89,7 @@ window.goToInput = function(e) {
     });
   }, 300);
 
-  // 涟漪接近全覆盖时，页面已在下方就位，等待云散月出
+  // 涟漪接近全覆盖 → 页面静默切换 → 涟漪与页面同步呼吸交叉溶解
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
@@ -98,9 +98,9 @@ window.goToInput = function(e) {
     var input = document.getElementById('input-screen');
     input.classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 1800);
+  }, 1900);
 
-  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3600);
+  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 4400);
 };
 
 // ============================================================
@@ -790,9 +790,9 @@ window.goToSpace = function(e) {
     document.body.style.color = '#2B2B2B';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 1800);
+  }, 1900);
 
-  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 3600);
+  setTimeout(function() { if (sw.parentNode) sw.remove(); }, 4400);
 };
 
 // ============================================================

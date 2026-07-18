@@ -342,36 +342,36 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .kw.warm{text-shadow:0 0 22px rgba(210,160,100,.5)}
 .kw.glow{text-shadow:0 0 28px rgba(200,160,100,.6),0 0 50px rgba(180,140,80,.25)}
 
-/* 涟漪吞没转场 — 拨云见月：涟漪散开→下一页缓缓浮现 */
+/* 涟漪吞没转场 — 呼吸交叉溶解 */
 .swallower{
   position:fixed;z-index:200;border-radius:50%;pointer-events:none;
   width:250vmax;height:250vmax;
   transform:translate(-50%,-50%) scale(0);
   background:radial-gradient(circle,
-    rgba(255,210,140,.2) 0%,
-    rgba(255,220,160,.14) 25%,
-    rgba(248,235,210,.08) 50%,
-    rgba(248,246,242,.04) 75%,
+    rgba(255,210,140,.35) 0%,
+    rgba(255,220,160,.2) 25%,
+    rgba(248,235,210,.1) 50%,
+    rgba(248,246,242,.05) 75%,
     transparent 100%
   );
-  transition:transform 2s cubic-bezier(.55,0,.15,1),
-              opacity 1.8s ease 1.5s;
+  transition:transform 2.2s cubic-bezier(.45,0,.2,1),
+              opacity 2.2s cubic-bezier(.45,0,.2,1) 1.6s;
 }
 .swallower.expand{
   transform:translate(-50%,-50%) scale(1);
   opacity:0;
 }
 
-/* 新页面 — 像月亮从云后缓缓浮现 */
+/* 新页面 — 与涟漪同步呼吸浮现 */
 #input-screen.active{
-  animation:pageEmerge 1.6s ease forwards;
+  animation:pageEmerge 2.2s cubic-bezier(.45,0,.2,1) forwards;
 }
 #space-screen.active{
-  animation:pageEmerge 1.6s ease forwards;
+  animation:pageEmerge 2.2s cubic-bezier(.45,0,.2,1) forwards;
 }
 @keyframes pageEmerge{
-  from{opacity:0;transform:translateY(16px)}
-  to{opacity:1;transform:translateY(0)}
+  from{opacity:0;filter:blur(4px);transform:translateY(12px)}
+  to{opacity:1;filter:blur(0);transform:translateY(0)}
 }
 .picker-card{background:#fff;border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .picker-card h2{font-size:20px;color:var(--navy);margin-bottom:8px}
