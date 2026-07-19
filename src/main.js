@@ -89,22 +89,21 @@ window.goToInput = function(e) {
     });
   }, 300);
 
-  // 涟漪盖满全屏（~2.5s）后页面静默切换
+  // 涟漪盖满全屏（~2.5s，opacity=1）后页面切换
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
     document.body.style.background = '#F8F6F2';
     document.body.style.color = '#2B2B2B';
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = 'hidden';
     var input = document.getElementById('input-screen');
     input.classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 2800);
+  }, 2500);
 
-  // 雾散后清理
   setTimeout(function() {
     if (sw.parentNode) sw.remove();
-  }, 6000);
+  }, 5000);
 };
 
 // ============================================================
@@ -791,14 +790,14 @@ window.goToSpace = function(e) {
     intro.classList.remove('active', 'transitioning');
     document.body.style.background = '#F8EBDD';
     document.body.style.color = '#3D332C';
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = 'hidden';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 2800);
+  }, 2500);
 
   setTimeout(function() {
     if (sw.parentNode) sw.remove();
-  }, 6000);
+  }, 5000);
 };
 
 // ============================================================

@@ -181,52 +181,45 @@
       </div>
       <div class="input-card">
         <div class="tab-bar">
-          <button class="tab active" data-tab="paste">✏️ 粘贴对话</button>
-          <button class="tab" data-tab="image">📸 上传截图 <span class="coming-soon-tag">即将上线</span></button>
-          <button class="tab" data-tab="audio">🎙️ 录制对话 <span class="coming-soon-tag">即将上线</span></button>
+          <button class="tab active" data-tab="paste">
+            <img src="/icon-chat.png" alt="" width="20" height="20" class="tab-icon"> 粘贴对话
+          </button>
+          <button class="tab" data-tab="image">
+            <img src="/icon-screenshot.png" alt="" width="20" height="20" class="tab-icon"> 上传截图 <span class="coming-soon-tag">即将上线</span>
+          </button>
+          <button class="tab" data-tab="audio">
+            <img src="/icon-record.png" alt="" width="20" height="20" class="tab-icon"> 录制对话 <span class="coming-soon-tag">即将上线</span>
+          </button>
         </div>
         <div id="tab-paste" class="tab-content active">
-          <textarea id="text-input" placeholder="把微信聊天记录复制到这里……&#10;&#10;格式示例：&#10;我：你为什么不回我消息&#10;TA：刚刚在忙" rows="10"></textarea>
+          <textarea id="text-input" placeholder="把聊天记录粘贴到这里……&#10;&#10;格式示例：&#10;我：你为什么不回我消息&#10;TA：刚刚在忙" rows="10"></textarea>
         </div>
         <div id="tab-image" class="tab-content">
           <div id="drop-zone" class="drop-zone">
-            <div class="drop-icon">📷</div>
+            <img src="/icon-screenshot.png" alt="" width="48" height="48" class="drop-icon-img">
             <p>点击或拖拽上传聊天截图</p>
-            <p class="drop-hint">支持 JPG、PNG。分析后立即删除。</p>
+            <p class="drop-hint">支持 JPG、PNG，分析后立即删除原始文件</p>
             <input type="file" id="image-input" accept="image/*" hidden />
             <button id="upload-btn" class="btn-secondary" type="button">选择图片</button>
           </div>
         </div>
         <div id="tab-audio" class="tab-content">
           <div class="audio-placeholder">
-            <div class="audio-icon">🎙️</div>
-            <h3>实时录制或上传已有录音</h3>
-            <div class="audio-features">
-              <div class="audio-feature-item">🎯 自动识别不同说话人</div>
-              <div class="audio-feature-item">📝 转写语音内容</div>
-              <div class="audio-feature-item">🎭 分析语气、情绪变化</div>
-              <div class="audio-feature-item">🔍 还原冲突过程</div>
-              <div class="audio-feature-item">📋 生成完整冲突分析报告</div>
-            </div>
-            <div class="audio-actions-coming">
-              <button class="btn-secondary" disabled type="button">🎤 开始录制</button>
-              <button class="btn-secondary" disabled type="button">📁 上传录音</button>
-            </div>
-            <p class="audio-note">支持实时录音，也支持上传已有录音文件。</p>
+            <img src="/icon-record.png" alt="" width="48" height="48" class="audio-icon-img">
+            <h3>录制或上传对话录音</h3>
+            <p class="audio-note">即将上线：自动区分说话人、转写文字、分析情绪变化</p>
           </div>
         </div>
         <div id="identity-section" class="identity-section hidden">
-          <p class="identity-label">在这段关系里，你是哪一方？</p>
-          <p class="identity-sub">知间会先帮你识别对话中的角色</p>
-            <button class="identity-btn" data-role="A">🙋 我</button>
-            <button class="identity-btn" data-role="B">💬 对方</button>
-            <button class="identity-btn" data-role="auto">🤖 帮我判断</button>
-            <button class="identity-btn" data-role="B">👤 我是 B</button>
-            <button class="identity-btn" data-role="auto">🤖 帮我判断</button>
+          <p class="identity-label">在这段对话里，你是哪一方？</p>
+          <div class="identity-buttons">
+            <button class="identity-btn" data-role="A">我是 A 方</button>
+            <button class="identity-btn" data-role="B">我是 B 方</button>
+            <button class="identity-btn" data-role="auto">帮我判断</button>
           </div>
           <p id="identity-hint" class="identity-hint"></p>
         </div>
-        <div class="privacy-note">🔒 分析完成后立即删除，不存储、不训练、不分享。</div>
+        <div class="privacy-note">你的对话将被安全加密。未注册用户分析后立即删除，注册用户可随时导出或一键删除。</div>
       </div>
       <button id="analyze-btn" class="btn-primary" disabled>开始分析</button>
       <p id="input-hint" class="input-hint">请输入至少 5 条对话</p>
