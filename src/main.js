@@ -89,7 +89,7 @@ window.goToInput = function(e) {
     });
   }, 300);
 
-  // 涟漪覆盖到 80% 时页面静默切换
+  // 涟漪盖满全屏（~2.5s）后页面静默切换
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
@@ -99,12 +99,12 @@ window.goToInput = function(e) {
     var input = document.getElementById('input-screen');
     input.classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 2200);
+  }, 2800);
 
-  // 清理
+  // 雾散后清理
   setTimeout(function() {
     if (sw.parentNode) sw.remove();
-  }, 5000);
+  }, 6000);
 };
 
 // ============================================================
@@ -794,11 +794,11 @@ window.goToSpace = function(e) {
     document.body.style.overflow = 'auto';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
-  }, 2200);
+  }, 2800);
 
   setTimeout(function() {
     if (sw.parentNode) sw.remove();
-  }, 5000);
+  }, 6000);
 };
 
 // ============================================================
@@ -1028,23 +1028,23 @@ function showRolePicker(analysis, callback) {
     ctx2.fillStyle = bgGrad;
     ctx2.fillRect(0, 0, W2, H2);
 
-    // 光雾层 — 阳光穿过窗帘，大面积柔和
-    var hazeBreathe = 1 + Math.sin(ms * 0.12) * 0.18;
+    // 光雾层 — 阳光穿过窗帘，下午暖光
+    var hazeBreathe = 1 + Math.sin(ms * 0.12) * 0.2;
     var hazeX = W2 * 0.55 + Math.sin(ms * 0.04) * W2 * 0.2;
-    var hazeY = H2 * 0.2 + Math.sin(ms * 0.05) * H2 * 0.1;
-    var haze = ctx2.createRadialGradient(hazeX, hazeY, 0, hazeX, hazeY, Math.max(W2, H2) * 1.0 * hazeBreathe);
-    haze.addColorStop(0, 'rgba(246,201,143,0.18)');
-    haze.addColorStop(0.35, 'rgba(240,185,125,0.08)');
-    haze.addColorStop(0.7, 'rgba(225,160,100,0.02)');
+    var hazeY = H2 * 0.15 + Math.sin(ms * 0.05) * H2 * 0.12;
+    var haze = ctx2.createRadialGradient(hazeX, hazeY, 0, hazeX, hazeY, Math.max(W2, H2) * 1.1 * hazeBreathe);
+    haze.addColorStop(0, 'rgba(250,210,150,0.28)');
+    haze.addColorStop(0.3, 'rgba(245,195,135,0.14)');
+    haze.addColorStop(0.65, 'rgba(235,170,110,0.04)');
     haze.addColorStop(1, 'rgba(220,150,90,0)');
     ctx2.fillStyle = haze;
     ctx2.fillRect(0, 0, W2, H2);
 
-    // 第二层小光雾 — 右上角
-    var haze2X = W2 * 0.75 + Math.sin(ms * 0.06) * W2 * 0.1;
-    var haze2Y = H2 * 0.1;
-    var haze2 = ctx2.createRadialGradient(haze2X, haze2Y, 0, haze2X, haze2Y, Math.max(W2, H2) * 0.7);
-    haze2.addColorStop(0, 'rgba(250,215,165,0.12)');
+    // 第二层光雾 — 右上角暖光
+    var haze2X = W2 * 0.72 + Math.sin(ms * 0.06) * W2 * 0.12;
+    var haze2Y = H2 * 0.08;
+    var haze2 = ctx2.createRadialGradient(haze2X, haze2Y, 0, haze2X, haze2Y, Math.max(W2, H2) * 0.75);
+    haze2.addColorStop(0, 'rgba(252,220,172,0.2)');
     haze2.addColorStop(1, 'rgba(240,180,120,0)');
     ctx2.fillStyle = haze2;
     ctx2.fillRect(0, 0, W2, H2);

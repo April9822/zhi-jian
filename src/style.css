@@ -367,26 +367,32 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .kw.warm{text-shadow:0 0 22px rgba(210,160,100,.5)}
 .kw.glow{text-shadow:0 0 28px rgba(200,160,100,.6),0 0 50px rgba(180,140,80,.25)}
 
-/* 涟漪吞没转场 — 半透明涟漪扩散 → 下一页从半透明到清晰 */
+/* 涟漪吞没转场 — 扩散变浓→盖满全屏→雾散→下一页浮现 */
 .swallower{
   position:fixed;z-index:200;border-radius:50%;pointer-events:none;
   width:250vmax;height:250vmax;
   transform:translate(-50%,-50%) scale(0);
-  /* 极淡暖色，让下一页能透过涟漪被看到 */
+  opacity:0;
+  /* 暖色面纱，盖住旧页面 */
   background:radial-gradient(circle,
-    rgba(255,210,140,.14) 0%,
-    rgba(255,220,160,.07) 25%,
-    rgba(248,242,230,.03) 50%,
-    transparent 75%
+    rgba(248,235,221,.85) 0%,
+    rgba(245,225,205,.6) 25%,
+    rgba(240,215,185,.35) 50%,
+    rgba(235,200,165,.12) 75%,
+    transparent 95%
   );
-  -webkit-backdrop-filter:blur(2px);
-  backdrop-filter:blur(2px);
-  transition:transform 2.8s cubic-bezier(.4,0,.2,1),
-              opacity 2s cubic-bezier(.4,0,.2,1) 2.2s;
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
 }
 .swallower.expand{
-  transform:translate(-50%,-50%) scale(1);
-  opacity:0;
+  animation:rippleBreathe 5.5s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes rippleBreathe{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  8%{opacity:.5}
+  40%{transform:translate(-50%,-50%) scale(1);opacity:1}
+  55%{opacity:1}
+  100%{opacity:0}
 }
 
 /* 新页面 — 与涟漪同步呼吸浮现 */
@@ -397,8 +403,9 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   animation:pageEmerge 2.2s cubic-bezier(.45,0,.2,1) forwards;
 }
 @keyframes pageEmerge{
-  0%{opacity:.35;filter:blur(6px);transform:translateY(12px)}
-  30%{opacity:.55;filter:blur(3.5px)}
+  0%{opacity:0;filter:blur(10px);transform:translateY(16px)}
+  25%{opacity:.3;filter:blur(7px)}
+  50%{opacity:.6;filter:blur(3px)}
   100%{opacity:1;filter:blur(0);transform:translateY(0)}
 }
 .picker-card{background:#fff;border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
