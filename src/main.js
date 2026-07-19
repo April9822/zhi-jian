@@ -789,8 +789,8 @@ window.goToSpace = function(e) {
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
-    document.body.style.background = '#FDF8F2';
-    document.body.style.color = '#4A4038';
+    document.body.style.background = '#F8EBDD';
+    document.body.style.color = '#3D332C';
     document.body.style.overflow = 'auto';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
@@ -992,7 +992,7 @@ function showRolePicker(analysis, callback) {
 })();
 
 // ============================================================
-// 🌅 知间空间 — 温暖呼吸背景 + 丁达尔光柱
+// 🏡 暮光暖庭 — 午后阳光 + 光雾 + 微尘 + 关系连接曲线
 // ============================================================
 (function(){
   var wc = document.getElementById('warmCanvas');
@@ -1002,61 +1002,83 @@ function showRolePicker(analysis, callback) {
   wc.width = W2; wc.height = H2;
   addEventListener('resize', function(){ W2 = wc.width = innerWidth; H2 = wc.height = innerHeight; });
 
-  // 丁达尔光柱预设（左上角阳光射入，3-4道斜向光柱）
-  var beams = [
-    { x:W2*-0.08, y:H2*-0.05, w:W2*0.6, len:H2*1.1, a:0.07, tilt:28 },
-    { x:W2*0.05,  y:H2*-0.1,  w:W2*0.45, len:H2*1.0, a:0.05, tilt:32 },
-    { x:W2*0.15,  y:H2*-0.02, w:W2*0.35, len:H2*0.95, a:0.04, tilt:25 },
-    { x:W2*0.22,  y:H2*0.05,  w:W2*0.28, len:H2*0.85, a:0.03, tilt:30 },
-  ];
+  // 阳光微尘
+  var dust = [];
+  for (var i = 0; i < 25; i++) {
+    dust.push({
+      x: Math.random() * W2, y: Math.random() * H2,
+      ox: Math.random() * W2, oy: Math.random() * H2,
+      r: 0.8 + Math.random() * 2.2,
+      b: 0.06 + Math.random() * 0.18,
+      sp: 0.2 + Math.random() * 0.6,
+      ph: Math.random() * 6.28
+    });
+  }
 
   function renderWarm(ts) {
     var ms = ts * 0.001;
     ctx2.clearRect(0, 0, W2, H2);
 
-    // 基底渐变：晨光白 → 杏仁白
+    // 基底渐变：暖米 → 蜜桃 → 暖琥珀
     var bgGrad = ctx2.createLinearGradient(0, 0, 0, H2);
-    bgGrad.addColorStop(0, '#FDF8F2');
-    bgGrad.addColorStop(0.5, '#F8F0E5');
-    bgGrad.addColorStop(1, '#F2E8D8');
+    bgGrad.addColorStop(0, '#F8EBDD');
+    bgGrad.addColorStop(0.45, '#F4D8B8');
+    bgGrad.addColorStop(0.75, '#ECCA9F');
+    bgGrad.addColorStop(1, '#E3BD88');
     ctx2.fillStyle = bgGrad;
     ctx2.fillRect(0, 0, W2, H2);
 
-    // 中央偏上柔光 — 暖金呼吸
-    var breathe = 1 + Math.sin(ms * 0.18) * 0.2;
-    var glowSize = H2 * 0.65 * breathe;
-    var glowOpacity = 0.12 + Math.sin(ms * 0.14) * 0.04;
-    var glowGrad = ctx2.createRadialGradient(
-      W2 * 0.5, H2 * 0.25,
-      glowSize * 0.05,
-      W2 * 0.5 + Math.sin(ms * 0.08) * W2 * 0.04, H2 * 0.35,
-      glowSize
-    );
-    glowGrad.addColorStop(0, 'rgba(245,205,155,' + glowOpacity + ')');
-    glowGrad.addColorStop(0.4, 'rgba(231,185,138,' + (glowOpacity * 0.5) + ')');
-    glowGrad.addColorStop(0.8, 'rgba(210,165,120,' + (glowOpacity * 0.12) + ')');
-    glowGrad.addColorStop(1, 'rgba(200,150,100,0)');
-    ctx2.fillStyle = glowGrad;
+    // 光雾层 — 阳光穿过窗帘，大面积柔和
+    var hazeBreathe = 1 + Math.sin(ms * 0.12) * 0.18;
+    var hazeX = W2 * 0.55 + Math.sin(ms * 0.04) * W2 * 0.2;
+    var hazeY = H2 * 0.2 + Math.sin(ms * 0.05) * H2 * 0.1;
+    var haze = ctx2.createRadialGradient(hazeX, hazeY, 0, hazeX, hazeY, Math.max(W2, H2) * 1.0 * hazeBreathe);
+    haze.addColorStop(0, 'rgba(246,201,143,0.18)');
+    haze.addColorStop(0.35, 'rgba(240,185,125,0.08)');
+    haze.addColorStop(0.7, 'rgba(225,160,100,0.02)');
+    haze.addColorStop(1, 'rgba(220,150,90,0)');
+    ctx2.fillStyle = haze;
     ctx2.fillRect(0, 0, W2, H2);
 
-    // 丁达尔光柱 — 柔和暖金，在浅色底上像真实阳光
-    var beamBreathe = 1 + Math.sin(ms * 0.15) * 0.18;
-    var beamSway = Math.sin(ms * 0.06) * 0.6;
-    beams.forEach(function(b) {
-      ctx2.save();
-      var rad = (b.tilt + beamSway) * Math.PI / 180;
-      ctx2.translate(b.x, b.y);
-      ctx2.rotate(rad);
-      var grad = ctx2.createLinearGradient(0, 0, 0, b.len);
-      var ba = b.a * beamBreathe;
-      grad.addColorStop(0, 'rgba(255,240,210,' + (ba * 1.2) + ')');
-      grad.addColorStop(0.3, 'rgba(245,210,165,' + ba + ')');
-      grad.addColorStop(0.7, 'rgba(220,180,135,' + (ba * 0.35) + ')');
-      grad.addColorStop(1, 'rgba(200,160,120,0)');
-      ctx2.fillStyle = grad;
-      ctx2.fillRect(-b.w/2, 0, b.w, b.len);
-      ctx2.restore();
+    // 第二层小光雾 — 右上角
+    var haze2X = W2 * 0.75 + Math.sin(ms * 0.06) * W2 * 0.1;
+    var haze2Y = H2 * 0.1;
+    var haze2 = ctx2.createRadialGradient(haze2X, haze2Y, 0, haze2X, haze2Y, Math.max(W2, H2) * 0.7);
+    haze2.addColorStop(0, 'rgba(250,215,165,0.12)');
+    haze2.addColorStop(1, 'rgba(240,180,120,0)');
+    ctx2.fillStyle = haze2;
+    ctx2.fillRect(0, 0, W2, H2);
+
+    // 阳光微尘
+    dust.forEach(function(d) {
+      d.x = d.ox + Math.sin(ms * d.sp + d.ph) * 25;
+      d.y = d.oy + Math.cos(ms * d.sp * 0.6 + d.ph) * 15 - ms * 0.01;
+      if (d.y < -20) { d.y = H2 + 20; d.oy = H2 + 20; d.ox = Math.random() * W2; }
+      if (d.y > H2 + 20) { d.y = -20; d.oy = -20; }
+      var a = d.b + Math.sin(ms * 0.7 + d.ph) * 0.05;
+      var g = ctx2.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 2.5);
+      g.addColorStop(0, 'rgba(217,166,106,' + Math.max(0.02, a) + ')');
+      g.addColorStop(1, 'rgba(200,150,90,0)');
+      ctx2.beginPath(); ctx2.arc(d.x, d.y, d.r * 2.5, 0, 6.28); ctx2.fillStyle = g; ctx2.fill();
     });
+
+    // 关系连接曲线 — 极淡，代表"人与人之间"
+    ctx2.strokeStyle = 'rgba(216,168,120,0.06)';
+    ctx2.lineWidth = 1.5;
+    for (var k = 0; k < 3; k++) {
+      ctx2.beginPath();
+      var cx1 = W2 * (0.25 + k * 0.2);
+      var cy1 = H2 * (0.55 + Math.sin(ms * 0.03 + k) * 0.25);
+      var cx2 = W2 * (0.45 + k * 0.15);
+      var cy2 = H2 * (0.35 + Math.cos(ms * 0.04 + k) * 0.2);
+      ctx2.moveTo(cx1, cy1);
+      ctx2.quadraticCurveTo(
+        W2 * (0.4 + k * 0.1),
+        H2 * (0.45 + Math.sin(ms * 0.035 + k) * 0.15),
+        cx2, cy2
+      );
+      ctx2.stroke();
+    }
 
     requestAnimationFrame(renderWarm);
   }

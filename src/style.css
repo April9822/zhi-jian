@@ -292,38 +292,38 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 #space-screen{overflow-y:auto;-webkit-overflow-scrolling:touch}
 .space-container{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:60px 24px 80px;text-align:center}
 .space-hero{margin-bottom:48px}
-.space-brand{font-size:42px;font-weight:700;color:#8B6A4A;letter-spacing:.06em;margin-bottom:8px}
-.space-subtitle{font-size:16px;color:#9B8A78;margin-bottom:18px}
-.space-desc{font-size:15px;color:#7A6A5A;line-height:1.8}
+.space-brand{font-size:42px;font-weight:700;color:#8B5E3C;letter-spacing:.06em;margin-bottom:8px}
+.space-subtitle{font-size:16px;color:#A08068;margin-bottom:18px}
+.space-desc{font-size:15px;color:#756455;line-height:1.8}
 
 /* 分区标题 */
 .space-section{margin-bottom:40px}
-.space-section-title{font-size:18px;color:#8B6A4A;font-weight:500;margin-bottom:20px;letter-spacing:.03em}
+.space-section-title{font-size:18px;color:#8B5E3C;font-weight:500;margin-bottom:20px;letter-spacing:.03em}
 
 /* 收获卡片网格 */
 .benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.benefit-card{background:rgba(255,255,255,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:14px;padding:22px 18px;text-align:left;border:1px solid rgba(180,140,110,.1);box-shadow:0 2px 12px rgba(0,0,0,.04)}
-.benefit-card h3{font-size:15px;color:#6B5040;font-weight:500;margin:10px 0 6px}
-.benefit-card p{font-size:13px;color:#8A7665;line-height:1.6;margin:0}
+.benefit-card{background:rgba(255,250,242,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:14px;padding:22px 18px;text-align:left;border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 40px rgba(180,120,60,.1)}
+.benefit-card h3{font-size:15px;color:#5C3D28;font-weight:500;margin:10px 0 6px}
+.benefit-card p{font-size:13px;color:#7A6450;line-height:1.6;margin:0}
 
 /* 成长轨迹卡片 */
-.growth-card{background:rgba(255,255,255,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:14px;padding:24px;text-align:left;border:1px solid rgba(180,140,110,.1);box-shadow:0 2px 12px rgba(0,0,0,.04)}
-.growth-card>p{font-size:14px;color:#6B5A4A;line-height:1.75;margin-bottom:18px}
-.growth-card>p strong{color:#8B6A4A;font-weight:500}
+.growth-card{background:rgba(255,250,242,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:14px;padding:24px;text-align:left;border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 40px rgba(180,120,60,.1)}
+.growth-card>p{font-size:14px;color:#5C4535;line-height:1.75;margin-bottom:18px}
+.growth-card>p strong{color:#8B5E3C;font-weight:500}
 .growth-features{display:flex;flex-direction:column;gap:12px}
-.gf-item{font-size:13px;color:#8A7665;line-height:1.7;display:flex;align-items:flex-start;gap:8px}
-.gf-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:rgba(180,140,110,.5);flex-shrink:0;margin-top:7px}
+.gf-item{font-size:13px;color:#7A6450;line-height:1.7;display:flex;align-items:flex-start;gap:8px}
+.gf-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:rgba(181,122,69,.4);flex-shrink:0;margin-top:7px}
 
 /* 图标 */
 .space-card-icon{width:28px;height:28px}
 
 /* 注册区 */
 .signup-section{text-align:center;padding-top:8px}
-.signup-desc{font-size:14px;color:#8A7665;margin-bottom:20px}
-.btn-signup{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,#C4915A,#E7B98A);color:#FFF;border:none;border-radius:24px;font-size:15px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(196,145,90,.25)}
-.signup-link{margin-top:16px;font-size:13px;color:#9B8A78}
-.signup-link a{color:#C4915A;text-decoration:none}
-.footer-brand{font-size:12px;color:#B0A090;margin-top:40px}
+.signup-desc{font-size:14px;color:#7A6450;margin-bottom:20px}
+.btn-signup{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,#C4915A,#E7B98A);color:#FFF;border:none;border-radius:24px;font-size:15px;font-weight:500;cursor:pointer;box-shadow:0 4px 20px rgba(196,145,90,.3)}
+.signup-link{margin-top:16px;font-size:13px;color:#A08068}
+.signup-link a{color:#B57A45;text-decoration:none}
+.footer-brand{font-size:12px;color:#C0A890;margin-top:40px}
 /* ============================================================
    🌙 静态深色背景
    ============================================================ */
