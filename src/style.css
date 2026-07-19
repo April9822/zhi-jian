@@ -287,7 +287,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 @keyframes loadBgShift{0%{background:#101521}30%{background:#26354A}60%{background:#52657A}85%{background:#8EA5B5}100%{background:#D6DDD8}}
 .report-container{background:transparent}
 #warmCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-#space-screen{overflow-y:auto;-webkit-overflow-scrolling:touch}
+#space-screen{height:100vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .space-container{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:60px 24px 80px;text-align:center}
 .space-hero{margin-bottom:48px}
 .space-brand{font-size:42px;font-weight:700;color:#8B5E3C;letter-spacing:.06em;margin-bottom:8px}
