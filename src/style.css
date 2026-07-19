@@ -309,8 +309,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .growth-card>p{font-size:14px;color:#5C4535;line-height:1.75;margin-bottom:18px}
 .growth-card>p strong{color:#8B5E3C;font-weight:500}
 .growth-features{display:flex;flex-direction:column;gap:12px}
-.gf-item{font-size:13px;color:#7A6450;line-height:1.7;display:flex;align-items:flex-start;gap:8px}
-.gf-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:rgba(181,122,69,.4);flex-shrink:0;margin-top:7px}
+.growth-ending{font-size:13px;color:#B57A45;line-height:1.8;margin-top:8px;font-style:italic}
 
 /* 图标 */
 .space-card-icon{width:28px;height:28px}
