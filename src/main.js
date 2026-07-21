@@ -95,7 +95,7 @@ window.goToInput = function(e) {
     intro.classList.remove('active', 'transitioning');
     document.body.style.background = '#F8F6F2';
     document.body.style.color = '#2B2B2B';
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'auto';
     var input = document.getElementById('input-screen');
     input.classList.add('active');
     window.scrollTo({ top: 0 });
@@ -111,10 +111,7 @@ window.goToInput = function(e) {
 // ============================================================
 const state = {
   conversation: '',
-  userRole: null, // 'A' | 'B' | 'observer' | 'auto'
-  ocrText: '',
-  inputMode: 'paste', // 'paste' | 'image'
-  imageFile: null,
+  inputMode: 'paste',
 };
 
 // ============================================================
@@ -133,8 +130,6 @@ const dom = {
   uploadBtn: $('#upload-btn'),
   ocrPreview: $('#ocr-preview'),
   ocrText: $('#ocr-text'),
-  identitySection: $('#identity-section'),
-  identityHint: $('#identity-hint'),
   analyzeBtn: $('#analyze-btn'),
   inputHint: $('#input-hint'),
   tabs: $$('.tab'),
@@ -211,7 +206,7 @@ function handleImageFile(file) {
 dom.textInput.addEventListener('input', () => {
   state.conversation = dom.textInput.value.trim();
   updateAnalyzeButton();
-  updateIdentitySection();
+
 });
 
 // OCR 文字变化也监听
@@ -219,19 +214,8 @@ if (dom.ocrText) {
   dom.ocrText.addEventListener('input', () => {
     state.ocrText = dom.ocrText.value.trim();
     updateAnalyzeButton();
-    updateIdentitySection();
+  
   });
-}
-
-function updateIdentitySection() {
-  const text = state.inputMode === 'paste' ? (state.conversation || '') : (state.ocrText || '');
-  const lines = text.split('\n').filter((l) => l.trim().length > 0);
-
-  if (lines.length >= 3) {
-    dom.identitySection.classList.remove('hidden');
-  } else {
-    dom.identitySection.classList.add('hidden');
-  }
 }
 
 function updateAnalyzeButton() {
@@ -262,20 +246,6 @@ function updateAnalyzeButton() {
 }
 
 // ============================================================
-// 身份标注
-// ============================================================
-$$('.identity-btn').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    $$('.identity-btn').forEach((b) => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    state.userRole = btn.dataset.role;
-
-    const labels = { A: '你是对话中更主动的一方', B: '你是对话中回应和防御更多的一方', auto: 'AI 正在分析对话角色...' };
-    dom.identityHint.textContent = labels[state.userRole] || '';
-  });
-});
-
-// ============================================================
 // 开始分析
 // ============================================================
 dom.analyzeBtn.addEventListener('click', startAnalysis);
@@ -299,8 +269,8 @@ async function startAnalysis() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        conversation,
-        userRole: state.userRole || 'auto',
+        conversation: conversation,
+        userRole: 'auto',
       }),
     });
 
@@ -608,19 +578,16 @@ function setupShare(analysis) {
 // ============================================================
 $('#new-analysis-btn').addEventListener('click', () => {
   state.conversation = '';
-  state.userRole = null;
+  
   state.ocrText = '';
-  state.imageFile = null;
   dom.textInput.value = '';
   if (dom.ocrText) dom.ocrText.value = ''
-  dom.identitySection.classList.add('hidden');
   if (dom.ocrPreview) dom.ocrPreview.classList.add('hidden');
   dom.analyzeBtn.disabled = true;
   dom.inputHint.textContent = '请输入至少 5 条对话';
   dom.inputHint.style.color = '#94a3b8';
   dom.reportScreen.classList.remove('active');
   dom.inputScreen.classList.add('active');
-  $$('.identity-btn').forEach((b) => b.classList.remove('selected'));
   $('#share-link-box').classList.add('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
@@ -788,9 +755,9 @@ window.goToSpace = function(e) {
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
-    document.body.style.background = '#F8EBDD';
+    document.body.style.background = '#FDF0E0';
     document.body.style.color = '#3D332C';
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'auto';
     document.getElementById('space-screen').classList.add('active');
     window.scrollTo({ top: 0 });
   }, 2500);
@@ -1018,12 +985,12 @@ function showRolePicker(analysis, callback) {
     var ms = ts * 0.001;
     ctx2.clearRect(0, 0, W2, H2);
 
-    // 基底渐变：暖米 → 蜜桃 → 暖琥珀
+    // 基底渐变：暖橙黄昏 → 由上到下自然过渡
     var bgGrad = ctx2.createLinearGradient(0, 0, 0, H2);
-    bgGrad.addColorStop(0, '#F8EBDD');
-    bgGrad.addColorStop(0.45, '#F4D8B8');
-    bgGrad.addColorStop(0.75, '#ECCA9F');
-    bgGrad.addColorStop(1, '#E3BD88');
+    bgGrad.addColorStop(0, '#FDF0E0');
+    bgGrad.addColorStop(0.35, '#F5D8B8');
+    bgGrad.addColorStop(0.7, '#EDC498');
+    bgGrad.addColorStop(1, '#E3B078');
     ctx2.fillStyle = bgGrad;
     ctx2.fillRect(0, 0, W2, H2);
 

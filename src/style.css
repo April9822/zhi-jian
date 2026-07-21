@@ -118,7 +118,7 @@ canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;p
 /* ============================================================
    输入/报告（保持原样）
    ============================================================ */
-#input-screen{padding:60px 20px 80px;max-width:680px;margin:0 auto;background:#F8F6F2}
+#input-screen{height:100vh;overflow-y:auto;padding:60px 20px 80px;max-width:680px;margin:0 auto;background:#F8F6F2}
 .hero{text-align:center;margin-bottom:40px}
 .brand{font-size:48px;font-weight:700;color:var(--gold-dark);letter-spacing:.05em;margin-bottom:8px}
 .subtitle{font-size:16px;color:var(--text-secondary);margin-bottom:24px;letter-spacing:.1em}
