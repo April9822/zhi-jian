@@ -328,6 +328,45 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .signup-link{margin-top:16px;font-size:13px;color:#A08068}
 .signup-link a{color:#B57A45;text-decoration:none}
 .footer-brand{font-size:12px;color:#C0A890;margin-top:40px}
+
+/* ============================================================
+   账号页 / 登录页
+   ============================================================ */
+#account-screen,#login-screen{background:linear-gradient(180deg,#F8EBDD 0%,#F2D8B8 100%);overflow-y:auto}
+.account-container{max-width:440px;margin:0 auto;padding:80px 28px 60px;text-align:center}
+.account-hero{margin-bottom:36px}
+.account-title{font-size:28px;font-weight:600;color:#6B4A30;margin-bottom:10px}
+.account-desc{font-size:15px;color:#8A6A50}
+.account-form{text-align:left}
+.form-field{margin-bottom:18px}
+.form-field label{display:block;font-size:13px;color:#8B6A4A;margin-bottom:6px;font-weight:500}
+.form-field input{width:100%;padding:14px 16px;border:1px solid rgba(180,140,110,.3);border-radius:12px;font-size:15px;background:rgba(255,255,255,.7);color:#4A3525;font-family:inherit}
+.form-field input:focus{outline:none;border-color:#C4915A;box-shadow:0 0 0 3px rgba(196,145,90,.12)}
+.account-form .btn-signup{width:100%;margin-top:8px}
+.account-form .signup-link{text-align:center}
+
+/* ============================================================
+   关系花园页
+   ============================================================ */
+#gardenCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#garden-screen{height:100vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:linear-gradient(180deg,#F8EBDD 0%,#EEDCC5 50%,#E3CAA5 100%)}
+.garden-container{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:50px 24px 80px;text-align:center}
+.garden-hero{margin-bottom:36px}
+.garden-title{font-size:28px;font-weight:600;color:#6B4A30;margin-bottom:8px}
+.garden-subtitle{font-size:15px;color:#8A6A50}
+
+.garden-ecosystem{display:flex;flex-direction:column;gap:16px;margin-bottom:32px}
+.garden-entity{display:flex;align-items:center;gap:18px;background:rgba(255,250,242,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:18px;padding:20px 22px;border:1px solid rgba(255,255,255,.5);box-shadow:0 8px 28px rgba(180,120,60,.08)}
+.entity-visual{font-size:36px;flex-shrink:0;width:50px;text-align:center}
+.entity-info{flex:1;text-align:left}
+.entity-info h3{font-size:16px;color:#5C3D28;font-weight:500;margin-bottom:4px}
+.entity-status{font-size:12px;color:#9B7A60;margin-bottom:8px}
+.entity-bar{height:5px;background:rgba(180,140,110,.15);border-radius:3px;overflow:hidden}
+.entity-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#C4915A,#E7B98A);transition:width 1.5s ease}
+
+.garden-season{background:rgba(255,250,242,.5);border-radius:14px;padding:16px 20px;border:1px solid rgba(180,140,110,.1)}
+.garden-season p{font-size:14px;color:#8A6A50}
+.garden-season span{color:#B57A45;font-weight:500}
 /* ============================================================
    🌙 静态深色背景
    ============================================================ */

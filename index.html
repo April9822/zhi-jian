@@ -171,11 +171,109 @@
         <div class="space-section signup-section">
           <h2 class="space-section-title">种下你的种子</h2>
           <p class="signup-desc">每一次理解，都在滋养你的关系花园</p>
-          <button class="btn-primary btn-signup" onclick="showToast('账号功能即将上线，敬请期待')">种下我的种子</button>
-          <p class="signup-link">已有种子？<a href="#" onclick="showToast('登录功能即将上线')">回到我的花园</a></p>
+          <button class="btn-primary btn-signup" onclick="document.getElementById('space-screen').classList.remove('active');document.getElementById('account-screen').classList.add('active')">种下我的种子</button>
+          <p class="signup-link">已有种子？<a href="#" onclick="document.getElementById('space-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active')">回到我的花园</a></p>
         </div>
 
         <p class="footer-brand">知间 InBetween</p>
+      </div>
+    </main>
+
+    <!-- ====== 种下种子（注册） ====== -->
+    <main id="account-screen" class="screen">
+      <div class="account-container">
+        <div class="account-hero">
+          <h1 class="account-title">种下你的种子</h1>
+          <p class="account-desc">每一次理解，都会让它生根发芽</p>
+        </div>
+        <div class="account-form">
+          <div class="form-field">
+            <label>邮箱</label>
+            <input type="email" placeholder="输入你的邮箱地址">
+          </div>
+          <div class="form-field">
+            <label>密码</label>
+            <input type="password" placeholder="设置一个密码">
+          </div>
+          <div class="form-field">
+            <label>确认密码</label>
+            <input type="password" placeholder="再输入一次密码">
+          </div>
+          <button class="btn-primary btn-signup" onclick="showToast('账号功能即将上线')">种下我的种子</button>
+          <p class="signup-link">已有种子？<a href="#" onclick="document.getElementById('account-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active')">回到我的花园</a></p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====== 回到花园（登录） ====== -->
+    <main id="login-screen" class="screen">
+      <div class="account-container">
+        <div class="account-hero">
+          <h1 class="account-title">回到你的花园</h1>
+          <p class="account-desc">你的关系生命，一直在等你</p>
+        </div>
+        <div class="account-form">
+          <div class="form-field">
+            <label>邮箱</label>
+            <input type="email" placeholder="输入你的邮箱地址">
+          </div>
+          <div class="form-field">
+            <label>密码</label>
+            <input type="password" placeholder="输入你的密码">
+          </div>
+          <button class="btn-primary btn-signup" onclick="showToast('登录功能即将上线')">回到花园</button>
+          <p class="signup-link">还没有种子？<a href="#" onclick="document.getElementById('login-screen').classList.remove('active');document.getElementById('account-screen').classList.add('active')">种下我的种子</a></p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====== 关系花园 ====== -->
+    <main id="garden-screen" class="screen">
+      <canvas id="gardenCanvas"></canvas>
+      <div class="garden-container">
+        <div class="garden-hero">
+          <h1 class="garden-title">我的关系花园</h1>
+          <p class="garden-subtitle">每一次沟通，都在滋养一段关系</p>
+        </div>
+        <!-- 关系生命体 -->
+        <div class="garden-ecosystem">
+          <div class="garden-entity family-tree">
+            <div class="entity-visual">🌳</div>
+            <div class="entity-info">
+              <h3>家人</h3>
+              <p class="entity-status">古树 · 根基深厚</p>
+              <div class="entity-bar"><div class="entity-fill" style="width:72%"></div></div>
+            </div>
+          </div>
+          <div class="garden-entity partner-flower">
+            <div class="entity-visual">🌺</div>
+            <div class="entity-info">
+              <h3>伴侣</h3>
+              <p class="entity-status">花期 · 正在绽放</p>
+              <div class="entity-bar"><div class="entity-fill" style="width:85%"></div></div>
+            </div>
+          </div>
+          <div class="garden-entity friend-fish">
+            <div class="entity-visual">🐟</div>
+            <div class="entity-info">
+              <h3>朋友</h3>
+              <p class="entity-status">鱼群 · 自在游弋</p>
+              <div class="entity-bar"><div class="entity-fill" style="width:60%"></div></div>
+            </div>
+          </div>
+          <div class="garden-entity self-tree">
+            <div class="entity-visual">🌱</div>
+            <div class="entity-info">
+              <h3>自我</h3>
+              <p class="entity-status">生长中 · 第 12 天</p>
+              <div class="entity-bar"><div class="entity-fill" style="width:45%"></div></div>
+            </div>
+          </div>
+        </div>
+        <!-- 季节 -->
+        <div class="garden-season">
+          <p>当前季节：<span>春 · 生长季</span></p>
+        </div>
       </div>
     </main>
 
