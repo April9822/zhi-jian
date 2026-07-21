@@ -300,16 +300,23 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 
 /* 收获卡片网格 */
 .benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.benefit-card{background:rgba(255,250,242,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:14px;padding:22px 18px;text-align:left;border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 40px rgba(180,120,60,.1)}
+.benefit-card{background:rgba(255,250,242,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:22px;padding:22px 18px;text-align:left;border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 40px rgba(180,120,60,.1);animation:cardFloat 5s ease-in-out infinite}
+.benefit-card:nth-child(1){animation-delay:0s}
+.benefit-card:nth-child(2){animation-delay:.8s}
+.benefit-card:nth-child(3){animation-delay:1.6s}
+.benefit-card:nth-child(4){animation-delay:2.4s}
+.benefit-card:nth-child(5){animation-delay:3.2s}
+.benefit-card:nth-child(6){animation-delay:.4s}
 .benefit-card h3{font-size:15px;color:#5C3D28;font-weight:500;margin:10px 0 6px}
 .benefit-card p{font-size:13px;color:#7A6450;line-height:1.6;margin:0}
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
 /* 成长轨迹卡片 */
 .growth-card{background:rgba(255,250,242,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:14px;padding:24px;text-align:left;border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 40px rgba(180,120,60,.1)}
 .growth-card>p{font-size:14px;color:#5C4535;line-height:1.75;margin-bottom:18px}
 .growth-card>p strong{color:#8B5E3C;font-weight:500}
 .growth-features{display:flex;flex-direction:column;gap:12px}
-.growth-ending{font-size:13px;color:#B57A45;line-height:1.8;margin-top:8px;font-style:italic}
+.growth-ending{font-size:13px;color:#B57A45;line-height:1.8;margin-top:8px}
 
 /* 图标 */
 .space-card-icon{width:28px;height:28px}
