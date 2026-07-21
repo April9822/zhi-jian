@@ -195,7 +195,7 @@
             <input type="text" placeholder="验证码" style="flex:1">
             <button class="btn-code">获取验证码</button>
           </div>
-          <button class="btn-primary btn-signup" onclick="showToast('账号功能即将上线')">种下我的种子</button>
+          <button class="btn-primary btn-signup" onclick="document.getElementById('account-screen').classList.remove('active');document.getElementById('garden-screen').classList.add('active');document.body.style.overflow='auto'">种下我的种子</button>
           <p class="signup-link">已有种子？<a href="#" onclick="document.getElementById('account-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active')">回到我的花园</a></p>
         </div>
       </div>
@@ -233,6 +233,7 @@
           <h1 class="garden-title">我的关系花园</h1>
           <p class="garden-subtitle">每一次沟通，都在滋养一段关系</p>
         </div>
+        <div class="garden-demo-banner">🌱 预览模式 · 这是示例花园。 <a onclick="document.getElementById('garden-screen').classList.remove('active');document.getElementById('account-screen').classList.add('active')">种下种子</a> 后开始养护你的真实关系</div>
         <!-- 关系生命体 -->
         <div class="garden-ecosystem">
           <div class="garden-entity family-tree">
