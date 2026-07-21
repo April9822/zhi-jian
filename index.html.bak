@@ -188,12 +188,16 @@
         </div>
         <div class="account-form">
           <div class="form-field">
-            <label>手机号</label>
-            <input type="tel" placeholder="输入你的手机号">
+            <label>邮箱</label>
+            <input type="email" placeholder="输入你的邮箱地址">
           </div>
-          <div class="form-field form-row">
-            <input type="text" placeholder="验证码" style="flex:1">
-            <button class="btn-code">获取验证码</button>
+          <div class="form-field">
+            <label>密码</label>
+            <input type="password" placeholder="设置一个密码">
+          </div>
+          <div class="form-field">
+            <label>确认密码</label>
+            <input type="password" placeholder="再输入一次密码">
           </div>
           <button class="btn-primary btn-signup" onclick="showToast('账号功能即将上线')">种下我的种子</button>
           <p class="signup-link">已有种子？<a href="#" onclick="document.getElementById('account-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active')">回到我的花园</a></p>
@@ -210,18 +214,16 @@
         </div>
         <div class="account-form">
           <div class="form-field">
-          <img class="account-icon" src="/icon-garden.png" alt="" width="48" height="48">
             <label>邮箱</label>
             <input type="email" placeholder="输入你的邮箱地址">
           </div>
           <div class="form-field">
-            <label>手机号</label>
-            <input type="tel" placeholder="输入你的手机号">
+            <label>密码</label>
+            <input type="password" placeholder="输入你的密码">
           </div>
-          <div class="form-field form-row">
-            <input type="text" placeholder="验证码" style="flex:1">
-            <button class="btn-code">获取验证码</button>
-          </div>
+          <button class="btn-primary btn-signup" onclick="showToast('登录功能即将上线')">回到花园</button>
+          <p class="signup-link">还没有种子？<a href="#" onclick="document.getElementById('login-screen').classList.remove('active');document.getElementById('account-screen').classList.add('active')">种下我的种子</a></p>
+        </div>
       </div>
     </main>
 

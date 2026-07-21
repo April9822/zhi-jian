@@ -300,7 +300,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 
 /* 收获卡片网格 */
 .benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.benefit-card{background:rgba(255,250,242,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:22px;padding:22px 18px;text-align:left;border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 40px rgba(180,120,60,.1);animation:cardFloat 5s ease-in-out infinite}
+.benefit-card{background:rgba(255,250,242,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:22px;padding:22px 18px;text-align:left;border:1px solid rgba(255,255,255,.5);animation:cardFloat 5s ease-in-out infinite}
 .benefit-card:nth-child(1){animation-delay:0s}
 .benefit-card:nth-child(2){animation-delay:.8s}
 .benefit-card:nth-child(3){animation-delay:1.6s}
@@ -312,7 +312,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 @keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
 /* 成长轨迹卡片 */
-.growth-card{background:rgba(255,250,242,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:14px;padding:24px;text-align:left;border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 40px rgba(180,120,60,.1)}
+.growth-card{background:rgba(255,245,235,.7);border-radius:18px;padding:24px;text-align:left;border:1px solid rgba(200,160,120,.15)}
 .growth-card>p{font-size:14px;color:#5C4535;line-height:1.75;margin-bottom:18px}
 .growth-card>p strong{color:#8B5E3C;font-weight:500}
 .growth-features{display:flex;flex-direction:column;gap:12px}
@@ -342,6 +342,9 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .form-field label{display:block;font-size:13px;color:#8B6A4A;margin-bottom:6px;font-weight:500}
 .form-field input{width:100%;padding:14px 16px;border:1px solid rgba(180,140,110,.3);border-radius:12px;font-size:15px;background:rgba(255,255,255,.7);color:#4A3525;font-family:inherit}
 .form-field input:focus{outline:none;border-color:#C4915A;box-shadow:0 0 0 3px rgba(196,145,90,.12)}
+.form-row{display:flex;gap:10px;align-items:center}
+.btn-code{flex-shrink:0;padding:14px 16px;background:rgba(196,145,90,.12);border:1px solid rgba(196,145,90,.25);border-radius:12px;color:#B57A45;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:inherit}
+.account-icon{display:block;margin:0 auto 12px}
 .account-form .btn-signup{width:100%;margin-top:8px}
 .account-form .signup-link{text-align:center}
 
