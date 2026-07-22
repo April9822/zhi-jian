@@ -388,7 +388,12 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .entity-bar{height:5px;background:rgba(180,140,110,.15);border-radius:3px;overflow:hidden}
 .entity-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#C4915A,#E7B98A);transition:width 1.5s ease}
 
-.garden-season{background:rgba(255,250,242,.5);border-radius:14px;padding:16px 20px;border:1px solid rgba(180,140,110,.1)}
+.garden-total-bar{height:4px;background:rgba(180,140,110,.12);border-radius:2px;margin-bottom:8px;overflow:hidden}
+.garden-total-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#C4915A,#E7B98A);transition:width 1.2s ease;width:36%}
+.garden-season-label{font-size:13px;color:#B57A45;margin-bottom:20px;text-align:center}
+.entity-num{font-size:11px;color:#A08068;margin-top:4px}
+.btn-water{display:block;width:100%;max-width:300px;margin:24px auto;padding:12px;background:rgba(196,145,90,.15);border:1px dashed rgba(196,145,90,.3);color:#B57A45;border-radius:14px;font-size:14px;cursor:pointer}
+.garden-season{background:rgba(255,250,242,.5);border-radius:14px;padding:16px 20px;border:1px solid rgba(180,140,110,.1);display:none}
 .garden-season p{font-size:14px;color:#8A6A50}
 .garden-season span{color:#B57A45;font-weight:500}
 /* ============================================================

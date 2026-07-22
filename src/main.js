@@ -1083,6 +1083,94 @@ function showRolePicker(analysis, callback) {
 })();
 
 // ============================================================
+// ============================================================
+// 🌿 关系花园 — 能量系统 + 四季 + 生命体
+// ============================================================
+var GARDEN_DATA = {
+  totalEnergy: 145,
+  season: 'spring',
+  entities: [
+    { id:'family', name:'家人', icon:'🌳', type:'tree', energy:72, maxEnergy:100, seasonStage:1, desc:'古树 · 根基深厚' },
+    { id:'partner', name:'伴侣', icon:'🌺', type:'flower', energy:85, maxEnergy:100, seasonStage:2, desc:'花期 · 正在绽放' },
+    { id:'friend', name:'朋友', icon:'🐟', type:'fish', energy:60, maxEnergy:100, seasonStage:0, desc:'鱼群 · 自在游弋' },
+    { id:'self', name:'自我', icon:'🌱', type:'sapling', energy:45, maxEnergy:100, seasonStage:1, desc:'生长中 · 第 12 天' }
+  ]
+};
+
+var SEASONS = ['冬 · 沉淀季','春 · 生长季','夏 · 繁盛季','秋 · 收获季'];
+var SEASON_ICONS = {winter:'❄️', spring:'🌸', summer:'☀️', autumn:'🍂'};
+
+function getSeasonIndex(season) {
+  return {winter:0, spring:1, summer:2, autumn:3}[season] || 1;
+}
+function getSeasonName(season) {
+  return SEASONS[getSeasonIndex(season)] || '春 · 生长季';
+}
+
+function initGarden() {
+  var container = document.getElementById('garden-ecosystem');
+  if (!container) return;
+  var totalMax = GARDEN_DATA.entities.reduce(function(s, e) { return s + e.maxEnergy; }, 0);
+  var totalPct = Math.round(GARDEN_DATA.totalEnergy / totalMax * 100);
+  var totalBar = document.getElementById('garden-total-fill');
+  if (totalBar) totalBar.style.width = Math.min(100, totalPct) + '%';
+  var seasonLabel = document.getElementById('garden-season-label');
+  if (seasonLabel) seasonLabel.textContent = (SEASON_ICONS[GARDEN_DATA.season]||'') + ' ' + getSeasonName(GARDEN_DATA.season);
+  var seasonColors = {winter:'#A0B8D0', spring:'#C4A882', summer:'#E8B878', autumn:'#D4956A'};
+  var sc = seasonColors[GARDEN_DATA.season] || '#C4A882';
+
+  container.innerHTML = GARDEN_DATA.entities.map(function(e) {
+    var pct = Math.round(e.energy / e.maxEnergy * 100);
+    var iconMap = {
+      tree: {winter:'🪵', spring:'🌳', summer:'🌲', autumn:'🍂'},
+      flower: {winter:'🥀', spring:'🌱', summer:'🌺', autumn:'🌼'},
+      fish: {winter:'🐟', spring:'🐠', summer:'🐡', autumn:'🐟'},
+      sapling: {winter:'🌰', spring:'🌱', summer:'🪴', autumn:'🌾'}
+    };
+    var icons = iconMap[e.type] || iconMap.sapling;
+    var icon = icons[GARDEN_DATA.season] || e.icon;
+    return '<div class="garden-entity">'+
+      '<div class="entity-visual" style="font-size:38px">'+icon+'</div>'+
+      '<div class="entity-info"><h3>'+e.name+'</h3>'+
+      '<p class="entity-status">'+e.desc+'</p>'+
+      '<div class="entity-bar"><div class="entity-fill" style="width:'+pct+'%;background:linear-gradient(90deg,'+sc+',#E7C89E)"></div></div>'+
+      '<p class="entity-num">'+e.energy+'/'+e.maxEnergy+'</p></div></div>';
+  }).join('');
+
+  var btn = document.getElementById('btn-water');
+  if (btn) btn.style.display = 'block';
+}
+
+window.waterGarden = function() {
+  var idx = Math.floor(Math.random() * GARDEN_DATA.entities.length);
+  var e = GARDEN_DATA.entities[idx];
+  var add = Math.floor(Math.random() * 10) + 5;
+  e.energy = Math.min(e.maxEnergy, e.energy + add);
+  GARDEN_DATA.totalEnergy += add;
+  if (e.energy >= 100) {
+    e.seasonStage++; e.energy = 0; GARDEN_DATA.totalEnergy += 20;
+    var allStages = GARDEN_DATA.entities.map(function(x) { return x.seasonStage; });
+    var minStage = Math.min.apply(null, allStages);
+    var seasonKeys = ['winter','spring','summer','autumn'];
+    if (minStage >= getSeasonIndex(GARDEN_DATA.season) + 1 && getSeasonIndex(GARDEN_DATA.season) < 3) {
+      GARDEN_DATA.season = seasonKeys[getSeasonIndex(GARDEN_DATA.season) + 1];
+    }
+    var descs = {family:'古树 · 第'+e.seasonStage+'形态', partner:'花期 · 第'+e.seasonStage+'次绽放', friend:'鱼群 · 第'+e.seasonStage+'级活跃', self:'生长中 · 第'+e.seasonStage+'阶段'};
+    e.desc = descs[e.id] || e.desc;
+  } else {
+    e.desc = '刚获得 +'+add+' 能量';
+  }
+  initGarden();
+  showToast('🌿 +'+add+' 能量浇灌了 '+e.name);
+  setTimeout(function() { var descs2 = {family:'古树 · 根基深厚', partner:'花期 · 正在绽放', friend:'鱼群 · 自在游弋', self:'生长中 · 继续努力'}; e.desc = descs2[e.id]; initGarden(); }, 3000);
+};
+
+var gardenObserver = new MutationObserver(function() {
+  if (document.getElementById('garden-screen') && document.getElementById('garden-screen').classList.contains('active')) initGarden();
+});
+var _gsEl = document.getElementById('garden-screen');
+if (_gsEl) gardenObserver.observe(_gsEl, {attributes:true, attributeFilter:['class']});
+
 // 🏡 暮光暖庭 — 午后阳光 + 光雾 + 微尘 + 关系连接曲线
 // ============================================================
 (function(){
