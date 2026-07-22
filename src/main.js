@@ -303,6 +303,17 @@ async function startAnalysis() {
 // 渲染报告
 // ============================================================
 function renderReport(analysis) {
+  // 按选择视角过滤双栏
+  if (currentViewParty === 'A') {
+    if (analysis.dualAnalysis) { analysis.dualAnalysis.sideB = null; }
+    if (analysis.emotionAnalysis) { analysis.emotionAnalysis.sideB = null; }
+    if (analysis.behavioralNotes) { analysis.behavioralNotes.sideB = ''; }
+  } else if (currentViewParty === 'B') {
+    if (analysis.dualAnalysis) { analysis.dualAnalysis.sideA = null; }
+    if (analysis.emotionAnalysis) { analysis.emotionAnalysis.sideA = null; }
+    if (analysis.behavioralNotes) { analysis.behavioralNotes.sideA = ''; }
+  }
+
   renderCoreInsight(analysis.coreInsight);
   renderResponsibilityRatio(analysis.responsibilityRatio);
   renderDualColumns(analysis.dualAnalysis);
@@ -311,6 +322,7 @@ function renderReport(analysis) {
   renderEmotionAnalysis(analysis.emotionAnalysis);
   renderEmotionRelief(analysis.emotionRelief);
   renderIcebreakers(analysis.icebreakers, analysis.behavioralNotes);
+  renderTotalReport(analysis);
   setupShare(analysis);
 }
 
@@ -555,7 +567,76 @@ function renderIcebreakers(icebreakers, notes) {
   });
 }
 
+// ============================================================
+// 🆕 总体报告 + 能量评分
+// ============================================================
+function calcEnergyScore(analysis) {
+  var score = 50; // 基础分
+  if (analysis.emotionAnalysis) {
+    var a = analysis.emotionAnalysis.sideA || {};
+    var b = analysis.emotionAnalysis.sideB || {};
+    var avgAnxiety = ((a.anxiety||0) + (b.anxiety||0)) / 2;
+    var avgAnger = ((a.anger||0) + (b.anger||0)) / 2;
+    score = Math.round(100 - (avgAnxiety * 0.3 + avgAnger * 0.5));
+  }
+  score = Math.max(5, Math.min(95, score));
+
+  var energy = 0;
+  if (score >= 80) energy = 5;
+  else if (score >= 60) energy = 2;
+  else if (score >= 40) energy = 1;
+  else if (score >= 20) energy = 0.5;
+  else energy = 0;
+
+  return { score: score, energy: energy };
+}
+
+function renderTotalReport(analysis) {
+  var result = calcEnergyScore(analysis);
+  var insights = analysis.coreInsight || {};
+  var total = $('#total-container');
+  if (!total) return;
+
+  var energyLabel = result.energy >= 2 ? '这次沟通获得了较高的关系能量' : (result.energy > 0 ? '这次沟通获得了一些关系能量' : '这次沟通需要更多理解');
+
+  total.innerHTML =
+    '<div class="total-summary">'+
+      '<h3>这次对话的核心</h3>'+
+      '<p>'+ (insights.summary || '你们真正在意的，是彼此是否被看见。') +'</p>'+
+    '</div>'+
+    '<div class="total-energy">'+
+      '<div class="energy-circle">'+
+        '<span class="energy-num">'+result.score+'</span>'+
+        '<span class="energy-unit">分</span>'+
+      '</div>'+
+      '<p class="energy-desc">'+energyLabel+'</p>'+
+      '<p class="energy-value">+' + result.energy + ' 关系能量</p>'+
+    '</div>'+
+    '<div class="total-sim">'+
+      '<h3>情景模拟练习</h3>'+
+      '<p>想试试换个方式回应，会带来什么不同吗？</p>'+
+      '<button class="btn-primary btn-sim" onclick="showToast(\'情景模拟即将上线\')">开始模拟对话</button>'+
+    '</div>';
+
+  $('#screen-total').classList.remove('hidden');
+}
+
+// 切换视角按钮
+document.addEventListener('click', function(e) {
+  if (e.target.id === 'switch-view-btn') {
+    currentViewParty = currentViewParty === 'A' ? 'B' : (currentViewParty === 'B' ? 'both' : 'A');
+    var labels = {A:'只看 A 的视角', B:'只看 B 的视角', both:'总览全部'};
+    e.target.textContent = '🔄 ' + labels[currentViewParty];
+    // 重新渲染
+    var intro = document.getElementById('intro-screen');
+    if (intro) intro.style.display = 'none';
+    renderReport(window._lastAnalysis || {});
+  }
+});
+
 function setupShare(analysis) {
+  // 保存分析供切换视角使用
+  window._lastAnalysis = analysis;
   $('#share-btn').addEventListener('click', () => {
     const shareData = {
       sideB: analysis.dualAnalysis?.sideB,
@@ -683,26 +764,55 @@ function renderSharedView(data) {
 handleSharedLink();
 
 // ============================================================
-// 思考动画：渐进式消息
+// 加载动画 — 逐段浮现→停留→消失→下一段
 // ============================================================
 var loadingTimer = null;
+var loadingStopped = false;
+
 function startLoadingMessages() {
-  var msgs = ['#lm1','#lm2','#lm3','#lm4'];
-  var idx = 0;
+  loadingStopped = false;
+  var msgs = [
+    document.querySelector('#lm1'),
+    document.querySelector('#lm2'),
+    document.querySelector('#lm3'),
+    document.querySelector('#lm4')
+  ];
   // 隐藏所有
-  msgs.forEach(function(s) { var el = document.querySelector(s); if (el) el.style.opacity = '0'; });
-  function showNext() {
-    var el = document.querySelector(msgs[idx]);
-    if (el) { el.style.transition = 'opacity 1s ease'; el.style.opacity = '1'; }
-    idx++;
+  msgs.forEach(function(el) { if (el) { el.style.opacity = '0'; el.style.transition = 'opacity .8s ease'; } });
+
+  var idx = 0;
+  function playNext() {
+    if (loadingStopped || idx >= msgs.length) return;
+    var el = msgs[idx];
+    if (!el) return;
+
+    // 淡入
+    requestAnimationFrame(function() { el.style.opacity = '1'; });
+
+    // 2.5s 后淡出
+    setTimeout(function() {
+      if (loadingStopped) return;
+      el.style.opacity = '0';
+      idx++;
+      // 0.6s 后播下一段
+      setTimeout(function() { playNext(); }, 600);
+    }, 2500);
   }
-  showNext();
-  loadingTimer = setInterval(function() {
-    if (idx < msgs.length) showNext();
-  }, 3500);
+
+  playNext();
+
+  // 如果分析还没完成，循环播放
+  loadingTimer = setTimeout(function loopAll() {
+    if (loadingStopped) return;
+    idx = 0;
+    playNext();
+    loadingTimer = setTimeout(loopAll, msgs.length * 3100 + 1000);
+  }, msgs.length * 3100 + 1500);
 }
+
 function stopLoadingMessages() {
-  if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
+  loadingStopped = true;
+  if (loadingTimer) { clearTimeout(loadingTimer); loadingTimer = null; }
 }
 
 // ============================================================
@@ -784,35 +894,50 @@ window.goToSpace = function(e) {
 // ============================================================
 
 // ============================================================
-// 角色选择
+// 角色选择 — 选择要看谁的视角
 // ============================================================
+var currentViewParty = 'both'; // 'A' | 'B' | 'both'
+
 function showRolePicker(analysis, callback) {
   var dual = analysis.dualAnalysis;
   var sideA = dual ? dual.sideA : null;
   var sideB = dual ? dual.sideB : null;
 
-  // 创建选择界面
+  var descA = sideA ? (sideA.realMeaning || sideA.innerVoice || '更主动表达的一方') : '';
+  var descB = sideB ? (sideB.realMeaning || sideB.innerVoice || '更多回应的一方') : '';
+
   var picker = document.createElement('div');
   picker.id = 'role-picker';
-  picker.innerHTML = '<div class="picker-card">'+
-    '<h2>👥 AI 识别到这段对话中有两个人</h2>'+
-    '<p class="picker-sub">请选择你更像哪一方，知间会从你的视角展开报告</p>'+
-    '<div class="picker-options">'+
-      '<button class="picker-btn picker-a">'+
-        '<span class="picker-label">🙋 角色 A</span>'+
-        '<span class="picker-desc">'+(sideA ? (sideA.realMeaning || sideA.innerVoice || '更主动表达的一方') : '')+'</span>'+
-      '</button>'+
-      '<button class="picker-btn picker-b">'+
-        '<span class="picker-label">💬 角色 B</span>'+
-        '<span class="picker-desc">'+(sideB ? (sideB.realMeaning || sideB.innerVoice || '更多回应的一方') : '')+'</span>'+
-      '</button>'+
-    '</div>'+
-    '<button class="picker-btn picker-both" style="margin-top:8px;width:100%;background:transparent;border:1px dashed #ccc;color:#94a3b8;padding:12px;border-radius:12px;font-size:14px">👀 我只是旁观者，都看看</button>'+
-  '</div>';
-  picker.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:20px';
-  picker.querySelector('.picker-a').onclick = function(){ picker.remove(); callback(); };
-  picker.querySelector('.picker-b').onclick = function(){ picker.remove(); callback(); };
-  picker.querySelector('.picker-both').onclick = function(){ picker.remove(); callback(); };
+  picker.innerHTML =
+    '<div class="picker-card">'+
+      '<h2>这段对话中有两个人</h2>'+
+      '<p class="picker-sub">选择你想先看谁的视角</p>'+
+      '<div class="picker-options">'+
+        '<button class="picker-btn picker-a">'+
+          '<span class="picker-label">角色 A</span>'+
+          '<span class="picker-desc">'+descA+'</span>'+
+        '</button>'+
+        '<button class="picker-btn picker-b">'+
+          '<span class="picker-label">角色 B</span>'+
+          '<span class="picker-desc">'+descB+'</span>'+
+        '</button>'+
+        '<button class="picker-btn picker-both">'+
+          '<span class="picker-label">总览</span>'+
+          '<span class="picker-desc">先看整体结论</span>'+
+        '</button>'+
+      '</div>'+
+    '</div>';
+  picker.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:20px';
+
+  picker.querySelector('.picker-a').onclick = function(){
+    currentViewParty = 'A'; picker.remove(); callback();
+  };
+  picker.querySelector('.picker-b').onclick = function(){
+    currentViewParty = 'B'; picker.remove(); callback();
+  };
+  picker.querySelector('.picker-both').onclick = function(){
+    currentViewParty = 'both'; picker.remove(); callback();
+  };
   document.body.appendChild(picker);
 }
 

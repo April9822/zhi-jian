@@ -332,6 +332,23 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .footer-brand{font-size:12px;color:#C0A890;margin-top:40px}
 
 /* ============================================================
+   总报告 & 能量评分
+   ============================================================ */
+.total-summary{background:rgba(255,255,255,.7);border-radius:14px;padding:20px;margin-bottom:16px;text-align:left}
+.total-summary h3{font-size:16px;color:#5C3D28;margin-bottom:8px}
+.total-summary p{font-size:14px;color:#7A6450;line-height:1.8}
+.total-energy{text-align:center;padding:20px;margin-bottom:16px}
+.energy-circle{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#C4915A,#E7B98A);color:#FFF;margin-bottom:10px}
+.energy-num{font-size:28px;font-weight:700;line-height:1}
+.energy-unit{font-size:11px;opacity:.8}
+.energy-desc{font-size:14px;color:#6B4A30;margin-bottom:4px}
+.energy-value{font-size:18px;color:#B57A45;font-weight:600}
+.total-sim{background:rgba(255,250,242,.7);border-radius:14px;padding:20px;text-align:center}
+.total-sim h3{font-size:16px;color:#5C3D28;margin-bottom:6px}
+.total-sim p{font-size:13px;color:#8A6A50;margin-bottom:14px}
+.btn-sim{width:auto;display:inline-block;padding:12px 28px}
+
+/* ============================================================
    账号页 / 登录页
    ============================================================ */
 #account-screen,#login-screen{background:linear-gradient(180deg,#FDF0E0 0%,#F0CDA0 100%);overflow-y:auto}
