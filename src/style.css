@@ -311,10 +311,10 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .benefit-card p{font-size:13px;color:#7A6450;line-height:1.6;margin:0}
 @keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-/* 关系花园 — 异形漂浮卡片 */
+/* 关系花园 — 波浪线框长方形背板 */
 .garden-section{margin:48px 0 40px;position:relative}
 .garden-section::before{content:'';position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:40px;height:2px;background:rgba(196,145,90,.3);border-radius:1px}
-.growth-card{background:rgba(255,255,255,.75);border-radius:40% 60% 55% 45% / 45% 50% 50% 55%;padding:36px 28px;text-align:center;border:1px solid rgba(200,160,120,.12);box-shadow:0 8px 32px rgba(180,120,60,.08);animation:cardFloat 6s ease-in-out infinite;animation-delay:1s}
+.growth-card{background:rgba(255,250,242,.55);border-radius:8% 12% 10% 9% / 7% 11% 12% 8%;padding:36px 28px;text-align:center;border:2px solid rgba(200,160,120,.18);box-shadow:0 8px 32px rgba(180,120,60,.06);animation:cardFloat 6s ease-in-out infinite;animation-delay:1s}
 .growth-card>p{font-size:16px;color:#5C4535;line-height:2;margin-bottom:14px}
 .growth-card>p strong{color:#8B5E3C;font-weight:500}
 .growth-card .space-card-icon{display:block;margin:0 auto 20px}

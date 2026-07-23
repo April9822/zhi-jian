@@ -1198,12 +1198,13 @@ if (_gsEl) gardenObserver.observe(_gsEl, {attributes:true, attributeFilter:['cla
     var ms = ts * 0.001;
     ctx2.clearRect(0, 0, W2, H2);
 
-    // 基底渐变：暖橙黄昏 → 由上到下自然过渡
-    var bgGrad = ctx2.createLinearGradient(0, 0, 0, H2);
-    bgGrad.addColorStop(0, '#FDF0E0');
-    bgGrad.addColorStop(0.35, '#F5D8B8');
-    bgGrad.addColorStop(0.7, '#EDC498');
-    bgGrad.addColorStop(1, '#E3B078');
+    // 基底：均匀暖米色，和 body 保持一致
+    ctx2.fillStyle = '#FDF0E0';
+    ctx2.fillRect(0, 0, W2, H2);
+    // 底部微妙的暖光渐变（不易察觉）
+    var bgGrad = ctx2.createLinearGradient(0, H2 * 0.7, 0, H2);
+    bgGrad.addColorStop(0, 'rgba(253,240,224,0)');
+    bgGrad.addColorStop(1, 'rgba(245,215,185,.3)');
     ctx2.fillStyle = bgGrad;
     ctx2.fillRect(0, 0, W2, H2);
 
