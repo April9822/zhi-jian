@@ -1,0 +1,73 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(npm run preview)",
+      "Bash(npm install *)",
+      "Bash(npx vite *)",
+      "Bash(git add *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git commit *)",
+      "Bash(mkdir *)",
+      "Bash(ls *)",
+      "Read(data/**)",
+      "Read(research/**)",
+      "Read(idea-vault/**)",
+      "Read(zhi-jian/**)",
+      "Write(zhi-jian/src/**)",
+      "Write(zhi-jian/api/**)",
+      "Write(zhi-jian/index.html)",
+      "Write(zhi-jian/.claude/memory/**)",
+      "Edit(zhi-jian/src/**)",
+      "Edit(zhi-jian/api/**)",
+      "Edit(zhi-jian/index.html)"
+    ],
+    "deny": [
+      "Write(data/**)",
+      "Edit(data/**)",
+      "Bash(rm *)",
+      "Bash(git push *)",
+      "Bash(git reset --hard *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "targets": ["zhi-jian/src/**", "zhi-jian/api/**", "zhi-jian/index.html"],
+        "description": "代码变更后提示进行QA测试",
+        "prompt": "检测到代码修改。请确认：(1) 是否需要通知QA测试员运行测试？(2) 修改内容是否有输出包含禁止词汇？"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "targets": ["zhi-jian/src/**/*.css", "zhi-jian/index.html"],
+        "description": "CSS修改前检查色彩规范",
+        "prompt": "即将修改CSS/样式文件。请先确认：(1) 使用的颜色是否在DESIGN-COLOR-SYSTEM允许范围内？(2) 是否遵守了移动端优先和触控目标规范？"
+      },
+      {
+        "matcher": "Write|Edit",
+        "targets": ["zhi-jian/api/**"],
+        "description": "API修改前检查AI分析管线",
+        "prompt": "即将修改AI分析API。请先确认：(1) 是否遵循了6步分析流程（角色识别→关系建模→时间线→情绪曲线→分层报告→建议）？(2) System Prompt是否包含禁止词汇库？(3) 是否有双侧分析平衡检查？"
+      }
+    ],
+    "OnSessionStart": [
+      {
+        "description": "会话启动时提醒知间宪法和当前项目状态",
+        "prompt": "你在知间 InBetween 项目中工作。请牢记：(1) 知间不是聊天分析工具，是关系成长型产品；(2) 三大禁止：不评判人格、不定对错、不贴标签；(3) 当前状态：产品架构设计阶段，代码尚未编写；(4) 遵循小步迭代工作约定。"
+      }
+    ]
+  },
+  "rules": [
+    ".claude/rules/product-principles.md",
+    ".claude/rules/design-system-guard.md",
+    ".claude/rules/ai-analysis-pipeline.md",
+    ".claude/rules/code-quality.md"
+  ],
+  "model": "sonnet",
+  "cwd": "zhi-jian"
+}

@@ -1,80 +1,92 @@
 # 知间 InBetween
 
 > 理解人与人之间。Understand what's between.
+>
+> 🟡 **当前阶段**：产品架构设计 — 从「冲突解剖师」升级到「关系操作系统」
 
 ---
 
-## 项目结构
+## 项目状态
 
-```
-zhi-jian/
-├── index.html          # 主页面（输入 + 五屏报告）
-├── src/
-│   ├── main.js         # 前端逻辑
-│   └── style.css       # 智者品牌调性样式
-├── api/
-│   └── analyze.js      # AI 分析引擎（Vercel Serverless）
-├── vite.config.js      # Vite 配置
-├── vercel.json         # Vercel 部署配置
-└── package.json
-```
+| 维度 | 状态 |
+|------|:---:|
+| 产品方案 | 🟡 从 V1.0 升级到「关系操作系统」方案 |
+| 代码 | ❌ 尚未编写（架构设计阶段） |
+| 脚手架 | ✅ Vite + package.json |
+| 智能体体系 | ✅ 8个专业智能体已部署 |
+| 规则体系 | ✅ 4个规则文件 + 3个hooks |
 
-## 技术栈
-
-- **前端**：HTML + CSS + 原生 JavaScript（Vite 构建）
-- **后端**：Vercel Serverless Function
-- **AI**：DeepSeek API（chat/completions）
-- **部署**：Vercel
-
-## 本地开发
+## 快速开始
 
 ```bash
 npm install
 npm run dev
 ```
 
-## 部署到 Vercel
+## 当前任务
 
-### 前提条件
-1. 注册 [Vercel](https://vercel.com) 账号（用 GitHub 登录）
-2. 拥有 DeepSeek API Key
+👉 **第一步**：运行智能体对齐工作流，让所有智能体读取已有文档，对齐颗粒度
 
-### 步骤
+```
+/workflow 知间智能体对齐工作流
+```
 
-1. **安装 Vercel CLI**（可选）：
-   ```bash
-   npm i -g vercel
-   ```
+## 知间智能体体系
 
-2. **推送代码到 GitHub**：
-   ```bash
-   git init
-   git add .
-   git commit -m "知间 V1.0 初始版本"
-   git remote add origin https://github.com/April9822/zhi-jian.git
-   git push -u origin main
-   ```
+知间使用 8 个专业智能体协作工作：
 
-3. **在 Vercel 导入项目**：
-   - 打开 vercel.com → New Project
-   - 选择 `zhi-jian` 仓库
-   - Framework: Vite
-   - 设置环境变量：`DEEPSEEK_API_KEY` = 你的 DeepSeek API Key
-   - 点击 Deploy
+| 智能体 | 角色 |
+|--------|------|
+| 🧠 知间AI系统架构师 | 产品全局架构决策者 |
+| 📐 知间产品设计师 | 信息架构与功能模块设计 |
+| 🎨 知间UX设计师 | 交互体验与视觉调性 |
+| 🛡️ 知间安全隐私审查 | 数据安全与AI伦理独立审查 |
+| 🔧 知间AI工程师 | Prompt工程与AI分析管线 |
+| 💻 知间前端工程师 | 前端组件与动画实现 |
+| 🧪 知间QA测试员 | 多场景质量测试 |
+| 📚 知间Idea馆长 | April的创业Idea记录与完善 |
 
-4. **访问**：Vercel 会自动分配一个域名（如 `zhi-jian.vercel.app`）
+详见 [.claude/CLAUDE.md](.claude/CLAUDE.md)
 
-## 环境变量
+## 项目结构
 
-| 变量 | 说明 |
-|------|------|
-| `DEEPSEEK_API_KEY` | DeepSeek API 密钥 |
+```
+zhi-jian/
+├── .claude/
+│   ├── agents/           # 8个智能体定义
+│   ├── rules/            # 4个规则文件（自动加载）
+│   ├── workflows/        # 工作流脚本
+│   ├── memory/           # 项目记忆
+│   ├── settings.json     # 钩子+权限配置
+│   └── CLAUDE.md         # 项目主入口（必读）
+├── src/                  # 前端代码（待创建）
+├── api/                  # 后端API（待创建）
+├── index.html            # 首页（待创建）
+└── package.json          # Vite 配置
+```
 
-## V1.0 功能
+## 知间宪法
 
-- ✅ 粘贴微信聊天记录
-- ✅ AI 标识用户身份（A/B/自动）
-- ✅ 五屏冲突分析报告（核心结论 → 双向双栏 → 对话回放 → 如果重来 → 破冰）
-- ✅ 风险护栏（不判对错、不贴人格标签、双侧分析）
-- ✅ 分享 TA 的那一半（匿名链接）
-- ✅ 移动端响应式
+所有智能体和代码必须遵守：
+
+1. **禁止评判人格**（不使用人格诊断标签）
+2. **禁止定义对错**（不判输赢、不给责任百分比）
+3. **禁止贴负面标签**（只描述行为，不贴标签）
+
+所有分析/页面/功能遵循：**看见事实 → 理解关系 → 练习成长**
+
+## 相关文档
+
+- [产品说明 V1.0](../idea-vault/product-brief-argument-anatomist.md) 📝 [待升级：融合关系操作系统方案]
+- [竞品与市场调研](../research/2026-07-17-调研报告-竞品与市场.md)
+- [头脑风暴报告](../research/2026-07-17-头脑风暴.md)
+- [HCI心理学评估](../research/2026-07-17-HCI分析.md)
+- [色彩系统](DESIGN-COLOR-SYSTEM.md)
+- [QA自检日志](QA-LOG.md) 📝 [注意：日志中的代码当前不在仓库中]
+
+## 技术栈
+
+- **前端**：HTML + CSS + 原生JavaScript（Vite构建）
+- **后端**：Vercel Serverless Function
+- **AI**：DeepSeek API
+- **部署**：Vercel

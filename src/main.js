@@ -303,23 +303,31 @@ async function startAnalysis() {
 // 渲染报告
 // ============================================================
 function renderReport(analysis) {
-  // 按选择视角过滤双栏
-  if (currentViewParty === 'A') {
-    if (analysis.dualAnalysis) { analysis.dualAnalysis.sideB = null; }
-    if (analysis.emotionAnalysis) { analysis.emotionAnalysis.sideB = null; }
-    if (analysis.behavioralNotes) { analysis.behavioralNotes.sideB = ''; }
-  } else if (currentViewParty === 'B') {
-    if (analysis.dualAnalysis) { analysis.dualAnalysis.sideA = null; }
-    if (analysis.emotionAnalysis) { analysis.emotionAnalysis.sideA = null; }
-    if (analysis.behavioralNotes) { analysis.behavioralNotes.sideA = ''; }
+  var parties = analysis.parties || [];
+
+  // 按选择视角过滤
+  if (currentViewParty !== 'both' && parties.length > 0) {
+    var selParty = currentViewParty;
+    if (analysis.dualAnalysis && analysis.dualAnalysis.entries) {
+      analysis.dualAnalysis.entries = analysis.dualAnalysis.entries.filter(function(e) { return e.party === selParty; });
+    }
+    if (analysis.emotionAnalysis && analysis.emotionAnalysis.entries) {
+      analysis.emotionAnalysis.entries = analysis.emotionAnalysis.entries.filter(function(e) { return e.party === selParty; });
+    }
+    if (analysis.behavioralNotes && analysis.behavioralNotes.entries) {
+      analysis.behavioralNotes.entries = analysis.behavioralNotes.entries.filter(function(e) { return e.party === selParty; });
+    }
+    if (analysis.responsibilityRatio && analysis.responsibilityRatio.ratios) {
+      analysis.responsibilityRatio.ratios = analysis.responsibilityRatio.ratios.filter(function(r) { return r.party === selParty; });
+    }
   }
 
   renderCoreInsight(analysis.coreInsight);
-  renderResponsibilityRatio(analysis.responsibilityRatio);
-  renderDualColumns(analysis.dualAnalysis);
-  renderReplay(analysis.replay);
-  renderWhatIf(analysis.whatIf);
-  renderEmotionAnalysis(analysis.emotionAnalysis);
+  renderResponsibilityRatio(analysis.responsibilityRatio, analysis.parties);
+  renderDualColumns(analysis.dualAnalysis, analysis.parties);
+  renderReplay(analysis.replay, analysis.parties);
+  renderWhatIf(analysis.whatIf, analysis.parties);
+  renderEmotionAnalysis(analysis.emotionAnalysis, analysis.parties);
   renderEmotionRelief(analysis.emotionRelief);
   renderIcebreakers(analysis.icebreakers, analysis.behavioralNotes);
   renderTotalReport(analysis);
@@ -342,59 +350,80 @@ function renderCoreInsight(insight) {
 // ============================================================
 // 🆕 冲突贡献度
 // ============================================================
-function renderResponsibilityRatio(ratio) {
+function renderResponsibilityRatio(ratio, parties) {
   if (!ratio) return;
-  const a = ratio.sideA || 50;
-  const b = ratio.sideB || 50;
+  var labelMap = {};
+  if (parties) { parties.forEach(function(p) { labelMap[p.id] = p.label || p.id; }); }
+
+  var bars = '';
+  if (ratio.ratios && Array.isArray(ratio.ratios)) {
+    bars = ratio.ratios.map(function(r, i) {
+      var label = labelMap[r.party] || r.party || ('参与方 '+(i+1));
+      var hue = ['#C4915A','#8B6A5A','#A08070','#D9A870','#6B8A7A'][i] || '#C4915A';
+      return '<div class="ratio-side"><span class="ratio-label">'+label+'</span>'+
+        '<div class="ratio-bar-bg"><div class="ratio-bar-fill" style="width:'+r.percent+'%;background:'+hue+'"></div></div>'+
+        '<span class="ratio-pct">'+r.percent+'%</span>'+
+        '<p class="ratio-reason">'+r.reason+'</p></div>';
+    }).join('');
+  } else {
+    // 兼容旧格式
+    var a = ratio.sideA || 50, b = ratio.sideB || 50;
+    bars = '<div class="ratio-side"><span class="ratio-label">一方</span><div class="ratio-bar-bg"><div class="ratio-bar-fill" style="width:'+a+'%;background:#C4915A"></div></div><span class="ratio-pct">'+a+'%</span><p class="ratio-reason">'+(ratio.reasonA||'')+'</p></div>'+
+           '<div class="ratio-side"><span class="ratio-label">另一方</span><div class="ratio-bar-bg"><div class="ratio-bar-fill" style="width:'+b+'%;background:#8B6A5A"></div></div><span class="ratio-pct">'+b+'%</span><p class="ratio-reason">'+(ratio.reasonB||'')+'</p></div>';
+  }
+
   $('#screen-responsibility').classList.remove('hidden');
-  $('#responsibility-container').innerHTML = `
-    <div class="ratio-bar-wrap">
-      <div class="ratio-side">
-        <span class="ratio-label">👤 A</span>
-        <div class="ratio-bar-bg"><div class="ratio-bar-fill a" style="width:${a}%"></div></div>
-        <span class="ratio-pct">${a}%</span>
-        <p class="ratio-reason">${ratio.reasonA || ''}</p>
-      </div>
-      <div class="ratio-side">
-        <span class="ratio-label">👤 B</span>
-        <div class="ratio-bar-bg"><div class="ratio-bar-fill b" style="width:${b}%"></div></div>
-        <span class="ratio-pct">${b}%</span>
-        <p class="ratio-reason">${ratio.reasonB || ''}</p>
-      </div>
-    </div>
-    <p class="ratio-note">${ratio.note || ''}</p>
-  `;
+  $('#responsibility-container').innerHTML = '<div class="ratio-bar-wrap">'+bars+'</div>'+
+    '<p class="ratio-note">'+(ratio.totalNote || ratio.note || '以上是基于本次对话行为的分析，不是人格评价')+'</p>';
 }
 
 // ============================================================
 // 双向双栏（增强视觉区分）
 // ============================================================
-function renderDualColumns(dual) {
+function renderDualColumns(dual, parties) {
   if (!dual) return;
-  const { sideA, sideB, gap } = dual;
+  var cols = '';
+  var labelMap = {};
+  if (parties) { parties.forEach(function(p) { labelMap[p.id] = p.label || p.id; }); }
 
-  $('#dual-columns').innerHTML = `
-    <div class="column column-a">
-      <div class="column-header">🟠 ${sideA?.label || 'A'} 的世界</div>
-      <div class="layer"><span class="layer-label">💬 说了</span><p class="layer-said">${sideA?.said || ''}</p></div>
-      <div class="layer arrow-layer">⬇ 对方听到的</div>
-      <div class="layer"><p class="layer-heard">${sideA?.heardByB || ''}</p></div>
-      <div class="layer arrow-layer">⬇ 内心活动</div>
-      <div class="layer"><p class="layer-inner">${sideA?.innerVoice || ''}</p></div>
-      <div class="layer arrow-layer">⬇</div>
-      <div class="layer layer-real"><span class="layer-label">❤️ 真正想说的</span><p>${sideA?.realMeaning || ''}</p></div>
-    </div>
-    <div class="column column-b">
-      <div class="column-header">🔵 ${sideB?.label || 'B'} 的世界</div>
-      <div class="layer"><span class="layer-label">💬 说了</span><p class="layer-said">${sideB?.said || ''}</p></div>
-      <div class="layer arrow-layer">⬇ 对方听到的</div>
-      <div class="layer"><p class="layer-heard">${sideB?.heardByA || ''}</p></div>
-      <div class="layer arrow-layer">⬇ 内心活动</div>
-      <div class="layer"><p class="layer-inner">${sideB?.innerVoice || ''}</p></div>
-      <div class="layer arrow-layer">⬇</div>
-      <div class="layer layer-real"><span class="layer-label">❤️ 真正想说的</span><p>${sideB?.realMeaning || ''}</p></div>
-    </div>
-  `;
+  if (dual.entries && Array.isArray(dual.entries)) {
+    var colors = ['column-a','column-b','column-c','column-d','column-e'];
+    dual.entries.forEach(function(e, i) {
+      var label = e.label || labelMap[e.party] || ('参与方 '+(i+1));
+      cols += '<div class="column '+colors[i]+'">'+
+        '<div class="column-header">👤 '+label+'</div>'+
+        '<div class="layer"><span class="layer-label">说了</span><p class="layer-said">'+(e.said||'')+'</p></div>'+
+        '<div class="layer arrow-layer">↓ 对方可能听到的</div>'+
+        '<div class="layer"><p class="layer-heard">'+(e.heardAs||'')+'</p></div>'+
+        '<div class="layer arrow-layer">↓ 内心活动</div>'+
+        '<div class="layer"><p class="layer-inner">'+(e.innerVoice||'')+'</p></div>'+
+        '<div class="layer arrow-layer">↓</div>'+
+        '<div class="layer layer-real"><span class="layer-label">❤️ 真正想说的</span><p>'+(e.realMeaning||'')+'</p></div>'+
+        '</div>';
+    });
+  } else {
+    // 兼容旧格式
+    var sideA = dual.sideA || {};
+    var sideB = dual.sideB || {};
+    cols = '<div class="column column-a"><div class="column-header">👤 '+(sideA.label||'一方')+'</div>'+
+      '<div class="layer"><span class="layer-label">说了</span><p class="layer-said">'+(sideA.said||'')+'</p></div>'+
+      '<div class="layer arrow-layer">↓ 对方听到的</div>'+
+      '<div class="layer"><p class="layer-heard">'+(sideA.heardByB||'')+'</p></div>'+
+      '<div class="layer arrow-layer">↓ 内心活动</div>'+
+      '<div class="layer"><p class="layer-inner">'+(sideA.innerVoice||'')+'</p></div>'+
+      '<div class="layer arrow-layer">↓</div>'+
+      '<div class="layer layer-real"><span class="layer-label">❤️ 真正想说的</span><p>'+(sideA.realMeaning||'')+'</p></div></div>'+
+      '<div class="column column-b"><div class="column-header">👤 '+(sideB.label||'另一方')+'</div>'+
+      '<div class="layer"><span class="layer-label">说了</span><p class="layer-said">'+(sideB.said||'')+'</p></div>'+
+      '<div class="layer arrow-layer">↓ 对方听到的</div>'+
+      '<div class="layer"><p class="layer-heard">'+(sideB.heardByA||'')+'</p></div>'+
+      '<div class="layer arrow-layer">↓ 内心活动</div>'+
+      '<div class="layer"><p class="layer-inner">'+(sideB.innerVoice||'')+'</p></div>'+
+      '<div class="layer arrow-layer">↓</div>'+
+      '<div class="layer layer-real"><span class="layer-label">❤️ 真正想说的</span><p>'+(sideB.realMeaning||'')+'</p></div></div>';
+  }
+
+  $('#dual-columns').innerHTML = cols;
 
   $('#gap-annotation').innerHTML = gap ? `
     <div class="gap-card">
@@ -407,25 +436,25 @@ function renderDualColumns(dual) {
 // ============================================================
 // 对话回放（纯心理分析 + 隐藏需求）
 // ============================================================
-function renderReplay(replayList) {
+function renderReplay(replayList, parties) {
   if (!replayList || !Array.isArray(replayList)) return;
+  var labelMap = {};
+  if (parties) { parties.forEach(function(p) { labelMap[p.id] = p.label || p.id; }); }
 
   const html = replayList.map((r) => {
     const turnClass = r.isTurningPoint ? 'replay-item turning-point' : 'replay-item';
     const turnBadge = r.isTurningPoint ? '<span class="turn-badge">⚡ 转折点</span>' : '';
+    var speakerLabel = labelMap[r.speaker] || r.speaker || '';
 
-    return `
-      <div class="${turnClass}">
-        <div class="replay-header">
-          <span class="replay-round">第${r.round}句</span>
-          <span class="replay-speaker">${r.speaker === 'A' ? '🟠 A' : '🔵 B'}</span>
-          ${turnBadge}
-        </div>
-        <p class="replay-text">${r.text || ''}</p>
-        ${r.psychology ? `<div class="replay-psychology">🧠 知间解说：${r.psychology}</div>` : ''}
-        ${r.hiddenNeed ? `<div class="replay-need">💎 未说出口的需求：${r.hiddenNeed}</div>` : ''}
-      </div>
-    `;
+    return '<div class="'+turnClass+'">'+
+      '<div class="replay-header">'+
+        '<span class="replay-round">第'+r.round+'句</span>'+
+        '<span class="replay-speaker">👤 '+speakerLabel+'</span>'+turnBadge+
+      '</div>'+
+      '<p class="replay-text">'+(r.text||'')+'</p>'+
+      (r.psychology ? '<div class="replay-psychology">🧠 知间解说：'+r.psychology+'</div>' : '')+
+      (r.hiddenNeed ? '<div class="replay-need">💎 未说出口的需求：'+r.hiddenNeed+'</div>' : '')+
+    '</div>';
   }).join('');
 
   $('#replay-container').innerHTML = html;
@@ -434,18 +463,20 @@ function renderReplay(replayList) {
 // ============================================================
 // 如果重来
 // ============================================================
-function renderWhatIf(whatIf) {
+function renderWhatIf(whatIf, parties) {
   if (!whatIf) return;
+  var labelMap = {};
+  if (parties) { parties.forEach(function(p) { labelMap[p.id] = p.label || p.id; }); }
 
   const sideBySide = whatIf.sideBySide || [];
-  const rows = sideBySide.map((row) => `
-    <div class="what-if-row">
-      <div class="what-if-speaker">${row.speaker === 'A' ? '🟠 A' : '🔵 B'}</div>
-      <div class="what-if-original">${row.original || ''}</div>
-      <div class="what-if-arrow">→</div>
-      <div class="what-if-alt">${row.alternative || ''}</div>
-    </div>
-  `).join('');
+  const rows = sideBySide.map((row) => {
+    var label = labelMap[row.speaker] || row.speaker || '';
+    return '<div class="what-if-row">'+
+      '<div class="what-if-speaker">👤 '+label+'</div>'+
+      '<div class="what-if-original">'+(row.original||'')+'</div>'+
+      '<div class="what-if-arrow">→</div>'+
+      '<div class="what-if-alt">'+(row.alternative||'')+'</div></div>';
+  }).join('');
 
   $('#what-if-container').innerHTML = `
     <div class="what-if-summary">
@@ -462,36 +493,43 @@ function renderWhatIf(whatIf) {
 // ============================================================
 // 🆕 情绪量化分析
 // ============================================================
-function renderEmotionAnalysis(emotion) {
+function renderEmotionAnalysis(emotion, parties) {
   if (!emotion) return;
   $('#screen-emotion').classList.remove('hidden');
+  var labelMap = {};
+  if (parties) { parties.forEach(function(p) { labelMap[p.id] = p.label || p.id; }); }
 
-  const renderSide = (data, label) => {
-    if (!data) return '';
-    const dims = [
-      { key: 'anxiety', label: '😰 焦虑', color: '#f59e0b' },
-      { key: 'anger', label: '😤 愤怒', color: '#ef4444' },
-      { key: 'sadness', label: '😢 悲伤', color: '#3b82f6' },
-      { key: 'hurt', label: '💔 委屈', color: '#8b5cf6' },
-      { key: 'exhaustion', label: '😮‍💨 疲惫', color: '#6b7280' },
-      { key: 'helplessness', label: '😶 无力感', color: '#94a3b8' },
-    ];
-    const bars = dims.map(d => `
-      <div class="emotion-bar-row">
-        <span class="emotion-label">${d.label}</span>
-        <div class="emotion-bar-bg"><div class="emotion-bar-fill" style="width:${data[d.key]||0}%;background:${d.color}"></div></div>
-        <span class="emotion-score">${data[d.key]||0}</span>
-      </div>
-    `).join('');
-    return `<div class="emotion-card"><h4>${label}</h4>${bars}<p class="emotion-summary">${data.summary||''}</p></div>`;
-  };
+  var html = '';
+  var entries = emotion.entries;
 
-  $('#emotion-container').innerHTML = `
-    <div class="emotion-grid">
-      ${renderSide(emotion.sideA, '🟠 A 的情绪画像')}
-      ${renderSide(emotion.sideB, '🔵 B 的情绪画像')}
-    </div>
-  `;
+  if (!entries && emotion.sideA) {
+    // 兼容旧格式
+    entries = [{party:'A', label:'一方', anxiety:emotion.sideA.anxiety, anger:emotion.sideA.anger, sadness:emotion.sideA.sadness, hurt:emotion.sideA.hurt, exhaustion:emotion.sideA.exhaustion, helplessness:emotion.sideA.helplessness, summary:emotion.sideA.summary}];
+    if (emotion.sideB) entries.push({party:'B', label:'另一方', anxiety:emotion.sideB.anxiety, anger:emotion.sideB.anger, sadness:emotion.sideB.sadness, hurt:emotion.sideB.hurt, exhaustion:emotion.sideB.exhaustion, helplessness:emotion.sideB.helplessness, summary:emotion.sideB.summary});
+  }
+
+  var dims = [
+    { key: 'anxiety', label: '😰 焦虑', color: '#C4915A' },
+    { key: 'anger', label: '😤 愤怒', color: '#D4784A' },
+    { key: 'sadness', label: '😢 悲伤', color: '#8B6A5A' },
+    { key: 'hurt', label: '💔 委屈', color: '#A06050' },
+    { key: 'exhaustion', label: '😮‍💨 疲惫', color: '#8A7A6A' },
+    { key: 'helplessness', label: '😶 无力感', color: '#9A8A7A' },
+  ];
+
+  if (entries && Array.isArray(entries)) {
+    html = entries.map(function(data) {
+      var label = data.label || labelMap[data.party] || data.party || '';
+      var bars = dims.map(function(d) {
+        return '<div class="emotion-bar-row"><span class="emotion-label">'+d.label+'</span>'+
+          '<div class="emotion-bar-bg"><div class="emotion-bar-fill" style="width:'+(data[d.key]||0)+'%;background:'+d.color+'"></div></div>'+
+          '<span class="emotion-score">'+(data[d.key]||0)+'</span></div>';
+      }).join('');
+      return '<div class="emotion-card"><h4>👤 '+label+'</h4>'+bars+'<p class="emotion-summary">'+(data.summary||'')+'</p></div>';
+    }).join('');
+  }
+
+  $('#emotion-container').innerHTML = '<div class="emotion-grid">'+html+'</div>';
 }
 
 // ============================================================
@@ -624,13 +662,18 @@ function renderTotalReport(analysis) {
 // 切换视角按钮
 document.addEventListener('click', function(e) {
   if (e.target.id === 'switch-view-btn') {
-    currentViewParty = currentViewParty === 'A' ? 'B' : (currentViewParty === 'B' ? 'both' : 'A');
-    var labels = {A:'只看 A 的视角', B:'只看 B 的视角', both:'总览全部'};
-    e.target.textContent = '🔄 ' + labels[currentViewParty];
-    // 重新渲染
+    var analysis = window._lastAnalysis || {};
+    var parties = analysis.parties || [];
+    var partyIds = parties.map(function(p) { return p.id; });
+    partyIds.push('both');
+    var idx = partyIds.indexOf(currentViewParty);
+    var nextIdx = (idx + 1) % partyIds.length;
+    currentViewParty = partyIds[nextIdx];
+    var nextLabel = currentViewParty === 'both' ? '总览全部' : (parties.find(function(p){return p.id===currentViewParty})||{}).label||currentViewParty;
+    e.target.textContent = '🔄 切换视角: ' + nextLabel;
     var intro = document.getElementById('intro-screen');
     if (intro) intro.style.display = 'none';
-    renderReport(window._lastAnalysis || {});
+    renderReport(analysis);
   }
 });
 
@@ -898,42 +941,48 @@ window.goToSpace = function(e) {
 var currentViewParty = 'both'; // 'A' | 'B' | 'both'
 
 function showRolePicker(analysis, callback) {
+  var parties = analysis.parties || [];
   var dual = analysis.dualAnalysis;
-  var sideA = dual ? dual.sideA : null;
-  var sideB = dual ? dual.sideB : null;
+  var entries = (dual && dual.entries) ? dual.entries : [];
 
-  var descA = sideA ? (sideA.realMeaning || sideA.innerVoice || '更主动表达的一方') : '';
-  var descB = sideB ? (sideB.realMeaning || sideB.innerVoice || '更多回应的一方') : '';
+  // 构建选择按钮
+  var btns = '';
+  if (parties.length >= 2) {
+    var n = Math.min(parties.length, 5);
+    btns = parties.slice(0, n).map(function(p) {
+      var entry = entries.find(function(e) { return e.party === p.id; }) || {};
+      var desc = entry.realMeaning || entry.innerVoice || p.quote || '';
+      return '<button class="picker-btn" data-party="'+p.id+'">'+
+        '<span class="picker-label">'+p.label+'</span>'+
+        '<span class="picker-desc">'+desc+'</span></button>';
+    }).join('');
+  } else {
+    // 兼容旧格式
+    var sideA = dual ? dual.sideA : null;
+    var sideB = dual ? dual.sideB : null;
+    btns = '<button class="picker-btn" data-party="A"><span class="picker-label">'+(sideA?sideA.label:'一方')+'</span><span class="picker-desc">'+(sideA?sideA.realMeaning||sideA.innerVoice||'':'')+'</span></button>'+
+           '<button class="picker-btn" data-party="B"><span class="picker-label">'+(sideB?sideB.label:'另一方')+'</span><span class="picker-desc">'+(sideB?sideB.realMeaning||sideB.innerVoice||'':'')+'</span></button>';
+  }
 
   var picker = document.createElement('div');
   picker.id = 'role-picker';
   picker.innerHTML =
     '<div class="picker-card">'+
-      '<h2>这段对话中有两个人</h2>'+
+      '<h2>这段对话中有 '+(parties.length || 2)+' 位参与者</h2>'+
       '<p class="picker-sub">选择你想先看谁的视角</p>'+
-      '<div class="picker-options">'+
-        '<button class="picker-btn picker-a">'+
-          '<span class="picker-label">角色 A</span>'+
-          '<span class="picker-desc">'+descA+'</span>'+
-        '</button>'+
-        '<button class="picker-btn picker-b">'+
-          '<span class="picker-label">角色 B</span>'+
-          '<span class="picker-desc">'+descB+'</span>'+
-        '</button>'+
-        '<button class="picker-btn picker-both">'+
-          '<span class="picker-label">总览</span>'+
-          '<span class="picker-desc">先看整体结论</span>'+
-        '</button>'+
-      '</div>'+
+      '<div class="picker-options">'+btns+'</div>'+
+      '<button class="picker-btn picker-both" style="margin-top:8px;width:100%;background:transparent;border:1px dashed rgba(255,255,255,.15);color:#AAA;padding:12px;border-radius:12px;font-size:14px;cursor:pointer">先看整体结论</button>'+
     '</div>';
   picker.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:20px';
 
-  picker.querySelector('.picker-a').onclick = function(){
-    currentViewParty = 'A'; picker.remove(); callback();
-  };
-  picker.querySelector('.picker-b').onclick = function(){
-    currentViewParty = 'B'; picker.remove(); callback();
-  };
+  // 绑定事件
+  picker.querySelectorAll('.picker-btn[data-party]').forEach(function(btn) {
+    btn.onclick = function() {
+      currentViewParty = btn.dataset.party;
+      picker.remove();
+      callback();
+    };
+  });
   picker.querySelector('.picker-both').onclick = function(){
     currentViewParty = 'both'; picker.remove(); callback();
   };
