@@ -89,16 +89,15 @@ window.goToInput = function(e) {
     });
   }, 300);
 
-  // 涟漪盖满全屏（~2.5s，opacity=1）后页面切换 → 关系花园
+  // 涟漪盖满全屏（~2.5s，opacity=1）后页面切换
   setTimeout(function() {
     intro.style.display = 'none';
     intro.classList.remove('active', 'transitioning');
-    document.body.style.background = '#F3E3C1';
-    document.body.style.color = '#343434';
+    document.body.style.background = '#F8F6F2';
+    document.body.style.color = '#2B2B2B';
     document.body.style.overflow = 'auto';
-    var garden = document.getElementById('garden-screen');
-    if (garden) garden.classList.add('active');
-    initGardenCanvas();
+    var input = document.getElementById('input-screen');
+    input.classList.add('active');
     window.scrollTo({ top: 0 });
   }, 2500);
 
@@ -1427,95 +1426,3 @@ if (_gsEl) gardenObserver.observe(_gsEl, {attributes:true, attributeFilter:['cla
   }
   requestAnimationFrame(D);
 })();
-
-// ============================================================
-// 花园 Canvas 暖光粒子
-// ============================================================
-function initGardenCanvas() {
-  var gc = document.getElementById('gardenCanvas');
-  if (!gc || gc.dataset.init) return;
-  gc.dataset.init = '1';
-
-  var ctx = gc.getContext('2d');
-  var W = window.innerWidth, H = window.innerHeight;
-  gc.width = W; gc.height = H;
-  window.addEventListener('resize', function() {
-    W = gc.width = window.innerWidth;
-    H = gc.height = window.innerHeight;
-  });
-
-  var dust = [];
-  for (var i = 0; i < 40; i++) {
-    dust.push({
-      x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 2 + 1,
-      vx: (Math.random() - .5) * .3,
-      vy: (Math.random() - .5) * .3 - .2,
-      o: Math.random() * .4 + .1,
-      phase: Math.random() * 6.28
-    });
-  }
-
-  function drawGarden() {
-    if (!document.getElementById('garden-screen') || !document.getElementById('garden-screen').classList.contains('active')) {
-      requestAnimationFrame(drawGarden); return;
-    }
-    ctx.clearRect(0, 0, W, H);
-
-    var g = ctx.createRadialGradient(W * .7, H * .35, 0, W * .5, H * .5, Math.max(W, H) * .8);
-    g.addColorStop(0, 'rgba(243,227,193,.15)');
-    g.addColorStop(.5, 'rgba(243,227,193,.05)');
-    g.addColorStop(1, 'rgba(243,227,193,0)');
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-
-    var ms = Date.now() * .001;
-    dust.forEach(function(d) {
-      d.x += d.vx; d.y += d.vy;
-      if (d.x < -10) d.x = W + 10;
-      if (d.x > W + 10) d.x = -10;
-      if (d.y < -10) d.y = H + 10;
-      if (d.y > H + 10) d.y = -10;
-
-      var a = d.o + Math.sin(ms * 1.5 + d.phase) * .08;
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, d.r, 0, 6.28);
-      ctx.fillStyle = 'rgba(213,168,90,' + Math.max(0, a) + ')';
-      ctx.fill();
-    });
-
-    requestAnimationFrame(drawGarden);
-  }
-  drawGarden();
-}
-
-// ============================================================
-// 花园种子按钮 → 输入页
-// ============================================================
-document.addEventListener('DOMContentLoaded', function() {
-  var seedBtn = document.getElementById('garden-seed-btn');
-  if (seedBtn) {
-    seedBtn.addEventListener('click', function() {
-      var garden = document.getElementById('garden-screen');
-      var input = document.getElementById('input-screen');
-      if (garden) garden.classList.remove('active');
-      if (input) input.classList.add('active');
-      document.body.style.background = '#F8F6F2';
-      document.body.style.color = '#2B2B2B';
-      window.scrollTo({ top: 0 });
-    });
-  }
-
-  // 报告页"开始新的分析"→ 回花园
-  var newAnalysisBtn = document.getElementById('new-analysis-btn');
-  if (newAnalysisBtn) {
-    newAnalysisBtn.addEventListener('click', function() {
-      var report = document.getElementById('report-screen');
-      var garden = document.getElementById('garden-screen');
-      if (report) report.classList.remove('active');
-      if (garden) { garden.classList.add('active'); initGardenCanvas(); }
-      document.body.style.background = '#F3E3C1';
-      document.body.style.color = '#343434';
-      window.scrollTo({ top: 0 });
-    });
-  }
-});

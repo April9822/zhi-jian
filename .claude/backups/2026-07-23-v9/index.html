@@ -225,73 +225,24 @@
       </div>
     </main>
 
-    <!-- ====== 关系花园 · 主页 ====== -->
+    <!-- ====== 关系花园 ====== -->
     <main id="garden-screen" class="screen">
       <canvas id="gardenCanvas"></canvas>
       <div class="garden-container">
-        <div class="garden-header">
-          <p class="garden-greeting">你的关系花园</p>
-          <p class="garden-sub">每一次理解，都在这里生长</p>
+        <div class="garden-hero">
+          <h1 class="garden-title">我的关系花园</h1>
+          <p class="garden-subtitle">每一次沟通，都在滋养一段关系</p>
         </div>
-
-        <div class="garden-ecosystem">
-          <!-- 家人 · 古树 -->
-          <div class="creature creature-tree">
-            <div class="creature-visual tree-visual">
-              <div class="tree-trunk"></div>
-              <div class="tree-canopy canopy-1"></div>
-              <div class="tree-canopy canopy-2"></div>
-              <div class="tree-canopy canopy-3"></div>
-            </div>
-            <div class="creature-label">家人</div>
-            <div class="creature-glow"></div>
-          </div>
-
-          <!-- 伴侣 · 花 -->
-          <div class="creature creature-flower">
-            <div class="creature-visual flower-visual">
-              <div class="flower-center"></div>
-              <div class="petal p1"></div>
-              <div class="petal p2"></div>
-              <div class="petal p3"></div>
-              <div class="petal p4"></div>
-              <div class="petal p5"></div>
-            </div>
-            <div class="creature-label">伴侣</div>
-            <div class="creature-glow"></div>
-          </div>
-
-          <!-- 朋友 · 游鱼 -->
-          <div class="creature creature-fish">
-            <div class="creature-visual fish-visual">
-              <div class="fish-body"></div>
-              <div class="fish-tail"></div>
-              <div class="fish-eye"></div>
-            </div>
-            <div class="creature-label">朋友</div>
-            <div class="creature-glow"></div>
-          </div>
-
-          <!-- 自我 · 幼苗 -->
-          <div class="creature creature-seedling">
-            <div class="creature-visual seedling-visual">
-              <div class="seedling-stem"></div>
-              <div class="seedling-leaf leaf-l"></div>
-              <div class="seedling-leaf leaf-r"></div>
-            </div>
-            <div class="creature-label">自我</div>
-            <div class="creature-glow"></div>
-          </div>
+        <div class="garden-demo-banner">🌱 预览模式 · 这是示例花园。 <a onclick="document.getElementById('garden-screen').classList.remove('active');document.getElementById('account-screen').classList.add('active')">种下种子</a> 后开始养护你的真实关系</div>
+        <!-- 关系生命体 -->
+        <div class="garden-total-bar">
+          <div class="garden-total-fill" id="garden-total-fill"></div>
         </div>
-
-        <!-- 巧妙融入花园的入口 —— 一颗发光的种子 -->
-        <button type="button" class="garden-seed-btn" id="garden-seed-btn">
-          <span class="seed-icon">·</span>
-          <span class="seed-text">种下新的理解</span>
-          <span class="seed-sparkle"></span>
-        </button>
-
-        <p class="garden-footer">知间 InBetween · 理解人与人之间</p>
+        <p class="garden-season-label" id="garden-season-label">春 · 生长季</p>
+        <div class="garden-ecosystem" id="garden-ecosystem">
+          <!-- JS 动态填充 -->
+        </div>
+        <button class="btn-primary btn-water" id="btn-water" onclick="window.waterGarden()" style="display:none">💧 浇灌花园（演示用）</button>
       </div>
     </main>
 
