@@ -1429,7 +1429,7 @@ if (_gsEl) gardenObserver.observe(_gsEl, {attributes:true, attributeFilter:['cla
 })();
 
 // ============================================================
-// 花园 Canvas 暖光粒子
+// 花园 Canvas · 光斑系统（模拟树林光斑）
 // ============================================================
 function initGardenCanvas() {
   var gc = document.getElementById('gardenCanvas');
@@ -1444,42 +1444,44 @@ function initGardenCanvas() {
     H = gc.height = window.innerHeight;
   });
 
-  var dust = [];
-  for (var i = 0; i < 40; i++) {
-    dust.push({
-      x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 2 + 1,
-      vx: (Math.random() - .5) * .3,
-      vy: (Math.random() - .5) * .3 - .2,
-      o: Math.random() * .4 + .1,
-      phase: Math.random() * 6.28
+  // 光斑粒子
+  var dapples = [];
+  for (var i = 0; i < 25; i++) {
+    dapples.push({
+      x: Math.random() * W,
+      y: Math.random() * H * .7,
+      r: Math.random() * 3 + 1.5,
+      vx: (Math.random() - .5) * .15,
+      vy: (Math.random() - .5) * .1 - .05,
+      o: Math.random() * .5 + .15,
+      phase: Math.random() * 6.28,
+      pulse: Math.random() * 2 + 1.5
     });
   }
 
   function drawGarden() {
-    if (!document.getElementById('garden-screen') || !document.getElementById('garden-screen').classList.contains('active')) {
+    var gs = document.getElementById('garden-screen');
+    if (!gs || !gs.classList.contains('active')) {
       requestAnimationFrame(drawGarden); return;
     }
     ctx.clearRect(0, 0, W, H);
 
-    var g = ctx.createRadialGradient(W * .7, H * .35, 0, W * .5, H * .5, Math.max(W, H) * .8);
-    g.addColorStop(0, 'rgba(243,227,193,.15)');
-    g.addColorStop(.5, 'rgba(243,227,193,.05)');
-    g.addColorStop(1, 'rgba(243,227,193,0)');
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-
     var ms = Date.now() * .001;
-    dust.forEach(function(d) {
+    dapples.forEach(function(d) {
       d.x += d.vx; d.y += d.vy;
-      if (d.x < -10) d.x = W + 10;
-      if (d.x > W + 10) d.x = -10;
-      if (d.y < -10) d.y = H + 10;
-      if (d.y > H + 10) d.y = -10;
+      if (d.x < -20) d.x = W + 20;
+      if (d.x > W + 20) d.x = -20;
+      if (d.y < -20) d.y = H + 20;
+      if (d.y > H * .8) d.y = -20;
 
-      var a = d.o + Math.sin(ms * 1.5 + d.phase) * .08;
+      var a = d.o + Math.sin(ms * d.pulse + d.phase) * .12;
+      var g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 3);
+      g.addColorStop(0, 'rgba(255,248,235,' + Math.max(0, a) + ')');
+      g.addColorStop(.5, 'rgba(243,227,193,' + Math.max(0, a * .5) + ')');
+      g.addColorStop(1, 'rgba(243,227,193,0)');
       ctx.beginPath();
-      ctx.arc(d.x, d.y, d.r, 0, 6.28);
-      ctx.fillStyle = 'rgba(213,168,90,' + Math.max(0, a) + ')';
+      ctx.arc(d.x, d.y, d.r * 3, 0, 6.28);
+      ctx.fillStyle = g;
       ctx.fill();
     });
 
@@ -1489,12 +1491,44 @@ function initGardenCanvas() {
 }
 
 // ============================================================
-// 花园种子按钮 → 输入页
+// 浇灌反馈
+// ============================================================
+window.waterCreature = function(creatureId) {
+  var creature = document.getElementById(creatureId);
+  if (!creature) return;
+
+  // 水滴
+  var rect = creature.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2;
+  var cy = rect.top + rect.height * .3;
+
+  for (var i = 0; i < 3; i++) {
+    (function(delay) {
+      setTimeout(function() {
+        var drop = document.createElement('span');
+        drop.className = 'water-drop';
+        drop.style.left = (cx + (Math.random() - .5) * 30) + 'px';
+        drop.style.top = cy + 'px';
+        drop.style.animationDelay = '0s';
+        document.body.appendChild(drop);
+        setTimeout(function() { if (drop.parentNode) drop.remove(); }, 1200);
+      }, delay);
+    })(i * 150);
+  }
+
+  // 生物发光
+  creature.classList.add('creature-flash');
+  setTimeout(function() { creature.classList.remove('creature-flash'); }, 900);
+};
+
+// ============================================================
+// 路牌按钮 + 事件绑定
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
-  var seedBtn = document.getElementById('garden-seed-btn');
-  if (seedBtn) {
-    seedBtn.addEventListener('click', function() {
+  // 路牌 → 输入页
+  var signpost = document.getElementById('garden-signpost');
+  if (signpost) {
+    signpost.addEventListener('click', function() {
       var garden = document.getElementById('garden-screen');
       var input = document.getElementById('input-screen');
       if (garden) garden.classList.remove('active');
@@ -1504,6 +1538,19 @@ document.addEventListener('DOMContentLoaded', function() {
       window.scrollTo({ top: 0 });
     });
   }
+
+  // 生物点击 → 浇灌反馈
+  ['eco-tree','eco-flower','eco-fish','eco-seedling'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.waterCreature(id);
+      });
+      el.style.pointerEvents = 'auto';
+      el.style.cursor = 'pointer';
+    }
+  });
 
   // 报告页"开始新的分析"→ 回花园
   var newAnalysisBtn = document.getElementById('new-analysis-btn');

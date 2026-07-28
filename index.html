@@ -228,70 +228,86 @@
     <!-- ====== 关系花园 · 主页 ====== -->
     <main id="garden-screen" class="screen">
       <canvas id="gardenCanvas"></canvas>
-      <div class="garden-container">
-        <div class="garden-header">
-          <p class="garden-greeting">你的关系花园</p>
-          <p class="garden-sub">每一次理解，都在这里生长</p>
+
+      <!-- 天空光源 -->
+      <div class="garden-sky">
+        <div class="garden-sun"></div>
+      </div>
+
+      <!-- 远景层 -->
+      <div class="garden-far">
+        <div class="distant-hill dh-left"></div>
+        <div class="distant-hill dh-right"></div>
+        <div class="distant-tree dt1"></div>
+        <div class="distant-tree dt2"></div>
+        <div class="distant-tree dt3"></div>
+      </div>
+
+      <!-- 中景层 · 大树（家人） -->
+      <div class="garden-mid">
+        <div class="eco-tree" id="eco-tree" data-growth="65">
+          <div class="tree-roots">
+            <span class="root r1"></span><span class="root r2"></span><span class="root r3"></span>
+          </div>
+          <div class="tree-trunk"><span class="trunk-knot"></span></div>
+          <div class="tree-crown crown-a"></div>
+          <div class="tree-crown crown-b"></div>
+          <div class="tree-crown crown-c"></div>
+          <div class="tree-aura"></div>
+          <span class="eco-label">家人 · 古树</span>
+        </div>
+      </div>
+
+      <!-- 近景层 · 花丛 + 池塘 + 幼苗 -->
+      <div class="garden-near">
+        <!-- 花（伴侣） -->
+        <div class="eco-flower" id="eco-flower" data-growth="45">
+          <div class="flower-stem"><span class="stem-leaf sl1"></span><span class="stem-leaf sl2"></span></div>
+          <div class="flower-bloom">
+            <span class="petal-outer po1"></span><span class="petal-outer po2"></span><span class="petal-outer po3"></span><span class="petal-outer po4"></span><span class="petal-outer po5"></span>
+            <span class="petal-inner pi1"></span><span class="petal-inner pi2"></span><span class="petal-inner pi3"></span><span class="petal-inner pi4"></span><span class="petal-inner pi5"></span>
+            <span class="flower-core"></span>
+          </div>
+          <span class="eco-label">伴侣 · 花</span>
         </div>
 
-        <div class="garden-ecosystem">
-          <!-- 家人 · 古树 -->
-          <div class="creature creature-tree">
-            <div class="creature-visual tree-visual">
-              <div class="tree-trunk"></div>
-              <div class="tree-canopy canopy-1"></div>
-              <div class="tree-canopy canopy-2"></div>
-              <div class="tree-canopy canopy-3"></div>
-            </div>
-            <div class="creature-label">家人</div>
-            <div class="creature-glow"></div>
+        <!-- 池塘 + 鱼（朋友） -->
+        <div class="eco-pond" id="eco-pond">
+          <div class="pond-surface">
+            <span class="pond-shimmer"></span>
           </div>
-
-          <!-- 伴侣 · 花 -->
-          <div class="creature creature-flower">
-            <div class="creature-visual flower-visual">
-              <div class="flower-center"></div>
-              <div class="petal p1"></div>
-              <div class="petal p2"></div>
-              <div class="petal p3"></div>
-              <div class="petal p4"></div>
-              <div class="petal p5"></div>
-            </div>
-            <div class="creature-label">伴侣</div>
-            <div class="creature-glow"></div>
+          <div class="pond-fish" id="eco-fish" data-growth="35">
+            <span class="fish-body"></span>
+            <span class="fish-fin-top"></span>
+            <span class="fish-fin-bot"></span>
+            <span class="fish-tail"></span>
+            <span class="fish-eye"></span>
           </div>
-
-          <!-- 朋友 · 游鱼 -->
-          <div class="creature creature-fish">
-            <div class="creature-visual fish-visual">
-              <div class="fish-body"></div>
-              <div class="fish-tail"></div>
-              <div class="fish-eye"></div>
-            </div>
-            <div class="creature-label">朋友</div>
-            <div class="creature-glow"></div>
-          </div>
-
-          <!-- 自我 · 幼苗 -->
-          <div class="creature creature-seedling">
-            <div class="creature-visual seedling-visual">
-              <div class="seedling-stem"></div>
-              <div class="seedling-leaf leaf-l"></div>
-              <div class="seedling-leaf leaf-r"></div>
-            </div>
-            <div class="creature-label">自我</div>
-            <div class="creature-glow"></div>
-          </div>
+          <span class="eco-label">朋友 · 游鱼</span>
         </div>
 
-        <!-- 巧妙融入花园的入口 —— 一颗发光的种子 -->
-        <button type="button" class="garden-seed-btn" id="garden-seed-btn">
-          <span class="seed-icon">·</span>
-          <span class="seed-text">种下新的理解</span>
-          <span class="seed-sparkle"></span>
-        </button>
+        <!-- 幼苗（自我） -->
+        <div class="eco-seedling" id="eco-seedling" data-growth="25">
+          <div class="seedling-soil"></div>
+          <div class="seedling-sprout">
+            <span class="sprout-stem"></span>
+            <span class="sprout-leaf slf1"></span>
+            <span class="sprout-leaf slf2"></span>
+          </div>
+          <span class="eco-label">自我 · 新芽</span>
+        </div>
+      </div>
 
-        <p class="garden-footer">知间 InBetween · 理解人与人之间</p>
+      <!-- 地面层 -->
+      <div class="garden-ground"></div>
+
+      <!-- 路牌按钮 -->
+      <div class="garden-signpost" id="garden-signpost" title="开始新的对话">
+        <div class="signpost-pole"></div>
+        <div class="signpost-board">
+          <span class="signpost-icon">→</span>
+        </div>
+        <div class="signpost-glow"></div>
       </div>
     </main>
 
@@ -354,15 +370,15 @@
 
     <main id="report-screen" class="screen">
       <div class="report-container">
-        <section id="screen-1" class="report-screen screen-1"><h2 class="section-label">🎯 核心洞察</h2><div id="core-insight" class="core-insight"></div></section>
-        <section id="screen-responsibility" class="report-screen screen-responsibility hidden"><h2 class="section-label">📊 本次冲突行为贡献度</h2><div id="responsibility-container"></div></section>
-        <section id="screen-2" class="report-screen screen-2"><h2 class="section-label">🌍 你们各自的世界</h2><div id="dual-columns" class="dual-columns"></div><div id="gap-annotation" class="gap-annotation"></div></section>
-        <section id="screen-3" class="report-screen screen-3"><h2 class="section-label">🎙️ 对话回放 · 知间解说</h2><div id="replay-container" class="replay-container"></div></section>
-        <section id="screen-4" class="report-screen screen-4"><h2 class="section-label">🔄 如果重来</h2><div id="what-if-container" class="what-if-container"></div></section>
-        <section id="screen-emotion" class="report-screen screen-emotion hidden"><h2 class="section-label">📈 吵架后的情绪画像</h2><div id="emotion-container"></div></section>
-        <section id="screen-relief" class="report-screen screen-relief hidden"><h2 class="section-label">🪴 试试这些方法</h2><div id="relief-container"></div><p id="relief-note" class="relief-note hidden"></p></section>
-        <section id="screen-5" class="report-screen screen-5"><h2 class="section-label">💬 破局与分享</h2><div id="icebreaker-container" class="icebreaker-container"></div><div id="share-section" class="share-section"><button id="share-btn" class="btn-primary">📤 分享 TA 的那一半</button><p class="share-hint">TA 只会看到自己的分析部分。你的隐私是安全的。</p></div></section>
-        <section id="screen-total" class="report-screen screen-total hidden"><h2 class="section-label">🌿 总体洞察 & 能量评分</h2><div id="total-container"></div></section>
+        <section id="screen-1" class="report-screen screen-1"><h2 class="section-label"><span class="zi-ring"></span>核心洞察</h2><div id="core-insight" class="core-insight"></div></section>
+        <section id="screen-responsibility" class="report-screen screen-responsibility hidden"><h2 class="section-label"><span class="zi-lozenge"></span>本次冲突行为贡献</h2><div id="responsibility-container"></div></section>
+        <section id="screen-2" class="report-screen screen-2"><h2 class="section-label"><span class="zi-dot"></span>你们各自的世界</h2><div id="dual-columns" class="dual-columns"></div><div id="gap-annotation" class="gap-annotation"></div></section>
+        <section id="screen-3" class="report-screen screen-3"><h2 class="section-label"><span class="zi-line"></span>对话回放 · 知间解说</h2><div id="replay-container" class="replay-container"></div></section>
+        <section id="screen-4" class="report-screen screen-4"><h2 class="section-label"><span class="zi-dot"></span>如果重来</h2><div id="what-if-container" class="what-if-container"></div></section>
+        <section id="screen-emotion" class="report-screen screen-emotion hidden"><h2 class="section-label"><span class="zi-wave"></span>情绪画像</h2><div id="emotion-container"></div></section>
+        <section id="screen-relief" class="report-screen screen-relief hidden"><h2 class="section-label"><span class="zi-dot"></span>试试这些方法</h2><div id="relief-container"></div><p id="relief-note" class="relief-note hidden"></p></section>
+        <section id="screen-5" class="report-screen screen-5"><h2 class="section-label"><span class="zi-ring"></span>破局与分享</h2><div id="icebreaker-container" class="icebreaker-container"></div><div id="share-section" class="share-section"><button id="share-btn" class="btn-primary">分享 TA 的那一半</button><p class="share-hint">TA 只会看到自己的分析部分。你的隐私是安全的。</p></div></section>
+        <section id="screen-total" class="report-screen screen-total hidden"><h2 class="section-label"><span class="zi-lozenge"></span>总体洞察</h2><div id="total-container"></div></section>
         <footer class="report-footer"><button id="switch-view-btn" class="btn-secondary" style="margin-bottom:8px">🔄 切换视角</button><button id="new-analysis-btn" class="btn-secondary">开始新的分析</button><p class="register-teaser">🌱 想记住这次分析，看到自己的成长？<a href="#" id="register-teaser-link">创建账号</a></p><p class="footer-brand">知间 InBetween · 理解人与人之间</p></footer>
       </div>
     </main>
