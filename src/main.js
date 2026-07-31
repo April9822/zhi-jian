@@ -1522,9 +1522,9 @@ window.waterCreature = function(creatureId) {
 };
 
 // ============================================================
-// 路牌按钮 + 事件绑定
+// 路牌按钮 + 事件绑定（module script 已 defer，DOM 已就绪）
 // ============================================================
-document.addEventListener('DOMContentLoaded', function() {
+(function bindGardenEvents() {
   // 路牌 → 输入页
   var signpost = document.getElementById('garden-signpost');
   if (signpost) {
@@ -1565,4 +1565,4 @@ document.addEventListener('DOMContentLoaded', function() {
       window.scrollTo({ top: 0 });
     });
   }
-});
+})();

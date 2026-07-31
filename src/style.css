@@ -22,6 +22,7 @@ body{overflow:hidden;
    ============================================================ */
 .intro-screen{background:#000;min-height:100vh;-webkit-text-size-adjust:100%;padding:0;position:relative;overflow:hidden}
 
+canvas#skyCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
 canvas#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
 /* 舞台 */
 .scene-stage{position:absolute;top:0;left:32px;width:280px;text-align:left;
@@ -515,7 +516,7 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 /* ============================================================
    关系花园 · 分层生态场景
    ============================================================ */
-#garden-screen{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;background:linear-gradient(180deg,#FDF5E8 0%,#F3E3C1 35%,#E8D7B5 70%,#D5C4A0 100%)}
+#garden-screen{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;background:linear-gradient(180deg,#FDF5E8 0%,#F3E3C1 35%,#E8D7B5 70%,#D5C4A0 100%);display:block!important}
 #gardenCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
 
 /* --- 天空光源 --- */
