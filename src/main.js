@@ -1522,7 +1522,7 @@ window.waterCreature = function(creatureId) {
 };
 
 // ============================================================
-// 路牌按钮 + 事件绑定（module script 已 defer，DOM 已就绪）
+// 花园事件绑定（module script 已 defer，DOM 已就绪）
 // ============================================================
 (function bindGardenEvents() {
   // 路牌 → 输入页
@@ -1539,8 +1539,45 @@ window.waterCreature = function(creatureId) {
     });
   }
 
+  // 石铭 → 知间空间
+  var stone = document.getElementById('garden-stone');
+  if (stone) {
+    stone.addEventListener('click', function() {
+      var garden = document.getElementById('garden-screen');
+      var space = document.getElementById('space-screen');
+      if (garden) garden.classList.remove('active');
+      if (space) space.classList.add('active');
+      document.body.style.overflow = 'auto';
+      window.scrollTo({ top: 0 });
+    });
+  }
+
+  // 小动物选择
+  var chosenAnimal = localStorage.getItem('zhijian-friend-animal') || '';
+  var animals = document.querySelectorAll('.animal-zone .animal');
+  animals.forEach(function(a) {
+    // 恢复之前的选择
+    if (a.dataset.animal === chosenAnimal) {
+      a.classList.add('chosen');
+      var hint = document.getElementById('animal-hint');
+      if (hint) hint.textContent = '你的小伙伴';
+    }
+    a.addEventListener('click', function(e) {
+      e.stopPropagation();
+      // 取消所有选中
+      animals.forEach(function(aa) { aa.classList.remove('chosen'); });
+      // 选中当前
+      a.classList.add('chosen');
+      localStorage.setItem('zhijian-friend-animal', a.dataset.animal);
+      var hint = document.getElementById('animal-hint');
+      if (hint) { hint.textContent = '你的小伙伴'; hint.style.animation = 'none'; }
+      // 浇灌反馈
+      window.waterCreature('eco-tree');
+    });
+  });
+
   // 生物点击 → 浇灌反馈
-  ['eco-tree','eco-flower','eco-fish','eco-seedling'].forEach(function(id) {
+  ['eco-tree','eco-flower','eco-seedling'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) {
       el.addEventListener('click', function(e) {

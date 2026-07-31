@@ -229,85 +229,82 @@
     <main id="garden-screen" class="screen">
       <canvas id="gardenCanvas"></canvas>
 
-      <!-- 天空光源 -->
-      <div class="garden-sky">
+      <!-- 天空 + 远山（中式水墨剪影） -->
+      <div class="garden-bg">
         <div class="garden-sun"></div>
-      </div>
-
-      <!-- 远景层 -->
-      <div class="garden-far">
-        <div class="distant-hill dh-left"></div>
-        <div class="distant-hill dh-right"></div>
-        <div class="distant-tree dt1"></div>
-        <div class="distant-tree dt2"></div>
-        <div class="distant-tree dt3"></div>
-      </div>
-
-      <!-- 中景层 · 大树（家人） -->
-      <div class="garden-mid">
-        <div class="eco-tree" id="eco-tree" data-growth="65">
-          <div class="tree-roots">
-            <span class="root r1"></span><span class="root r2"></span><span class="root r3"></span>
-          </div>
-          <div class="tree-trunk"><span class="trunk-knot"></span></div>
-          <div class="tree-crown crown-a"></div>
-          <div class="tree-crown crown-b"></div>
-          <div class="tree-crown crown-c"></div>
-          <div class="tree-aura"></div>
-          <span class="eco-label">家人 · 古树</span>
+        <div class="ink-mountain mtn-far"></div>
+        <div class="ink-mountain mtn-near"></div>
+        <div class="distant-woods">
+          <span class="dw d1"></span><span class="dw d2"></span><span class="dw d3"></span><span class="dw d4"></span>
         </div>
       </div>
 
-      <!-- 近景层 · 花丛 + 池塘 + 幼苗 -->
-      <div class="garden-near">
-        <!-- 花（伴侣） -->
-        <div class="eco-flower" id="eco-flower" data-growth="45">
-          <div class="flower-stem"><span class="stem-leaf sl1"></span><span class="stem-leaf sl2"></span></div>
-          <div class="flower-bloom">
-            <span class="petal-outer po1"></span><span class="petal-outer po2"></span><span class="petal-outer po3"></span><span class="petal-outer po4"></span><span class="petal-outer po5"></span>
-            <span class="petal-inner pi1"></span><span class="petal-inner pi2"></span><span class="petal-inner pi3"></span><span class="petal-inner pi4"></span><span class="petal-inner pi5"></span>
-            <span class="flower-core"></span>
+      <!-- 中景 · 大树（家人）+ 石灯 -->
+      <div class="garden-midlayer">
+        <div class="eco-tree" id="eco-tree">
+          <div class="tree-roots"><span class="root"></span><span class="root"></span><span class="root"></span></div>
+          <div class="tree-trunk"><span class="trunk-ring"></span></div>
+          <div class="tree-crowns">
+            <span class="tc tc1"></span><span class="tc tc2"></span><span class="tc tc3"></span>
           </div>
-          <span class="eco-label">伴侣 · 花</span>
+          <div class="tree-ribbon">🎐</div>
+          <span class="glabel">家人 · 古树</span>
+        </div>
+        <!-- 中式石灯 -->
+        <div class="stone-lantern"><span class="lantern-light"></span></div>
+      </div>
+
+      <!-- 近景 · 花丛 + 小动物们 + 幼苗 -->
+      <div class="garden-fore">
+        <!-- 花丛（伴侣） -->
+        <div class="eco-flower" id="eco-flower">
+          <div class="flower-stem"></div>
+          <div class="flower-head">
+            <span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span>
+            <span class="fh-core"></span>
+          </div>
+          <span class="glabel">伴侣 · 花</span>
         </div>
 
-        <!-- 池塘 + 鱼（朋友） -->
-        <div class="eco-pond" id="eco-pond">
-          <div class="pond-surface">
-            <span class="pond-shimmer"></span>
+        <!-- 小动物选择区（朋友） -->
+        <div class="animal-zone" id="animal-zone">
+          <p class="animal-hint" id="animal-hint">选一位小伙伴吧</p>
+          <div class="animal fox" data-animal="fox" title="狐狸 · 灵动聪慧">
+            <span class="animal-sprite fox-sprite"></span>
+            <span class="animal-name">狐狸</span>
           </div>
-          <div class="pond-fish" id="eco-fish" data-growth="35">
-            <span class="fish-body"></span>
-            <span class="fish-fin-top"></span>
-            <span class="fish-fin-bot"></span>
-            <span class="fish-tail"></span>
-            <span class="fish-eye"></span>
+          <div class="animal rabbit" data-animal="rabbit" title="兔子 · 温柔陪伴">
+            <span class="animal-sprite rabbit-sprite"></span>
+            <span class="animal-name">兔子</span>
           </div>
-          <span class="eco-label">朋友 · 游鱼</span>
+          <div class="animal squirrel" data-animal="squirrel" title="松鼠 · 活泼开心">
+            <span class="animal-sprite squirrel-sprite"></span>
+            <span class="animal-name">松鼠</span>
+          </div>
+          <div class="animal deer" data-animal="deer" title="小鹿 · 优雅从容">
+            <span class="animal-sprite deer-sprite"></span>
+            <span class="animal-name">小鹿</span>
+          </div>
         </div>
 
         <!-- 幼苗（自我） -->
-        <div class="eco-seedling" id="eco-seedling" data-growth="25">
-          <div class="seedling-soil"></div>
-          <div class="seedling-sprout">
-            <span class="sprout-stem"></span>
-            <span class="sprout-leaf slf1"></span>
-            <span class="sprout-leaf slf2"></span>
-          </div>
-          <span class="eco-label">自我 · 新芽</span>
+        <div class="eco-seedling" id="eco-seedling">
+          <div class="seedling-mound"></div>
+          <span class="sprout"></span>
+          <span class="glabel">自我 · 新芽</span>
         </div>
       </div>
 
-      <!-- 地面层 -->
-      <div class="garden-ground"></div>
+      <!-- 地面 -->
+      <div class="garden-floor"></div>
 
-      <!-- 路牌按钮 -->
-      <div class="garden-signpost" id="garden-signpost" title="开始新的对话">
-        <div class="signpost-pole"></div>
-        <div class="signpost-board">
-          <span class="signpost-icon">→</span>
-        </div>
-        <div class="signpost-glow"></div>
+      <!-- 趣味按钮：路牌 + 石铭 -->
+      <div class="garden-signpost" id="garden-signpost">
+        <span class="sp-pole"></span>
+        <span class="sp-board">聊一聊</span>
+      </div>
+      <div class="garden-stone" id="garden-stone">
+        <span class="stone-text">知间</span>
       </div>
     </main>
 

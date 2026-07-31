@@ -512,116 +512,126 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .zi-wave{display:inline-block;width:16px;height:8px;margin-right:10px;vertical-align:middle;border-bottom:1.5px solid #A8C3AE;border-radius:0 0 8px 8px}
 
 /* ============================================================
-   关系花园 · 分层生态场景
+   关系花园 · 动森×中式田园融合风格
    ============================================================ */
-#garden-screen{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;background:linear-gradient(180deg,#FDF5E8 0%,#F3E3C1 35%,#E8D7B5 70%,#D5C4A0 100%)}
+#garden-screen{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;background:linear-gradient(180deg,#FDF5E8 0%,#F9EAD0 25%,#F3E3C1 55%,#E8D7B5 100%)}
 #garden-screen.active{display:block!important}
 #gardenCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
 
-/* --- 天空光源 --- */
-.garden-sky{position:absolute;top:0;left:0;width:100%;height:55%;z-index:0;pointer-events:none}
-.garden-sun{position:absolute;top:10%;right:20%;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,248,235,1) 0%,rgba(243,227,193,.6) 30%,rgba(243,227,193,0) 70%);animation:sunGlow 4s ease-in-out infinite}
-@keyframes sunGlow{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:1}}
+/* --- 天空 + 远山 --- */
+.garden-bg{position:absolute;top:0;left:0;width:100%;height:65%;z-index:0;pointer-events:none}
+.garden-sun{position:absolute;top:8%;right:22%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(255,248,230,1) 0%,rgba(243,227,193,.5) 40%,transparent 70%);animation:sunWarm 4s ease-in-out infinite}
+@keyframes sunWarm{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.06);opacity:.9}}
+.ink-mountain{position:absolute;bottom:0;border-radius:45% 45% 0 0}
+.mtn-far{left:5%;width:55%;height:45%;background:linear-gradient(180deg,rgba(160,150,135,.25),rgba(140,130,115,.15));transform:translateX(10%)}
+.mtn-near{right:0;width:65%;height:35%;background:linear-gradient(180deg,rgba(150,140,125,.35),rgba(130,120,105,.2))}
+.distant-woods{position:absolute;bottom:15%;left:0;width:100%;display:flex;justify-content:space-around;padding:0 10%}
+.dw{display:block;width:16px;background:linear-gradient(180deg,rgba(122,154,126,.3),rgba(141,176,154,.15));border-radius:50% 50% 3px 3px}
+.d1{height:50px}.d2{height:38px}.d3{height:55px}.d4{height:42px}
 
-/* --- 远景层 --- */
-.garden-far{position:absolute;bottom:48%;left:0;width:100%;height:30%;z-index:1;pointer-events:none}
-.distant-hill{position:absolute;bottom:0;border-radius:50%}
-.dh-left{left:-15%;width:65%;height:80%;background:linear-gradient(180deg,rgba(142,165,181,.25),rgba(168,195,174,.35))}
-.dh-right{right:-10%;width:55%;height:65%;background:linear-gradient(180deg,rgba(142,165,181,.2),rgba(168,195,174,.3))}
-.distant-tree{position:absolute;bottom:20%}
-.dt1{left:18%;width:28px;height:70px;background:linear-gradient(180deg,rgba(122,154,126,.35),rgba(141,176,154,.25));border-radius:50% 50% 4px 4px}
-.dt2{left:28%;width:22px;height:55px;background:linear-gradient(180deg,rgba(122,154,126,.3),rgba(141,176,154,.2));border-radius:50% 50% 3px 3px}
-.dt3{right:25%;width:24px;height:60px;background:linear-gradient(180deg,rgba(122,154,126,.3),rgba(141,176,154,.2));border-radius:50% 50% 3px 3px}
+/* --- 中景 · 大树 + 石灯 --- */
+.garden-midlayer{position:absolute;bottom:28%;left:0;width:100%;height:50%;z-index:3;pointer-events:none}
+.eco-tree{position:absolute;bottom:0;left:6%;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 6px 20px rgba(60,40,20,.2))}
+.tree-roots{display:flex;gap:3px;margin-bottom:-2px}.tree-roots .root{display:block;width:12px;height:16px;background:linear-gradient(180deg,#A08060,#7A5E40);border-radius:60% 60% 0 0}
+.tree-roots .root:first-child{transform:rotate(-20deg)}.tree-roots .root:last-child{transform:rotate(20deg)}
+.tree-trunk{width:18px;height:85px;background:linear-gradient(180deg,#C4A882 0%,#A08060 50%,#7A5E40 100%);border-radius:4px 4px 6px 6px;position:relative}
+.trunk-ring{position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);width:9px;height:4px;background:rgba(122,94,64,.3);border-radius:50%}
+.tree-crowns{position:absolute;top:-75px;left:50%;transform:translateX(-50%);width:100px;height:90px}
+.tc{position:absolute;border-radius:50%}
+.tc1{width:95px;height:85px;top:0;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse at 45% 35%,#A8C3AE 0%,#7A9A7E 55%,#5C7A5E 100%);animation:tcBreathe1 5s ease-in-out infinite}
+.tc2{width:75px;height:65px;top:18px;left:0;background:radial-gradient(ellipse at 40% 35%,#B5CFB5 0%,#8DB09A 50%,#6B8A6B 100%);animation:tcBreathe2 5s ease-in-out .7s infinite}
+.tc3{width:65px;height:58px;top:22px;right:0;background:radial-gradient(ellipse at 45% 35%,#A8C3AE 0%,#7A9A7E 55%,#5C7A5E 100%);animation:tcBreathe3 5s ease-in-out 1.4s infinite}
+@keyframes tcBreathe1{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.04)}}
+@keyframes tcBreathe2{0%,100%{transform:scale(1)}50%{transform:scale(1.05) translateY(-2px)}}
+@keyframes tcBreathe3{0%,100%{transform:scale(1)}50%{transform:scale(1.03) translateY(-1px)}}
+.tree-ribbon{position:absolute;top:-20px;right:-10px;font-size:16px;animation:ribbonSway 3s ease-in-out infinite}
+@keyframes ribbonSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
 
-/* --- 中景层 · 大树（家人） --- */
-.garden-mid{position:absolute;bottom:30%;left:0;width:100%;height:55%;z-index:3;pointer-events:none}
-.eco-tree{position:absolute;bottom:0;left:8%;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 8px 24px rgba(80,60,30,.15))}
-.tree-roots{display:flex;gap:4px;margin-bottom:-2px}
-.root{display:block;width:10px;height:14px;background:linear-gradient(180deg,#A08060,#8B6B4A);border-radius:50% 50% 0 0}
-.r1{transform:rotate(-25deg)}.r3{transform:rotate(25deg)}
-.tree-trunk{width:16px;height:80px;background:linear-gradient(180deg,#C4A882 0%,#A08060 50%,#8B6B4A 100%);border-radius:4px 4px 5px 5px;position:relative}
-.trunk-knot{position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);width:8px;height:5px;background:rgba(139,107,74,.4);border-radius:50%}
-.tree-crown{position:absolute;border-radius:50%}
-.crown-a{width:90px;height:80px;top:-70px;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse at 45% 40%,#A8C3AE 0%,#7A9A7E 60%,#5C7A5E 100%);animation:crownBreathe1 5s ease-in-out infinite}
-.crown-b{width:70px;height:60px;top:-50px;left:calc(50% - 40px);background:radial-gradient(ellipse at 40% 35%,#B5CFB5 0%,#8DB09A 55%,#6B8A6B 100%);animation:crownBreathe2 5s ease-in-out .7s infinite}
-.crown-c{width:60px;height:55px;top:-45px;left:calc(50% + 15px);background:radial-gradient(ellipse at 45% 40%,#A8C3AE 0%,#7A9A7E 60%,#5C7A5E 100%);animation:crownBreathe3 5s ease-in-out 1.4s infinite}
-@keyframes crownBreathe1{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.04)}}
-@keyframes crownBreathe2{0%,100%{transform:scale(1)}50%{transform:scale(1.05) translateY(-3px)}}
-@keyframes crownBreathe3{0%,100%{transform:scale(1)}50%{transform:scale(1.03) translateY(-2px)}}
-.tree-aura{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:120px;height:110px;border-radius:50%;background:radial-gradient(ellipse,rgba(168,195,174,.15),transparent 70%);animation:auraPulse 5s ease-in-out infinite}
-@keyframes auraPulse{0%,100%{opacity:.4;transform:translateX(-50%) scale(1)}50%{opacity:.8;transform:translateX(-50%) scale(1.08)}}
+/* 石灯 */
+.stone-lantern{position:absolute;bottom:15%;right:8%;width:30px;height:55px;background:linear-gradient(180deg,#C4B5A0,#A89880);border-radius:6px 6px 8px 8px;box-shadow:0 4px 12px rgba(60,40,20,.15)}
+.stone-lantern::before{content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:22px;height:10px;background:#B5A590;border-radius:50%}
+.lantern-light{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:14px;height:14px;background:radial-gradient(circle,rgba(243,227,193,.9),rgba(213,168,90,.3),transparent);border-radius:50%;animation:lanternGlow 3s ease-in-out infinite}
+@keyframes lanternGlow{0%,100%{opacity:.5;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.4)}}
 
-/* --- 近景层 --- */
-.garden-near{position:absolute;bottom:12%;left:0;width:100%;height:45%;z-index:4;pointer-events:none}
+/* --- 近景 --- */
+.garden-fore{position:absolute;bottom:10%;left:0;width:100%;height:42%;z-index:4;pointer-events:none}
 
-/* 花（伴侣） */
-.eco-flower{position:absolute;bottom:5%;right:28%;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 4px 12px rgba(80,60,30,.1))}
-.flower-stem{width:3px;height:70px;background:linear-gradient(180deg,#8DB09A,#6B8A6B);border-radius:2px;position:relative}
-.stem-leaf{position:absolute;width:14px;height:8px;background:radial-gradient(ellipse at center,#A8C3AE,#7A9A7E);border-radius:50%}
-.sl1{top:25px;left:2px;transform:rotate(-40deg)}.sl2{top:45px;left:-6px;transform:rotate(35deg) scaleX(-1)}
-.flower-bloom{position:absolute;top:-38px;left:50%;transform:translateX(-50%);width:50px;height:50px;animation:bloomSway 4s ease-in-out infinite}
-@keyframes bloomSway{0%,100%{transform:translateX(-50%) rotate(-3deg)}50%{transform:translateX(-50%) rotate(3deg)}}
-.petal-outer,.petal-inner{position:absolute;top:50%;left:50%;border-radius:50%;transform-origin:center bottom}
-.petal-outer{width:14px;height:20px;background:linear-gradient(180deg,#F3C9C9,#E8A0A0)}
-.petal-inner{width:10px;height:14px;background:linear-gradient(180deg,#FDE0E0,#F3B0B0);z-index:1}
-.po1{transform:translate(-50%,-100%) rotate(0deg)}.po2{transform:translate(-50%,-100%) rotate(72deg)}.po3{transform:translate(-50%,-100%) rotate(144deg)}.po4{transform:translate(-50%,-100%) rotate(216deg)}.po5{transform:translate(-50%,-100%) rotate(288deg)}
-.pi1{transform:translate(-50%,-100%) rotate(36deg)}.pi2{transform:translate(-50%,-100%) rotate(108deg)}.pi3{transform:translate(-50%,-100%) rotate(180deg)}.pi4{transform:translate(-50%,-100%) rotate(252deg)}.pi5{transform:translate(-50%,-100%) rotate(324deg)}
-.flower-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:radial-gradient(circle,#F5D58C,#E8C060);border-radius:50%;z-index:2;box-shadow:0 0 8px rgba(232,192,96,.5)}
+/* 花丛 */
+.eco-flower{position:absolute;bottom:8%;left:38%;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 2px 8px rgba(60,40,20,.1))}
+.flower-stem{width:3px;height:65px;background:linear-gradient(180deg,#8DB09A,#6B8A6B);border-radius:2px}
+.flower-head{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:48px;height:48px;animation:flowerNod 4s ease-in-out infinite}
+@keyframes flowerNod{0%,100%{transform:translateX(-50%) rotate(-4deg)}50%{transform:translateX(-50%) rotate(4deg)}}
+.fh-petal{position:absolute;top:50%;left:50%;width:13px;height:18px;background:linear-gradient(180deg,#F5CFCF,#E8A0A0);border-radius:50%;transform-origin:center bottom}
+.fh-petal:nth-child(1){transform:translate(-50%,-100%) rotate(0)}.fh-petal:nth-child(2){transform:translate(-50%,-100%) rotate(72deg)}.fh-petal:nth-child(3){transform:translate(-50%,-100%) rotate(144deg)}.fh-petal:nth-child(4){transform:translate(-50%,-100%) rotate(216deg)}.fh-petal:nth-child(5){transform:translate(-50%,-100%) rotate(288deg)}
+.fh-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:11px;height:11px;background:radial-gradient(circle,#F5D58C,#E8C060);border-radius:50%;z-index:1}
 
-/* 池塘 + 鱼（朋友） */
-.eco-pond{position:absolute;bottom:3%;right:5%;width:120px;height:70px}
-.pond-surface{position:absolute;bottom:0;width:120px;height:55px;background:linear-gradient(180deg,rgba(142,165,181,.35),rgba(107,138,154,.25));border-radius:45%;border:1px solid rgba(142,165,181,.25);overflow:hidden}
-.pond-shimmer{position:absolute;top:8px;left:20%;width:60%;height:1px;background:rgba(255,255,255,.4);border-radius:1px;animation:shimmerDrift 3s ease-in-out infinite}
-@keyframes shimmerDrift{0%,100%{transform:translateX(0);opacity:.3}50%{transform:translateX(8px);opacity:.7}}
-.pond-fish{position:absolute;top:10px;left:40%;animation:fishSwimPond 6s ease-in-out infinite}
-@keyframes fishSwimPond{0%{left:20%;transform:scaleX(1)}25%{left:60%;transform:scaleX(1)}50%{left:70%;transform:scaleX(-1)}75%{left:30%;transform:scaleX(-1)}100%{left:20%;transform:scaleX(1)}}
-.fish-body{display:block;width:28px;height:14px;background:linear-gradient(180deg,#8EA5B5,#6B8A9A);border-radius:50%;position:relative}
-.fish-fin-top{position:absolute;top:-6px;left:30%;width:8px;height:6px;background:rgba(142,165,181,.7);border-radius:50% 50% 0 0}
-.fish-fin-bot{position:absolute;bottom:-4px;left:35%;width:6px;height:5px;background:rgba(107,138,154,.7);border-radius:0 0 50% 50%}
-.fish-tail{position:absolute;top:50%;left:-8px;transform:translateY(-50%);width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-right:10px solid #7A95A5}
-.fish-eye{position:absolute;top:4px;right:6px;width:3px;height:3px;background:#343434;border-radius:50%}
+/* 小动物选择区 */
+.animal-zone{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);display:flex;gap:14px;align-items:flex-end;pointer-events:auto;background:rgba(255,252,245,.45);border-radius:24px;padding:10px 18px;border:1px solid rgba(180,150,110,.15)}
+.animal-hint{position:absolute;top:-28px;left:50%;transform:translateX(-50%);font-size:12px;color:#A09080;white-space:nowrap;font-family:"PingFang SC","Microsoft YaHei",sans-serif;animation:hintFloat 2s ease-in-out infinite}
+@keyframes hintFloat{0%,100%{opacity:.6;transform:translateX(-50%) translateY(0)}50%{opacity:1;transform:translateX(-50%) translateY(-4px)}}
+.animal{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .3s ease;padding:6px 4px;border-radius:14px}
+.animal:hover{background:rgba(255,252,245,.7);transform:translateY(-4px)}
+.animal.chosen{background:rgba(213,168,90,.2);box-shadow:0 0 18px rgba(213,168,90,.35)}
+.animal-name{font-size:10px;color:#8A7A65;font-family:"PingFang SC","Microsoft YaHei",sans-serif}
 
-/* 幼苗（自我） */
-.eco-seedling{position:absolute;bottom:2%;left:18%;display:flex;flex-direction:column;align-items:center}
-.seedling-soil{width:30px;height:12px;background:radial-gradient(ellipse,#C4A882,#A08060);border-radius:50%;margin-bottom:2px}
-.seedling-sprout{position:relative;display:flex;flex-direction:column;align-items:center;animation:sproutBob 3s ease-in-out infinite}
-@keyframes sproutBob{0%,100%{transform:rotate(0)}50%{transform:rotate(2deg)}}
-.sprout-stem{display:block;width:2px;height:36px;background:linear-gradient(180deg,#8DB09A,#6B8A6B);border-radius:1px}
-.sprout-leaf{position:absolute;width:16px;height:9px;background:radial-gradient(ellipse at center,#A8C3AE,#7A9A7E);border-radius:50%}
-.slf1{top:10px;left:-10px;transform:rotate(-40deg);animation:leafUnfurl1 3s ease-in-out infinite}
-.slf2{top:8px;left:4px;transform:rotate(35deg);animation:leafUnfurl2 3s ease-in-out .5s infinite}
-@keyframes leafUnfurl1{0%,100%{transform:rotate(-40deg) scale(1)}50%{transform:rotate(-32deg) scale(1.08)}}
-@keyframes leafUnfurl2{0%,100%{transform:rotate(35deg) scale(1)}50%{transform:rotate(28deg) scale(1.08)}}
+/* 动物 CSS 精灵 */
+.animal-sprite{display:block;width:32px;height:28px;position:relative;animation:animalIdle 2.5s ease-in-out infinite}
+@keyframes animalIdle{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* 狐狸 */
+.fox-sprite{width:32px;height:22px;background:linear-gradient(180deg,#E8985A,#C07040);border-radius:50% 50% 45% 45%}
+.fox-sprite::before{content:"";position:absolute;top:-10px;left:4px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:12px solid #E8985A}
+.fox-sprite::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:10px;height:6px;background:#F5F0E8;border-radius:50%}
+/* 兔子 */
+.rabbit-sprite{width:26px;height:24px;background:linear-gradient(180deg,#F5F0E8,#E8DDD0);border-radius:50%}
+.rabbit-sprite::before{content:"";position:absolute;top:-14px;left:5px;width:5px;height:16px;background:#F5F0E8;border-radius:50%}
+.rabbit-sprite::after{content:"";position:absolute;top:-14px;right:5px;width:5px;height:16px;background:#F5F0E8;border-radius:50%}
+/* 松鼠 */
+.squirrel-sprite{width:28px;height:20px;background:linear-gradient(180deg,#B8956E,#8B6B4A);border-radius:50%}
+.squirrel-sprite::before{content:"";position:absolute;top:-8px;left:3px;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:10px solid #B8956E}
+.squirrel-sprite::after{content:"";position:absolute;right:-6px;top:-4px;width:12px;height:16px;background:linear-gradient(180deg,#C4A882,#A08060);border-radius:50% 50% 30% 30%}
+/* 小鹿 */
+.deer-sprite{width:30px;height:26px;background:linear-gradient(180deg,#D4B896,#B8956E);border-radius:50%}
+.deer-sprite::before{content:"";position:absolute;top:-12px;left:6px;width:2px;height:14px;background:#8B6B4A;border-radius:1px;transform:rotate(-15deg)}
+.deer-sprite::after{content:"";position:absolute;top:-12px;right:6px;width:2px;height:14px;background:#8B6B4A;border-radius:1px;transform:rotate(15deg)}
 
-/* --- 地面层 --- */
-.garden-ground{position:absolute;bottom:0;left:0;width:100%;height:14%;z-index:5;pointer-events:none;background:linear-gradient(180deg,rgba(168,150,120,.2) 0%,rgba(160,140,110,.35) 30%,rgba(140,120,95,.5) 100%);border-radius:60% 70% 0 0 / 30% 30% 0 0}
+/* 幼苗 */
+.eco-seedling{position:absolute;bottom:2%;left:12%;display:flex;flex-direction:column;align-items:center}
+.seedling-mound{width:26px;height:10px;background:radial-gradient(ellipse,#C4A882,#A08060);border-radius:50%}
+.sprout{display:block;width:2px;height:32px;background:linear-gradient(180deg,#8DB09A,#6B8A6B);border-radius:1px;position:relative;animation:sproutWiggle 3s ease-in-out infinite}
+@keyframes sproutWiggle{0%,100%{transform:rotate(0)}50%{transform:rotate(2deg)}}
+.sprout::before,.sprout::after{content:"";position:absolute;width:14px;height:7px;background:radial-gradient(ellipse at center,#A8C3AE,#7A9A7E);border-radius:50%}
+.sprout::before{top:8px;left:-12px;transform:rotate(-35deg)}.sprout::after{top:6px;right:-10px;transform:rotate(30deg)}
 
-/* --- 路牌按钮 --- */
-.garden-signpost{position:absolute;bottom:10%;right:38%;z-index:10;cursor:pointer;display:flex;flex-direction:column;align-items:center;transition:transform .3s ease;filter:drop-shadow(0 4px 12px rgba(80,50,20,.2))}
-.garden-signpost:hover{transform:translateY(-3px)}
-.garden-signpost:active{transform:scale(.95)}
-.signpost-pole{width:5px;height:50px;background:linear-gradient(180deg,#B89570,#8B6B4A);border-radius:3px}
-.signpost-board{width:48px;height:34px;background:linear-gradient(180deg,#D4B896,#C4915A);border-radius:6px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(139,107,74,.4);position:relative;margin-bottom:2px}
-.signpost-board::before{content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:8px solid rgba(139,107,74,.4)}
-.signpost-board::after{content:"";position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:7px solid #D4B896}
-.signpost-icon{font-size:15px;color:#5C3A1A;font-weight:600;letter-spacing:.05em;z-index:1}
-.signpost-glow{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:70px;height:90px;border-radius:50%;background:radial-gradient(ellipse,rgba(213,168,90,.2),transparent 70%);animation:signpostPulse 2.5s ease-in-out infinite;pointer-events:none}
-@keyframes signpostPulse{0%,100%{opacity:.4}50%{opacity:.85}}
+/* --- 地面 --- */
+.garden-floor{position:absolute;bottom:0;left:0;width:100%;height:12%;z-index:5;pointer-events:none;background:linear-gradient(180deg,rgba(180,160,130,.15),rgba(160,135,105,.3),rgba(130,105,80,.45));border-radius:55% 60% 0 0/25% 28% 0 0}
 
-/* --- 通用标签 --- */
-.eco-label{font-size:11px;color:rgba(100,80,60,.6);letter-spacing:.05em;margin-top:6px;font-family:"PingFang SC","Microsoft YaHei",sans-serif;text-align:center}
+/* --- 趣味按钮 --- */
+.garden-signpost{position:absolute;bottom:14%;right:42%;z-index:20;cursor:pointer;display:flex;flex-direction:column;align-items:center;transition:transform .3s ease;filter:drop-shadow(0 3px 10px rgba(60,30,10,.2))}
+.garden-signpost:hover{transform:translateY(-3px)}.garden-signpost:active{transform:scale(.94)}
+.sp-pole{display:block;width:5px;height:48px;background:linear-gradient(180deg,#C4A882,#8B6B4A);border-radius:3px}
+.sp-board{display:flex;align-items:center;justify-content:center;width:54px;height:30px;background:linear-gradient(180deg,#E8D5B8,#C4915A);border-radius:5px;font-size:13px;font-weight:600;color:#4A3020;letter-spacing:.05em;font-family:"PingFang SC","Microsoft YaHei",sans-serif;border:2px solid rgba(139,107,74,.35);position:relative}
+.sp-board::before{content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:7px solid rgba(139,107,74,.35)}
+.sp-board::after{content:"";position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:6px solid #E8D5B8}
+
+.garden-stone{position:absolute;bottom:10%;right:14%;z-index:20;cursor:pointer;width:52px;height:40px;background:linear-gradient(180deg,#C5BCAE,#A09888);border-radius:45% 50% 40% 42%/55% 52% 48% 45%;display:flex;align-items:center;justify-content:center;transition:all .3s ease;filter:drop-shadow(0 2px 8px rgba(60,30,10,.15))}
+.garden-stone:hover{transform:translateY(-2px);background:linear-gradient(180deg,#D5CCC0,#B0A898)}.garden-stone:active{transform:scale(.95)}
+.stone-text{font-size:12px;font-weight:500;color:#5A4A3A;letter-spacing:.06em;font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+
+/* 标签 */
+.glabel{font-size:10px;color:rgba(100,80,60,.5);letter-spacing:.05em;margin-top:4px;font-family:"PingFang SC","Microsoft YaHei",sans-serif;text-align:center}
 
 /* --- 浇灌反馈 --- */
-.water-drop{position:absolute;width:8px;height:12px;background:radial-gradient(ellipse at 50% 30%,rgba(142,165,181,.9),rgba(107,138,154,.5));border-radius:50% 50% 50% 50% / 30% 30% 70% 70%;animation:dropFall 1s ease-in forwards;pointer-events:none;z-index:20}
-@keyframes dropFall{0%{opacity:0;transform:translateY(-40px) scale(.5)}30%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(8px) scale(.3)}}
+.water-drop{position:fixed;width:8px;height:12px;background:radial-gradient(ellipse at 50% 30%,rgba(142,165,181,.9),rgba(107,138,154,.5));border-radius:50% 50% 50% 50%/30% 30% 70% 70%;animation:dropFall 1s ease-in forwards;pointer-events:none;z-index:100}
+@keyframes dropFall{0%{opacity:0;transform:translateY(-30px) scale(.5)}30%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(6px) scale(.3)}}
 .creature-flash{animation:flashGlow .8s ease-out}
-@keyframes flashGlow{0%{filter:brightness(1.6) drop-shadow(0 0 12px rgba(213,168,90,.8))}100%{filter:brightness(1) drop-shadow(0 0 0px transparent)}}
+@keyframes flashGlow{0%{filter:brightness(1.6) drop-shadow(0 0 12px rgba(213,168,90,.8))}100%{filter:brightness(1)}}
 
 /* --- 响应式 --- */
 @media(max-width:480px){
-  .eco-tree{left:2%}.tree-trunk{height:60px}.crown-a{width:70px;height:60px;top:-55px}.crown-b{width:55px;height:45px;top:-40px}.crown-c{width:48px;height:40px;top:-35px}
-  .eco-flower{right:22%}.flower-stem{height:55px}
-  .eco-pond{right:2%;width:100px}.pond-surface{width:100px;height:45px}
-  .eco-seedling{left:12%}
-  .garden-signpost{bottom:12%;right:32%}.signpost-pole{height:40px}.signpost-board{width:40px;height:28px}
+  .eco-tree{left:2%}.tree-trunk{height:65px}.tc1{width:75px;height:65px;top:5px}.tc2{width:60px;height:50px;top:20px}.tc3{width:50px;height:45px;top:24px}
+  .eco-flower{left:32%}.flower-stem{height:50px}
+  .animal-zone{gap:8px;padding:8px 12px}.animal-sprite{width:26px;height:22px}
+  .eco-seedling{left:6%}
+  .garden-signpost{bottom:16%;right:38%}.sp-pole{height:38px}.sp-board{width:46px;height:26px;font-size:11px}
+  .garden-stone{bottom:12%;right:8%;width:44px;height:34px}.stone-text{font-size:10px}
 }
