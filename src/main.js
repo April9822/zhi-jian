@@ -325,6 +325,34 @@ function renderReport(analysis) {
     if (view.responsibilityRatio && view.responsibilityRatio.ratios) {
       view.responsibilityRatio.ratios = view.responsibilityRatio.ratios.filter(function(r) { return r.party === selParty; });
     }
+    // 对话回放：对方只留原话（不给看心声/需求），当前方的内心解读才显示
+    if (view.replay && Array.isArray(view.replay)) {
+      view.replay = view.replay.map(function(r) {
+        if (r.speaker !== selParty) {
+          var stripped = JSON.parse(JSON.stringify(r));
+          delete stripped.psychology;
+          delete stripped.hiddenNeed;
+          return stripped;
+        }
+        return r;
+      });
+    }
+    // 如果重来：只保留当前方的替换话术行
+    if (view.whatIf && view.whatIf.sideBySide && Array.isArray(view.whatIf.sideBySide)) {
+      view.whatIf.sideBySide = view.whatIf.sideBySide.filter(function(row) { return row.speaker === selParty; });
+    }
+    // 破局与分享：只保留当前方的话术
+    if (view.icebreakers && Array.isArray(view.icebreakers)) {
+      view.icebreakers = view.icebreakers.filter(function(ib) { return ib.party === selParty; });
+    }
+    // 核心洞察：单方视角换成该方的专属洞察
+    if (view.coreInsight && view.coreInsight.perParty && Array.isArray(view.coreInsight.perParty)) {
+      var mine = view.coreInsight.perParty.find(function(p) { return p.party === selParty; });
+      if (mine) {
+        view.coreInsight.title = mine.title || view.coreInsight.title;
+        view.coreInsight.summary = mine.summary || view.coreInsight.summary;
+      }
+    }
   }
 
   renderCoreInsight(view.coreInsight);
@@ -395,7 +423,7 @@ function renderResponsibilityRatio(ratio, parties) {
 
   $('#screen-responsibility').classList.remove('hidden');
   $('#responsibility-container').innerHTML = '<div class="ratio-bar-wrap">'+bars+'</div>'+
-    '<p class="ratio-note">'+escapeHtml(ratio.totalNote || ratio.note || '以上是基于本次对话行为的分析，不是人格评价')+'</p>';
+    '<p class="ratio-note">'+escapeHtml(ratio.totalNote || ratio.note || '以上是基于本次对话中双方表达方式的占比，不是对人的评价')+'</p>';
 }
 
 // ============================================================
@@ -471,7 +499,7 @@ function renderReplay(replayList, parties) {
         '<span class="replay-speaker">👤 '+speakerLabel+'</span>'+turnBadge+
       '</div>'+
       '<p class="replay-text">'+escapeHtml(r.text||'')+'</p>'+
-      (r.psychology ? '<div class="replay-psychology">🧠 知间解说：'+escapeHtml(r.psychology)+'</div>' : '')+
+      (r.psychology ? '<div class="replay-psychology">🧠 心声解读：'+escapeHtml(r.psychology)+'</div>' : '')+
       (r.hiddenNeed ? '<div class="replay-need">💎 未说出口的需求：'+escapeHtml(r.hiddenNeed)+'</div>' : '')+
     '</div>';
   }).join('');
@@ -577,13 +605,24 @@ function renderEmotionRelief(relief) {
 function renderIcebreakers(icebreakers, notes, parties) {
   if (!icebreakers || !Array.isArray(icebreakers)) return;
 
-  const cards = icebreakers.map((ib) => `
+  // 多参与方时标注每句话术是谁的第一人称口吻（单方视角已被过滤，无需标注）
+  const partyLabelMap = buildPartyLabelMap(parties);
+  const distinct = {};
+  icebreakers.forEach((ib) => { if (ib.party) distinct[ib.party] = true; });
+  const showPartyLabel = Object.keys(distinct).length > 1;
+
+  const cards = icebreakers.map((ib) => {
+    const styleLabel = (showPartyLabel && ib.party)
+      ? '👤 ' + escapeHtml(partyName(partyLabelMap, ib.party)) + ' · ' + escapeHtml(ib.style || '')
+      : escapeHtml(ib.style || '');
+    return `
     <div class="icebreaker-card">
-      <span class="icebreaker-style">${escapeHtml(ib.style || '')}</span>
+      <span class="icebreaker-style">${styleLabel}</span>
       <p class="icebreaker-text">${escapeHtml(ib.text || '')}</p>
       <button class="btn-copy-icebreaker" data-text="${escapeHtml(ib.text || '')}">📋 复制</button>
     </div>
-  `).join('');
+  `;
+  }).join('');
 
   let notesHtml = '';
   if (notes && notes.entries && Array.isArray(notes.entries)) {
@@ -1509,12 +1548,16 @@ function initGardenCanvas() {
   gc.dataset.init = '1';
 
   var ctx = gc.getContext('2d');
-  var W = window.innerWidth, H = window.innerHeight;
-  gc.width = W; gc.height = H;
-  window.addEventListener('resize', function() {
-    W = gc.width = window.innerWidth;
-    H = gc.height = window.innerHeight;
-  });
+  var host = gc.parentElement; // .garden-scene
+  var W = 0, H = 0;
+  function sizeCanvas() {
+    var r = host.getBoundingClientRect();
+    W = r.width || window.innerWidth;
+    H = r.height || window.innerHeight;
+    gc.width = W; gc.height = H;
+  }
+  sizeCanvas();
+  window.addEventListener('resize', sizeCanvas);
 
   // 光斑粒子
   var dapples = [];
@@ -1594,35 +1637,57 @@ window.waterCreature = function(creatureId) {
 };
 
 // ============================================================
+// 关系养分 · 本地存储（V1，暂不接账号）
+// ============================================================
+function getNurture() {
+  var v = parseInt(localStorage.getItem('zhijian-nurture') || '0', 10);
+  return isNaN(v) ? 0 : v;
+}
+function addNurture(n) {
+  localStorage.setItem('zhijian-nurture', String(getNurture() + n));
+  updateNurtureUI();
+}
+function updateNurtureUI() {
+  var el = document.getElementById('nurture-total');
+  if (el) el.textContent = String(getNurture());
+  var status = document.getElementById('nurture-status');
+  if (status) {
+    var total = getNurture();
+    status.textContent = total === 0 ? '你的关系正在慢慢生长' : '你已经积累了 ' + total + ' 点关系养分';
+  }
+}
+
+// ============================================================
 // 花园事件绑定（module script 已 defer，DOM 已就绪）
 // ============================================================
 (function bindGardenEvents() {
-  // 路牌 → 输入页
-  var signpost = document.getElementById('garden-signpost');
-  if (signpost) {
-    signpost.addEventListener('click', function() {
-      var garden = document.getElementById('garden-screen');
-      var input = document.getElementById('input-screen');
-      if (garden) garden.classList.remove('active');
-      if (input) input.classList.add('active');
-      document.body.style.background = '#F8F6F2';
-      document.body.style.color = '#2B2B2B';
-      window.scrollTo({ top: 0 });
-    });
+  // 跳转到输入页（倾诉）
+  function goToInput() {
+    var garden = document.getElementById('garden-screen');
+    var input = document.getElementById('input-screen');
+    if (garden) garden.classList.remove('active');
+    if (input) input.classList.add('active');
+    document.body.style.background = '#F8F6F2';
+    document.body.style.color = '#2B2B2B';
+    window.scrollTo({ top: 0 });
   }
 
-  // 石铭 → 知间空间
-  var stone = document.getElementById('garden-stone');
-  if (stone) {
-    stone.addEventListener('click', function() {
-      var garden = document.getElementById('garden-screen');
-      var space = document.getElementById('space-screen');
-      if (garden) garden.classList.remove('active');
-      if (space) space.classList.add('active');
-      document.body.style.overflow = 'auto';
-      window.scrollTo({ top: 0 });
-    });
-  }
+  // 顶部「+ 倾诉」
+  var topAnalyze = document.getElementById('garden-top-analyze');
+  if (topAnalyze) topAnalyze.addEventListener('click', goToInput);
+
+  // 底部导航
+  var navTalk = document.getElementById('nav-talk');
+  if (navTalk) navTalk.addEventListener('click', goToInput);
+  var navRecord = document.getElementById('nav-record');
+  if (navRecord) navRecord.addEventListener('click', function() { showToast('📋 记录 · 即将上线'); });
+  var navMe = document.getElementById('nav-me');
+  if (navMe) navMe.addEventListener('click', function() { showToast('👤 我的 · 即将上线'); });
+
+  // 关系养分显示
+  updateNurtureUI();
+  var practiceBtn = document.getElementById('nurture-practice-btn');
+  if (practiceBtn) practiceBtn.addEventListener('click', function() { showToast('🌿 模拟对话 · 即将上线'); });
 
   // 小动物选择
   var chosenAnimal = localStorage.getItem('zhijian-friend-animal') || '';

@@ -227,85 +227,107 @@
 
     <!-- ====== 关系花园 · 主页 ====== -->
     <main id="garden-screen" class="screen">
-      <canvas id="gardenCanvas"></canvas>
+      <!-- 顶部导航栏 -->
+      <header class="garden-topbar">
+        <span class="garden-logo">知间</span>
+        <button class="garden-top-btn" id="garden-top-analyze">+ 倾诉</button>
+      </header>
 
-      <!-- 天空 + 远山（中式水墨剪影） -->
-      <div class="garden-bg">
-        <div class="garden-sun"></div>
-        <div class="ink-mountain mtn-far"></div>
-        <div class="ink-mountain mtn-near"></div>
-        <div class="distant-woods">
-          <span class="dw d1"></span><span class="dw d2"></span><span class="dw d3"></span><span class="dw d4"></span>
+      <!-- 中间可滚动区 -->
+      <div class="garden-scroll">
+        <!-- 关系养分总览卡 -->
+        <section class="nurture-card">
+          <div class="nurture-head">
+            <span class="nurture-icon">🌱</span>
+            <span class="nurture-label">关系养分</span>
+            <span class="nurture-value" id="nurture-total">0</span>
+          </div>
+          <p class="nurture-status" id="nurture-status">你的关系正在慢慢生长</p>
+          <button class="nurture-cta" id="nurture-practice-btn">🌿 重新模拟对话</button>
+        </section>
+
+        <!-- 关系花园场景 -->
+        <div class="garden-scene">
+          <canvas id="gardenCanvas"></canvas>
+
+          <!-- 天空 + 远山（中式水墨剪影） -->
+          <div class="garden-bg">
+            <div class="garden-sun"></div>
+            <div class="ink-mountain mtn-far"></div>
+            <div class="ink-mountain mtn-near"></div>
+            <div class="distant-woods">
+              <span class="dw d1"></span><span class="dw d2"></span><span class="dw d3"></span><span class="dw d4"></span>
+            </div>
+          </div>
+
+          <!-- 中景 · 大树（家人）+ 石灯 -->
+          <div class="garden-midlayer">
+            <div class="eco-tree" id="eco-tree">
+              <div class="tree-roots"><span class="root"></span><span class="root"></span><span class="root"></span></div>
+              <div class="tree-trunk"><span class="trunk-ring"></span></div>
+              <div class="tree-crowns">
+                <span class="tc tc1"></span><span class="tc tc2"></span><span class="tc tc3"></span>
+              </div>
+              <div class="tree-ribbon">🎐</div>
+              <span class="glabel">家人 · 古树</span>
+            </div>
+            <!-- 中式石灯 -->
+            <div class="stone-lantern"><span class="lantern-light"></span></div>
+          </div>
+
+          <!-- 近景 · 花丛 + 小动物们 + 幼苗 -->
+          <div class="garden-fore">
+            <!-- 花丛（伴侣） -->
+            <div class="eco-flower" id="eco-flower">
+              <div class="flower-stem"></div>
+              <div class="flower-head">
+                <span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span>
+                <span class="fh-core"></span>
+              </div>
+              <span class="glabel">伴侣 · 花</span>
+            </div>
+
+            <!-- 小动物选择区（朋友） -->
+            <div class="animal-zone" id="animal-zone">
+              <p class="animal-hint" id="animal-hint">选一位小伙伴吧</p>
+              <div class="animal fox" data-animal="fox" title="狐狸 · 灵动聪慧">
+                <span class="animal-sprite fox-sprite"></span>
+                <span class="animal-name">狐狸</span>
+              </div>
+              <div class="animal rabbit" data-animal="rabbit" title="兔子 · 温柔陪伴">
+                <span class="animal-sprite rabbit-sprite"></span>
+                <span class="animal-name">兔子</span>
+              </div>
+              <div class="animal squirrel" data-animal="squirrel" title="松鼠 · 活泼开心">
+                <span class="animal-sprite squirrel-sprite"></span>
+                <span class="animal-name">松鼠</span>
+              </div>
+              <div class="animal deer" data-animal="deer" title="小鹿 · 优雅从容">
+                <span class="animal-sprite deer-sprite"></span>
+                <span class="animal-name">小鹿</span>
+              </div>
+            </div>
+
+            <!-- 幼苗（自我） -->
+            <div class="eco-seedling" id="eco-seedling">
+              <div class="seedling-mound"></div>
+              <span class="sprout"></span>
+              <span class="glabel">自我 · 新芽</span>
+            </div>
+          </div>
+
+          <!-- 地面 -->
+          <div class="garden-floor"></div>
         </div>
       </div>
 
-      <!-- 中景 · 大树（家人）+ 石灯 -->
-      <div class="garden-midlayer">
-        <div class="eco-tree" id="eco-tree">
-          <div class="tree-roots"><span class="root"></span><span class="root"></span><span class="root"></span></div>
-          <div class="tree-trunk"><span class="trunk-ring"></span></div>
-          <div class="tree-crowns">
-            <span class="tc tc1"></span><span class="tc tc2"></span><span class="tc tc3"></span>
-          </div>
-          <div class="tree-ribbon">🎐</div>
-          <span class="glabel">家人 · 古树</span>
-        </div>
-        <!-- 中式石灯 -->
-        <div class="stone-lantern"><span class="lantern-light"></span></div>
-      </div>
-
-      <!-- 近景 · 花丛 + 小动物们 + 幼苗 -->
-      <div class="garden-fore">
-        <!-- 花丛（伴侣） -->
-        <div class="eco-flower" id="eco-flower">
-          <div class="flower-stem"></div>
-          <div class="flower-head">
-            <span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span>
-            <span class="fh-core"></span>
-          </div>
-          <span class="glabel">伴侣 · 花</span>
-        </div>
-
-        <!-- 小动物选择区（朋友） -->
-        <div class="animal-zone" id="animal-zone">
-          <p class="animal-hint" id="animal-hint">选一位小伙伴吧</p>
-          <div class="animal fox" data-animal="fox" title="狐狸 · 灵动聪慧">
-            <span class="animal-sprite fox-sprite"></span>
-            <span class="animal-name">狐狸</span>
-          </div>
-          <div class="animal rabbit" data-animal="rabbit" title="兔子 · 温柔陪伴">
-            <span class="animal-sprite rabbit-sprite"></span>
-            <span class="animal-name">兔子</span>
-          </div>
-          <div class="animal squirrel" data-animal="squirrel" title="松鼠 · 活泼开心">
-            <span class="animal-sprite squirrel-sprite"></span>
-            <span class="animal-name">松鼠</span>
-          </div>
-          <div class="animal deer" data-animal="deer" title="小鹿 · 优雅从容">
-            <span class="animal-sprite deer-sprite"></span>
-            <span class="animal-name">小鹿</span>
-          </div>
-        </div>
-
-        <!-- 幼苗（自我） -->
-        <div class="eco-seedling" id="eco-seedling">
-          <div class="seedling-mound"></div>
-          <span class="sprout"></span>
-          <span class="glabel">自我 · 新芽</span>
-        </div>
-      </div>
-
-      <!-- 地面 -->
-      <div class="garden-floor"></div>
-
-      <!-- 趣味按钮：路牌 + 石铭 -->
-      <div class="garden-signpost" id="garden-signpost">
-        <span class="sp-pole"></span>
-        <span class="sp-board">聊一聊</span>
-      </div>
-      <div class="garden-stone" id="garden-stone">
-        <span class="stone-text">知间</span>
-      </div>
+      <!-- 底部导航栏 -->
+      <nav class="garden-bottomnav">
+        <button class="nav-item active" data-nav="garden"><span class="nav-icon">🏡</span><span>花园</span></button>
+        <button class="nav-item" data-nav="talk" id="nav-talk"><span class="nav-icon">💬</span><span>倾诉</span></button>
+        <button class="nav-item" data-nav="record" id="nav-record"><span class="nav-icon">📋</span><span>记录</span></button>
+        <button class="nav-item" data-nav="me" id="nav-me"><span class="nav-icon">👤</span><span>我的</span></button>
+      </nav>
     </main>
 
     <!-- ====== 输入页 ====== -->
@@ -368,9 +390,9 @@
     <main id="report-screen" class="screen">
       <div class="report-container">
         <section id="screen-1" class="report-screen screen-1"><h2 class="section-label"><span class="zi-ring"></span>核心洞察</h2><div id="core-insight" class="core-insight"></div></section>
-        <section id="screen-responsibility" class="report-screen screen-responsibility hidden"><h2 class="section-label"><span class="zi-lozenge"></span>本次冲突行为贡献</h2><div id="responsibility-container"></div></section>
+        <section id="screen-responsibility" class="report-screen screen-responsibility hidden"><h2 class="section-label"><span class="zi-lozenge"></span>双方各自的表达方式占比</h2><div id="responsibility-container"></div></section>
         <section id="screen-2" class="report-screen screen-2"><h2 class="section-label"><span class="zi-dot"></span>你们各自的世界</h2><div id="dual-columns" class="dual-columns"></div><div id="gap-annotation" class="gap-annotation"></div></section>
-        <section id="screen-3" class="report-screen screen-3"><h2 class="section-label"><span class="zi-line"></span>对话回放 · 知间解说</h2><div id="replay-container" class="replay-container"></div></section>
+        <section id="screen-3" class="report-screen screen-3"><h2 class="section-label"><span class="zi-line"></span>对话回放 · 心声解读</h2><div id="replay-container" class="replay-container"></div></section>
         <section id="screen-4" class="report-screen screen-4"><h2 class="section-label"><span class="zi-dot"></span>如果重来</h2><div id="what-if-container" class="what-if-container"></div></section>
         <section id="screen-emotion" class="report-screen screen-emotion hidden"><h2 class="section-label"><span class="zi-wave"></span>情绪画像</h2><div id="emotion-container"></div></section>
         <section id="screen-relief" class="report-screen screen-relief hidden"><h2 class="section-label"><span class="zi-dot"></span>试试这些方法</h2><div id="relief-container"></div><p id="relief-note" class="relief-note hidden"></p></section>

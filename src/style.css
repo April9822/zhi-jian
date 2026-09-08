@@ -415,8 +415,8 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 .halo{display:none}
 
 /* 按钮增强：玻璃+发光 */
-.intro-btn.primary{animation:btnFloat 3s ease-in-out 24.5s infinite;}
-  background:rgba(255,255,255,.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+.intro-btn.primary{animation:btnFloat 3s ease-in-out 24.5s infinite;
+  background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,.2);color:#fff;
   box-shadow:0 0 20px rgba(255,150,80,.15),inset 0 1px 0 rgba(255,255,255,.1);
 }
@@ -514,9 +514,39 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 /* ============================================================
    关系花园 · 动森×中式田园融合风格
    ============================================================ */
-#garden-screen{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;background:linear-gradient(180deg,#FDF5E8 0%,#F9EAD0 25%,#F3E3C1 55%,#E8D7B5 100%)}
-#garden-screen.active{display:block!important}
+/* ===== 养分花园 · 主容器 ===== */
+#garden-screen{position:relative;height:100vh;height:100dvh;overflow:hidden;background:linear-gradient(180deg,#FDF5E8 0%,#F9EAD0 25%,#F3E3C1 55%,#E8D7B5 100%)}
+#garden-screen.active{display:flex!important;flex-direction:column;align-items:stretch}
+
+/* --- 顶部导航栏 --- */
+.garden-topbar{flex:0 0 auto;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(253,245,232,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(196,145,90,.16);z-index:40}
+.garden-logo{font-size:20px;font-weight:600;color:#6B4A30;letter-spacing:.08em}
+.garden-top-btn{min-height:38px;padding:8px 16px;font-size:14px;font-weight:500;color:#6B4A30;background:rgba(196,145,90,.16);border:1px solid rgba(196,145,90,.34);border-radius:999px;cursor:pointer;transition:transform .2s ease,background .2s ease}
+.garden-top-btn:active{transform:scale(.95);background:rgba(196,145,90,.26)}
+
+/* --- 中间可滚动区 --- */
+.garden-scroll{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 20px;display:flex;flex-direction:column;gap:16px}
+
+/* --- 关系养分总览卡 --- */
+.nurture-card{flex:0 0 auto;background:rgba(255,250,242,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.55);border-radius:18px;padding:18px 20px;box-shadow:0 8px 24px rgba(180,120,60,.10)}
+.nurture-head{display:flex;align-items:center;gap:10px}
+.nurture-icon{font-size:24px;line-height:1}
+.nurture-label{font-size:15px;color:#8A6A50}
+.nurture-value{font-size:32px;font-weight:600;color:#6B4A30;margin-left:auto;font-variant-numeric:tabular-nums}
+.nurture-status{font-size:13px;color:#A08068;margin:10px 0 16px}
+.nurture-cta{width:100%;min-height:48px;font-size:15px;font-weight:500;color:#FDF5E8;background:linear-gradient(135deg,#C4915A,#B57A45);border:none;border-radius:14px;cursor:pointer;box-shadow:0 6px 16px rgba(180,120,60,.25);transition:transform .2s ease}
+.nurture-cta:active{transform:scale(.98)}
+
+/* --- 花园场景 --- */
+.garden-scene{position:relative;flex:1 0 auto;min-height:440px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#FDF5E8 0%,#F9EAD0 25%,#F3E3C1 55%,#E8D7B5 100%);box-shadow:0 10px 30px rgba(180,120,60,.12)}
 #gardenCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
+
+/* --- 底部导航栏 --- */
+.garden-bottomnav{flex:0 0 auto;height:64px;display:flex;align-items:stretch;background:rgba(253,245,232,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid rgba(196,145,90,.16);padding-bottom:env(safe-area-inset-bottom);z-index:40}
+.nav-item{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:#A09080;background:none;border:none;cursor:pointer;transition:color .2s ease}
+.nav-item .nav-icon{font-size:20px;line-height:1}
+.nav-item.active{color:#B57A45;font-weight:500}
+.nav-item:active{opacity:.7}
 
 /* --- 天空 + 远山 --- */
 .garden-bg{position:absolute;top:0;left:0;width:100%;height:65%;z-index:0;pointer-events:none}
@@ -605,18 +635,6 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
 /* --- 地面 --- */
 .garden-floor{position:absolute;bottom:0;left:0;width:100%;height:12%;z-index:5;pointer-events:none;background:linear-gradient(180deg,rgba(180,160,130,.15),rgba(160,135,105,.3),rgba(130,105,80,.45));border-radius:55% 60% 0 0/25% 28% 0 0}
 
-/* --- 趣味按钮 --- */
-.garden-signpost{position:absolute;bottom:14%;right:42%;z-index:20;cursor:pointer;display:flex;flex-direction:column;align-items:center;transition:transform .3s ease;filter:drop-shadow(0 3px 10px rgba(60,30,10,.2))}
-.garden-signpost:hover{transform:translateY(-3px)}.garden-signpost:active{transform:scale(.94)}
-.sp-pole{display:block;width:5px;height:48px;background:linear-gradient(180deg,#C4A882,#8B6B4A);border-radius:3px}
-.sp-board{display:flex;align-items:center;justify-content:center;width:54px;height:30px;background:linear-gradient(180deg,#E8D5B8,#C4915A);border-radius:5px;font-size:13px;font-weight:600;color:#4A3020;letter-spacing:.05em;font-family:"PingFang SC","Microsoft YaHei",sans-serif;border:2px solid rgba(139,107,74,.35);position:relative}
-.sp-board::before{content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:7px solid rgba(139,107,74,.35)}
-.sp-board::after{content:"";position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:6px solid #E8D5B8}
-
-.garden-stone{position:absolute;bottom:10%;right:14%;z-index:20;cursor:pointer;width:52px;height:40px;background:linear-gradient(180deg,#C5BCAE,#A09888);border-radius:45% 50% 40% 42%/55% 52% 48% 45%;display:flex;align-items:center;justify-content:center;transition:all .3s ease;filter:drop-shadow(0 2px 8px rgba(60,30,10,.15))}
-.garden-stone:hover{transform:translateY(-2px);background:linear-gradient(180deg,#D5CCC0,#B0A898)}.garden-stone:active{transform:scale(.95)}
-.stone-text{font-size:12px;font-weight:500;color:#5A4A3A;letter-spacing:.06em;font-family:"PingFang SC","Microsoft YaHei",sans-serif}
-
 /* 标签 */
 .glabel{font-size:10px;color:rgba(100,80,60,.5);letter-spacing:.05em;margin-top:4px;font-family:"PingFang SC","Microsoft YaHei",sans-serif;text-align:center}
 
@@ -632,6 +650,4 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:
   .eco-flower{left:32%}.flower-stem{height:50px}
   .animal-zone{gap:8px;padding:8px 12px}.animal-sprite{width:26px;height:22px}
   .eco-seedling{left:6%}
-  .garden-signpost{bottom:16%;right:38%}.sp-pole{height:38px}.sp-board{width:46px;height:26px;font-size:11px}
-  .garden-stone{bottom:12%;right:8%;width:44px;height:34px}.stone-text{font-size:10px}
 }
