@@ -1,11 +1,11 @@
 // src/modules/garden.js —— 关系花园（关系星图 + 角色形态 + none 兜底）
 // 一句话记忆：core 管账本，report 记账，garden 看账。
 // garden.js 只读账本（readRelations()），不得导出任何写入函数。
-import { readRelations } from '../core/state.js';
+import { readRelations, readRelationsByPerson, resolveAnimalSprite, renameWhoInRelation } from '../core/state.js';
 import { $, $$, byId } from '../core/dom.js';
-import { showToast } from '../core/utils.js';
+import { showToast, escapeHtml } from '../core/utils.js';
 import { goTo } from '../core/router.js';
-import { NODES, NAMED_NODE_IDS, displayOf } from '../core/nodes.js';
+import { NODES, NAMED_NODE_IDS, displayOf, RELATION_CAPS } from '../core/nodes.js';
 import { regionStatusOf, EMPTY_STATE_TEXT, SEASON_TEXT, SEASON_DESC } from '../core/copy.js';
 
 /** 季节常量（去 var，仅复用） */
@@ -161,6 +161,75 @@ export function getSeasonIndex() {
 /** 当前季节名称 */
 export function getSeasonName() {
   return SEASONS[getSeasonIndex()] || '春 · 生长季';
+}
+
+/** 季节索引 → 场景 class 后缀 */
+const SEASON_CLASS = ['season-winter', 'season-spring', 'season-summer', 'season-autumn'];
+
+/**
+ * 给 #garden-scene 施加季节 class，并按季节渲染专属装饰；
+ * 同时施加 18 岁年龄门槛（未满 18 隐藏爱人小花 partner/eco-flower）。
+ * 纯视觉，不读取任何 getBoundingClientRect()，不写账本。
+ */
+function applySceneClasses() {
+  const scene = byId('garden-scene') || $('.garden-scene');
+  if (!scene) return;
+  const idx = getSeasonIndex();
+  scene.classList.remove(...SEASON_CLASS);
+  scene.classList.add(SEASON_CLASS[idx]);
+  renderSeasonDecor(scene, idx);
+
+  // 18 岁门槛：未满 18 隐藏爱人小花（古树/动物/新芽不受限）
+  const age = Number(localStorage.getItem('zhijian-age'));
+  const restricted = Number.isFinite(age) && age > 0 && age < 18;
+  scene.classList.toggle('age-restricted', restricted);
+}
+
+/**
+ * 按季节生成专属装饰（冬雪 / 春鸟 / 秋叶+果；夏由 CSS 强化阳光，不生成 DOM）。
+ * 装饰层 pointer-events:none，不阻挡交互。
+ * @param {HTMLElement} scene
+ * @param {number} idx - 季节索引 0–3
+ */
+function renderSeasonDecor(scene, idx) {
+  let deco = scene.querySelector('.season-deco');
+  if (!deco) {
+    deco = document.createElement('div');
+    deco.className = 'season-deco';
+    scene.appendChild(deco);
+  }
+  deco.textContent = '';
+  deco.className = 'season-deco';
+
+  if (idx === 0) {
+    // 冬 · 下雪
+    for (let i = 0; i < 20; i += 1) {
+      const s = document.createElement('span');
+      s.className = 'snow';
+      s.style.left = `${(i * 5 + Math.random() * 3).toFixed(1)}%`;
+      s.style.animationDelay = `${(Math.random() * 6).toFixed(1)}s`;
+      s.style.animationDuration = `${(4 + Math.random() * 4).toFixed(1)}s`;
+      deco.appendChild(s);
+    }
+  } else if (idx === 1) {
+    // 春 · 小鸟
+    const b = document.createElement('span');
+    b.className = 'bird';
+    deco.appendChild(b);
+  } else if (idx === 3) {
+    // 秋 · 金黄落叶 + 成熟果实
+    for (let i = 0; i < 14; i += 1) {
+      const l = document.createElement('span');
+      l.className = 'autumn-leaf';
+      l.style.left = `${(i * 7 + Math.random() * 4).toFixed(1)}%`;
+      l.style.animationDelay = `${(Math.random() * 6).toFixed(1)}s`;
+      deco.appendChild(l);
+    }
+    const f = document.createElement('span');
+    f.className = 'fruit';
+    deco.appendChild(f);
+  }
+  // 夏（idx===2）：仅 CSS 强化阳光，无需额外 DOM
 }
 
 /**
@@ -413,6 +482,8 @@ export function updateRoleForms() {
   if (!scene) return;
   const relations = readRelations();
   for (const node of NAMED_NODE_IDS) {
+    // 多元素节点（家人/朋友）：形态由 renderMultiElements 按人施加，此处跳过
+    if (RELATION_CAPS[node]) continue;
     const elId = nodeElId(node);
     const el = elId ? byId(elId) : null;
     if (!el) continue;
@@ -444,6 +515,8 @@ export function updateRegionShapes() {
   if (!scene) return;
   const relations = readRelations();
   for (const node of NAMED_NODE_IDS) {
+    // 多元素节点（家人/朋友）：区域三态沿用单元素逻辑无意义，交由 renderMultiElements
+    if (RELATION_CAPS[node]) continue;
     const elId = nodeElId(node);
     const el = elId ? byId(elId) : null;
     if (!el) continue;
@@ -465,6 +538,97 @@ export function tierToShapeKey(tier) {
   if (tier === 'thick' || tier === 'full') return 'bloom';
   if (tier === 'mid') return 'growing';
   return 'calm';
+}
+
+// ============================================================
+// 多元素渲染（家人=古树 / 朋友=动物，按「人(who)」动态生成）
+// 数据来源：readRelationsByPerson(node)（见 core/state.js）。
+// ⚠️ 宪法纪律：本文件不得出现关系节点 id 字面量（家人/朋友/爱人/孩子/同事）。
+//    - 多元素节点集合由 Object.keys(RELATION_CAPS) 派生（无字面量）。
+//    - 形态分支用「元素 id（eco-tree / eco-stream，非节点字面量）」识别。
+//    - 生成元素的 data-anchor 取变量 node，不写字面量。
+// ============================================================
+
+/**
+ * 生成/更新全部「多元素关系」（家人古树 + 朋友动物）。
+ * 由 initGarden / navigate 事件驱动；元素随 readRelationsByPerson 的 who 分布重建。
+ */
+export function renderMultiElements() {
+  for (const node of Object.keys(RELATION_CAPS)) {
+    renderPersonCluster(node);
+  }
+}
+
+/** 构建动物精灵 innerHTML（纯函数，插值经 escapeHtml） */
+function buildAnimalSpriteHTML(sprite) {
+  return `<span class="animal-sprite ${escapeHtml(sprite)}-sprite" aria-hidden="true"></span>`;
+}
+
+/** 构建古树结构 innerHTML（纯函数，无插值） */
+function buildTreeItemHTML() {
+  return (
+    '<div class="tree-roots"><span class="root"></span><span class="root"></span><span class="root"></span></div>' +
+    '<div class="tree-trunk"><span class="trunk-ring"></span></div>' +
+    '<div class="tree-crowns"><span class="tc tc1"></span><span class="tc tc2"></span><span class="tc tc3"></span></div>'
+  );
+}
+
+/**
+ * 为单个多元素关系节点渲染「按人分布」的元素。
+ * @param {string} node - 关系节点 id（变量，非字面量）
+ */
+function renderPersonCluster(node) {
+  const host = byId(nodeElId(node));
+  if (!host) return;
+
+  // 清旧动态元素（统一用 data-person-item 标记，便于全量重建）
+  host.querySelectorAll('[data-person-item]').forEach((el) => el.remove());
+
+  const elId = nodeElId(node);
+  // 朋友动物挂在 .stream-animals 子容器；家人古树直接挂在 #eco-tree
+  const animalsWrap = elId === 'eco-stream' ? host.querySelector('.stream-animals') : null;
+  const target = animalsWrap || host;
+
+  const persons = readRelationsByPerson(node);
+  if (persons.length === 0) return;
+
+  const isAnimal = elId === 'eco-stream';
+
+  persons.forEach((p) => {
+    const tier = nurtureTier(p.total);
+    if (isAnimal) {
+      const sprite = resolveAnimalSprite(p.who);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `animal form--${tier}`;
+      btn.dataset.personItem = '';
+      btn.dataset.animal = sprite;
+      btn.dataset.anchor = node;
+      btn.dataset.who = p.who;
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-label', `${p.who} 的小伙伴`);
+      btn.innerHTML = buildAnimalSpriteHTML(sprite);
+      const label = document.createElement('span');
+      label.className = 'who-label';
+      label.textContent = p.who;
+      btn.appendChild(label);
+      target.appendChild(btn);
+    } else {
+      const item = document.createElement('div');
+      item.className = `eco-tree-item form--${tier}`;
+      item.dataset.personItem = '';
+      item.dataset.anchor = node; // 变量，非字面量；供浇灌/点击命中
+      item.dataset.who = p.who;
+      item.setAttribute('role', 'img');
+      item.setAttribute('aria-label', `${p.who} 的古树`);
+      item.innerHTML = buildTreeItemHTML();
+      const label = document.createElement('span');
+      label.className = 'who-label';
+      label.textContent = p.who;
+      item.appendChild(label);
+      target.appendChild(item);
+    }
+  });
 }
 
 /**
@@ -765,7 +929,104 @@ function bindGardenEvents() {
   const scene = byId('garden-scene') || $('.garden-scene');
   if (scene) {
     scene.addEventListener('click', handleSceneClick);
+    // 长按 [data-person-item] → 弹出改名输入框（合并别名 / 修正标签）
+    scene.addEventListener('pointerdown', startLongPressTimer);
+    scene.addEventListener('pointerup', cancelLongPressTimer);
+    scene.addEventListener('pointerleave', cancelLongPressTimer);
+    scene.addEventListener('pointercancel', cancelLongPressTimer);
   }
+}
+
+// ============================================================
+// 长按改名（data-person-item 上长按 500ms → 弹输入框 → 重命名/合并）
+// ============================================================
+
+let _longPressTimer = null;
+let _longPressTarget = null;
+const LONG_PRESS_MS = 500;
+
+function startLongPressTimer(e) {
+  const item = e.target.closest('[data-person-item]');
+  if (!item) return;
+  _longPressTarget = item;
+  _longPressTimer = setTimeout(() => {
+    const who = item.dataset.who || '';
+    const anchor = item.dataset.anchor || '';
+    if (who) showRenameModal(who, anchor);
+    _longPressTimer = null;
+  }, LONG_PRESS_MS);
+}
+
+function cancelLongPressTimer() {
+  if (_longPressTimer) {
+    clearTimeout(_longPressTimer);
+    _longPressTimer = null;
+  }
+  _longPressTarget = null;
+}
+
+/** 构建改名浮层 innerHTML（纯函数，插值经 escapeHtml） */
+function buildRenameModalHTML(oldWho) {
+  return (
+    '<div class="rename-card">' +
+    '<p class="rename-title">修改标签</p>' +
+    '<p class="rename-hint">改名后，同一人的养分会合并到新标签下。</p>' +
+    `<input type="text" class="rename-input" value="${escapeHtml(oldWho)}" maxlength="12" placeholder="输入名字">` +
+    '<div class="rename-actions">' +
+    '<button type="button" class="rename-cancel">取消</button>' +
+    '<button type="button" class="rename-confirm">确定</button>' +
+    '</div></div>'
+  );
+}
+
+/**
+ * 弹出改名浮层。用户输入新标签后：
+ * - 新标签与旧标签一致 → 不操作
+ * - 新标签已存在于同关系桶 → 合并（旧标签事件全部改为新标签）
+ * - 新标签不存在 → 仅改名
+ */
+function showRenameModal(oldWho, node) {
+  // 移除已有浮层
+  document.querySelector('.rename-modal')?.remove();
+
+  const modal = document.createElement('div');
+  modal.className = 'rename-modal';
+  modal.innerHTML = buildRenameModalHTML(oldWho);
+  document.body.appendChild(modal);
+
+  const input = modal.querySelector('.rename-input');
+  input?.focus();
+  input?.select();
+
+  const close = () => modal.remove();
+  modal.querySelector('.rename-cancel')?.addEventListener('click', close);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) close();
+  });
+
+  const confirm = () => {
+    const val = (input?.value || '').trim();
+    if (!val) { close(); return; }
+    if (val === oldWho) { close(); return; }
+    const updated = renameWhoInRelation(node, oldWho, val);
+    close();
+    if (updated > 0) {
+      showToast(`已将 ${updated} 条记录合并到「${val}」`);
+      renderMultiElements();
+      renderRegionCapsules();
+      updateRoleForms();
+      updateRegionShapes();
+      renderEmptyState();
+      updateNurtureUI();
+    } else {
+      showToast('没有需要改名的记录');
+    }
+  };
+  modal.querySelector('.rename-confirm')?.addEventListener('click', confirm);
+  input?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); confirm(); }
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+  });
 }
 
 /** 应用动物选中态（视觉 + 无障碍 aria-pressed + 提示文案） */
@@ -823,11 +1084,12 @@ function handleSceneClick(e) {
     return;
   }
 
-  // ③ 生物点击 -> 浇灌反馈 + 养分（eco-tree / eco-flower / eco-seedling 等）
+  // ③ 生物点击 -> 浇灌反馈 + 养分（eco-tree / eco-flower / eco-seedling / 动态 eco-tree-item）
   const creature = e.target.closest('[data-anchor]');
   if (
     creature &&
     (creature.classList.contains('eco-tree') ||
+      creature.classList.contains('eco-tree-item') ||
       creature.classList.contains('eco-flower') ||
       creature.classList.contains('eco-seedling'))
   ) {
@@ -869,6 +1131,8 @@ export function initGarden() {
   if (!scene) return; // 空值容错
 
   renderRelationGraph();
+  renderMultiElements(); // 多元素（家人古树 / 朋友动物）按人动态生成，须在形态/胶囊前
+  applySceneClasses();
   renderNoneFallback();
   updateNurtureUI();
   updateRoleForms();
@@ -882,7 +1146,9 @@ export function initGarden() {
     if (e.detail && e.detail.screenId === 'garden-screen') {
       initGardenCanvas();
       resetSceneSizeCache(); // 首次进入/重新进入，确保重算
+      applySceneClasses();
       renderRelationGraph();
+      renderMultiElements(); // 重新进入时按最新账本重建多元素
       renderNoneFallback();
       updateRegionShapes();
       renderRegionCapsules();

@@ -195,7 +195,23 @@
             <input type="text" placeholder="验证码" style="flex:1">
             <button class="btn-code">获取验证码</button>
           </div>
-          <button class="btn-primary btn-signup" data-goto="garden-screen">种下我的种子</button>
+          <div class="form-field">
+            <label>生日</label>
+            <input type="date" id="account-birthday" max="2026-09-17">
+            <p class="account-age-hint" id="account-age-hint"></p>
+          </div>
+          <div class="form-field">
+            <label>最想先经营的关系（可选）</label>
+            <select id="account-relation" class="account-select">
+              <option value="">暂不选择</option>
+              <option value="family">家人</option>
+              <option value="partner" data-age-restricted>爱人</option>
+              <option value="friend">朋友</option>
+              <option value="child">孩子</option>
+              <option value="colleague">同事</option>
+            </select>
+          </div>
+          <button class="btn-primary btn-signup" id="account-signup-btn" data-goto="garden-screen">种下我的种子</button>
           <p class="signup-link">已有种子？<a href="#" data-goto="login-screen">回到我的花园</a></p>
         </div>
       </div>
@@ -273,11 +289,6 @@
           <!-- 中景层 · 家人（古树）+ 爱人（共生花园） -->
           <div class="garden-layer garden-layer--mid">
             <div class="eco-tree" id="eco-tree" data-anchor="family">
-              <div class="tree-roots"><span class="root"></span><span class="root"></span><span class="root"></span></div>
-              <div class="tree-trunk"><span class="trunk-ring"></span></div>
-              <div class="tree-crowns">
-                <span class="tc tc1"></span><span class="tc tc2"></span><span class="tc tc3"></span>
-              </div>
               <span class="glabel">家人 · 古树</span>
             </div>
 
@@ -310,22 +321,6 @@
               </div>
               <div class="stream-animals" role="group" aria-label="选一位溪边小伙伴">
                 <p class="animal-hint" id="animal-hint">选一位小伙伴吧</p>
-                <button class="animal" type="button" data-animal="fox" aria-pressed="false" title="狐狸 · 灵动聪慧">
-                  <span class="animal-sprite fox-sprite" aria-hidden="true"></span>
-                  <span class="animal-name">狐狸</span>
-                </button>
-                <button class="animal" type="button" data-animal="rabbit" aria-pressed="false" title="兔子 · 温柔陪伴">
-                  <span class="animal-sprite rabbit-sprite" aria-hidden="true"></span>
-                  <span class="animal-name">兔子</span>
-                </button>
-                <button class="animal" type="button" data-animal="squirrel" aria-pressed="false" title="松鼠 · 活泼开心">
-                  <span class="animal-sprite squirrel-sprite" aria-hidden="true"></span>
-                  <span class="animal-name">松鼠</span>
-                </button>
-                <button class="animal" type="button" data-animal="deer" aria-pressed="false" title="小鹿 · 优雅从容">
-                  <span class="animal-sprite deer-sprite" aria-hidden="true"></span>
-                  <span class="animal-name">小鹿</span>
-                </button>
               </div>
               <span class="glabel">朋友 · 流动溪谷</span>
             </div>

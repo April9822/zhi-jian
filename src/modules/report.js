@@ -287,12 +287,12 @@ function buildEmotionHTML(emotion, parties) {
               d.label +
               '</span>' +
               '<div class="emotion-bar-bg"><div class="emotion-bar-fill" style="width:' +
-              Number(data[d.key] || 0) +
+              Number(data[d.key] ?? 0) +
               '%;background:' +
               d.color +
               '"></div></div>' +
               '<span class="emotion-score">' +
-              Number(data[d.key] || 0) +
+              Number(data[d.key] ?? 0) +
               '</span></div>'
           )
           .join('');

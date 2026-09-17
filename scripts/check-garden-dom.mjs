@@ -21,16 +21,8 @@ for (const a of REQUIRED_ANCHORS) {
   if (!new RegExp(`data-anchor="${a}"`).test(html)) fail.push(`缺 data-anchor="${a}"`);
 }
 
-/** 溪边动物组 */
+/** 溪边动物组（容器存在即可；动物由 garden.js::renderPersonCluster 动态生成） */
 if (!/class="stream-animals"/.test(html)) fail.push('缺 .stream-animals 组');
-const animalCount = (html.match(/class="animal"/g) || []).length;
-if (animalCount !== 4) fail.push(`.animal 数量应为 4，实际 ${animalCount}`);
-for (const animal of ['fox', 'rabbit', 'squirrel', 'deer']) {
-  if (!new RegExp(`data-animal="${animal}"`).test(html)) fail.push(`缺 data-animal="${animal}"`);
-}
-const pressedCount = (html.match(/aria-pressed="false"/g) || []).length;
-if (pressedCount < 4) fail.push(`aria-pressed 应至少 4 处，实际 ${pressedCount}`);
-if (!/<button class="animal"/.test(html)) fail.push('.animal 必须是 <button>（无障碍键盘触发）');
 
 /** 旧结构不得残留 */
 for (const legacy of ['animal-zone', 'garden-midlayer', 'garden-fore']) {
@@ -45,4 +37,4 @@ if (fail.length > 0) {
   fail.forEach((f) => console.error(`  ${f}`));
   process.exit(1);
 }
-console.log('✅ 花园五区域 DOM 结构检查通过（6 锚点 + 溪边 4 动物 + 旧结构已清除）');
+console.log('✅ 花园五区域 DOM 结构检查通过（6 锚点 + 动态多元素容器 + 旧结构已清除）');

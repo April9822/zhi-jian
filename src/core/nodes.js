@@ -20,6 +20,15 @@ export const NODES = Object.freeze([
 /** 兜底节点（无名记录）：有数据桶、永不连根脉、无生态区域 */
 export const NONE_ID = 'none';
 
+/**
+ * 关系元素数量上限（便于集中调整）。
+ * 家人古树合计上限 6 棵、朋友动物上限 5 只；其余关系不封顶。
+ * 仅作「数据写入封顶」依据（见 core/state.js::applyAnalysisToGarden），
+ * 不直接决定花园渲染数量。
+ * @type {Readonly<Record<string, number>>}
+ */
+export const RELATION_CAPS = Object.freeze({ family: 6, friend: 5 });
+
 /** 全部节点 id（含 none）——数据层遍历用 */
 export const ALL_NODE_IDS = Object.freeze([...NODES.map((n) => n.id), NONE_ID]);
 

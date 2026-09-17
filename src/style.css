@@ -256,8 +256,8 @@ textarea:focus{outline:none;border-color:var(--gold);background:var(--neutral-wh
 .emotion-card h4{font-size:15px;margin-bottom:14px;color:var(--navy)}
 .emotion-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .emotion-label{width:70px;font-size:12px;color:var(--text-secondary);flex-shrink:0;text-align:right}
-.emotion-bar-bg{flex:1;height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden}
-.emotion-bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.emotion-bar-bg{flex:1;min-width:0;height:10px;background:#f1f5f9;border-radius:5px;overflow:hidden;position:relative}
+.emotion-bar-fill{display:block;width:0;height:100%;border-radius:4px;background:#E08D79;transform-origin:left center;transition:width 1s ease}
 .emotion-score{width:28px;font-size:12px;font-weight:600;color:var(--navy);text-align:right}
 .emotion-summary{margin-top:12px;padding-top:10px;border-top:1px solid var(--warm-border);font-size:13px;color:var(--text-secondary);line-height:1.6}
 
@@ -629,7 +629,10 @@ canvas.garden-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-ind
 @keyframes fireFlicker{0%,100%{transform:scaleY(1);opacity:.85}50%{transform:scaleY(1.15);opacity:1}}
 
 /* --- 中景 · 家人（古树，左）+ 爱人（共生花园，右） --- */
-.eco-tree{position:absolute;left:24%;top:40%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 6px 20px rgba(60,40,20,.2));pointer-events:auto;cursor:pointer}
+.eco-tree{position:absolute;left:24%;top:40%;transform:translate(-50%,-50%);display:flex;flex-direction:row;align-items:flex-end;justify-content:center;gap:16px;flex-wrap:wrap;max-width:84%;filter:drop-shadow(0 6px 20px rgba(60,40,20,.2));pointer-events:auto;cursor:pointer}
+.eco-tree>.glabel{position:absolute;top:-18px;left:50%;transform:translateX(-50%);white-space:nowrap}
+/* 关系标签胶囊：绝对定位，脱离 flex 流（避免撑宽家人横向排布），各区域统一 */
+.region-capsule{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(100,80,60,.45);white-space:nowrap;pointer-events:none;text-align:center}
 .tree-roots{display:flex;gap:3px;margin-bottom:-2px}.tree-roots .root{display:block;width:12px;height:16px;background:linear-gradient(180deg,#A08060,#7A5E40);border-radius:60% 60% 0 0}
 .tree-roots .root:first-child{transform:rotate(-20deg)}.tree-roots .root:last-child{transform:rotate(20deg)}
 .tree-trunk{width:18px;height:85px;background:linear-gradient(180deg,#C4A882 0%,#A08060 50%,#7A5E40 100%);border-radius:4px 4px 6px 6px;position:relative}
@@ -642,6 +645,22 @@ canvas.garden-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-ind
 @keyframes tcBreathe1{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.04)}}
 @keyframes tcBreathe2{0%,100%{transform:scale(1)}50%{transform:scale(1.05) translateY(-2px)}}
 @keyframes tcBreathe3{0%,100%{transform:scale(1)}50%{transform:scale(1.03) translateY(-1px)}}
+
+/* 多元素：家人古树（按人动态生成，复用树形态，缩小以横向均分、随养分长高） */
+.eco-tree-item{position:relative;display:flex;flex-direction:column;align-items:center;width:42px}
+.eco-tree-item .tree-roots{margin-bottom:-2px}
+.eco-tree-item .tree-roots .root{width:7px;height:11px}
+.eco-tree-item .tree-roots .root:first-child{transform:rotate(-20deg)}
+.eco-tree-item .tree-roots .root:last-child{transform:rotate(20deg)}
+.eco-tree-item .tree-trunk{width:10px;height:44px}
+.eco-tree-item .trunk-ring{top:55%}
+.eco-tree-item .tree-crowns{width:52px;height:46px;top:-30px}
+.eco-tree-item .tc1{width:50px;height:44px}
+.eco-tree-item .tc2{width:40px;height:34px}
+.eco-tree-item .tc3{width:34px;height:30px}
+
+/* 多元素小标签（树/动物下方：该人 who，如「妈妈」） */
+.who-label{font-size:10px;color:#8A7A65;margin-top:2px;text-align:center;max-width:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:"PingFang SC","Microsoft YaHei",sans-serif}
 
 .eco-flower{position:absolute;left:56%;top:42%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 2px 8px rgba(60,40,20,.1));pointer-events:auto;cursor:pointer}
 .flower-stem{width:3px;height:65px;background:linear-gradient(180deg,#8DB09A,#6B8A6B);border-radius:2px}
@@ -733,7 +752,7 @@ canvas.garden-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-ind
 /* --- 响应式（≤480px：紧凑排布） --- */
 @media(max-width:480px){
   .tree-trunk{height:65px}.tc1{width:75px;height:65px;top:5px}.tc2{width:60px;height:50px;top:20px}.tc3{width:50px;height:45px;top:24px}
-  .eco-tree{left:22%;top:38%}
+  .eco-tree{left:50%;top:34%;gap:5px}.eco-tree-item{width:30px}.eco-tree-item .tree-trunk{height:30px}.eco-tree-item .tree-crowns{width:36px;height:32px;top:-20px}.eco-tree-item .tc1{width:34px;height:30px}.eco-tree-item .tc2{width:28px;height:24px}.eco-tree-item .tc3{width:24px;height:20px}
   .eco-flower{left:56%;top:42%}.flower-stem{height:50px}
   .eco-camp{left:82%;top:28%}
   .stream-animals{gap:6px;padding:6px 10px}
@@ -751,4 +770,87 @@ canvas.garden-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-ind
   .animal{transform:scale(.85);padding:4px 2px}
   .animal-sprite{width:22px;height:20px}
   .glabel{display:none}
+}
+
+/* ============================================================
+   注册 · 年龄输入（#10）
+   ============================================================ */
+.account-age-hint{font-size:12px;color:#A09080;margin:6px 0 0;min-height:14px}
+.account-select{width:100%;padding:10px 12px;border:1px solid var(--warm-border);border-radius:8px;background:var(--neutral-white);font-size:14px;font-family:inherit;color:var(--text-primary)}
+
+/* ============================================================
+   季节视觉差异强化（#4）—— 仅覆盖背景 + 显隐装饰，不动氧气/养分逻辑
+   ============================================================ */
+/* 各季背景渐变（覆盖 .garden-scene 默认日出渐变） */
+#garden-scene.season-winter{background:linear-gradient(180deg,#EAF2F8 0%,#DCE9F2 30%,#CADDEA 60%,#B9CFE0 100%)}
+#garden-scene.season-spring{background:linear-gradient(180deg,#EAF7E6 0%,#DFF3D6 25%,#CFEBBE 55%,#BBDDA0 100%)}
+#garden-scene.season-summer{background:linear-gradient(180deg,#FFF3D6 0%,#FDE7B8 25%,#F8DA9A 55%,#F0C97C 100%)}
+#garden-scene.season-autumn{background:linear-gradient(180deg,#FBEFD6 0%,#F4DCAC 25%,#E9C585 55%,#D9A85F 100%)}
+
+/* 装饰层（不阻挡交互） */
+.season-deco{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+
+/* 冬 · 下雪 */
+.snow{position:absolute;top:-8%;width:6px;height:6px;border-radius:50%;background:#FCFBF8;opacity:.85;box-shadow:0 0 4px rgba(252,251,248,.6);animation:snowFall linear infinite}
+@keyframes snowFall{0%{transform:translateY(-12px)}100%{transform:translateY(470px)}}
+
+/* 春 · 小鸟（纯 CSS） */
+.bird{position:absolute;top:15%;left:20%;width:10px;height:10px;border-radius:50%;background:#3a3a3a;animation:birdFloat 7s ease-in-out infinite}
+.bird::before,.bird::after{content:"";position:absolute;top:-3px;left:2px;width:15px;height:8px;background:#5a5a5a;border-radius:50%;transform-origin:left center;animation:birdFlap .45s ease-in-out infinite alternate}
+.bird::before{transform:rotate(-20deg)}
+.bird::after{transform:rotate(20deg);animation-delay:.22s}
+@keyframes birdFlap{from{transform:rotate(-24deg)}to{transform:rotate(24deg)}}
+@keyframes birdFloat{0%{transform:translate(0,0)}50%{transform:translate(40px,-12px)}100%{transform:translate(0,0)}}
+
+/* 秋 · 金黄落叶 + 成熟果实 */
+.autumn-leaf{position:absolute;top:-8%;width:12px;height:9px;background:linear-gradient(135deg,#E0A23C,#C9772E);border-radius:60% 0 60% 0;animation:leafFall 6s ease-in-out infinite}
+.fruit{position:absolute;bottom:20%;right:22%;width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#F08A4A,#B23B12);box-shadow:0 0 10px rgba(200,80,30,.5);animation:fruitSway 3.5s ease-in-out infinite}
+@keyframes fruitSway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+
+/* 夏 · 炙热太阳（强化阳光 + 橙色高光） */
+#garden-scene.season-summer .garden-sun{width:84px;height:84px;background:radial-gradient(circle,rgba(255,244,210,1) 0%,rgba(255,180,80,.75) 35%,transparent 72%);box-shadow:0 0 40px rgba(255,170,70,.45);animation:sunHot 2.6s ease-in-out infinite}
+@keyframes sunHot{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(1.12);opacity:1}}
+
+/* 18 岁门槛：未满 18 隐藏爱人小花（古树/动物/新芽不受影响） */
+#garden-scene.age-restricted .eco-flower{display:none}
+
+/* ============================================================
+   荒芜态（首次进入 / 无任何关系记录）
+   全部生态元素隐藏，仅留居中文案 + 一颗待萌芽的种子。
+   ============================================================ */
+#garden-scene.garden-empty .eco-tree,
+#garden-scene.garden-empty .eco-flower,
+#garden-scene.garden-empty .eco-stream,
+#garden-scene.garden-empty .eco-nursery,
+#garden-scene.garden-empty .eco-camp{display:none}
+#garden-scene.garden-empty .root-vein-hit,
+#garden-scene.garden-empty .glabel,
+#garden-scene.garden-empty .region-capsule{display:none}
+
+.garden-empty-state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;pointer-events:none}
+.garden-empty-state::before{content:"";width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#D4C4A0 0%,#B8A682 60%,#9A8866 100%);box-shadow:0 4px 14px rgba(120,100,60,.25);margin-bottom:14px;animation:seedPulse 3s ease-in-out infinite}
+@keyframes seedPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.08);opacity:.85}}
+.garden-empty-state .empty-title{font-size:15px;color:#8A7A65;font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0 0 6px}
+.garden-empty-state .empty-subtitle{font-size:12px;color:#B0A090;font-family:"PingFang SC","Microsoft YaHei",sans-serif;margin:0}
+
+/* ============================================================
+   长按改名浮层（data-person-item 长按 500ms 触发）
+   ============================================================ */
+.rename-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);animation:renameFadeIn .15s ease}
+@keyframes renameFadeIn{from{opacity:0}to{opacity:1}}
+.rename-card{width:280px;padding:20px 18px 16px;border-radius:14px;background:var(--neutral-white,#FFFBF5);box-shadow:0 8px 32px rgba(60,40,20,.18);animation:renameSlideUp .2s ease}
+@keyframes renameSlideUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+.rename-title{font-size:16px;font-weight:600;color:var(--text-primary,#3D2E1E);margin:0 0 4px;font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+.rename-hint{font-size:11px;color:var(--text-muted,#A09080);margin:0 0 12px;line-height:1.4;font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+.rename-input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--warm-border,#D4C4A8);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text-primary,#3D2E1E);background:var(--neutral-white,#FFFBF5);outline:none}
+.rename-input:focus{border-color:var(--warm-accent,#E08D79);box-shadow:0 0 0 3px rgba(224,141,121,.12)}
+.rename-actions{display:flex;gap:8px;margin-top:14px;justify-content:flex-end}
+.rename-actions button{border:none;border-radius:8px;padding:8px 18px;font-size:14px;font-family:inherit;cursor:pointer;transition:background .15s}
+.rename-cancel{background:#F0E8DC;color:#8A7A65}
+.rename-confirm{background:var(--warm-accent,#E08D79);color:var(--neutral-white,#FCFBF8)}
+.rename-confirm:hover{background:#D07D69}
+
+@media(max-width:320px){
+  /* 装饰元素可降级 */
+  .season-deco{display:none}
 }
