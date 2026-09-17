@@ -108,11 +108,32 @@ export const SYSTEM_PROMPT = `你是「知间 InBetween」——一位智慧、�
 export const BALANCE_CHECK_PROMPT = `请检查上面的分析：1）责任占比是否基于具体行为的情绪词和语气给出了真实差异（严禁均分或50/50）；2）是否识别了所有参与者；3）每人的标签是否使用了描述而非"A/B/C"；4）是否有一方被更严厉地评判？如果是，请重新平衡；5）分析中不应出现"知间暂停解说"等元描述。如果分析是平衡的，直接返回原来的 JSON，不要修改；如果需要调整，返回修改后的完整 JSON。只返回 JSON，不要加任何其他文字。`;
 
 // ============================================================
+// 对话校验（统一口径，供 analyze.js 与 vite.config.js 复用）
+// ============================================================
+/**
+ * 校验对话是否满足分析条件（≥3 行有意义对话）。
+ * @param {string} conversation
+ * @returns {{ok: boolean, reason?: string}}
+ */
+export function validateConversation(conversation) {
+  if (!conversation || typeof conversation !== 'string') {
+    return { ok: false, reason: '请先输入对话内容' };
+  }
+  const lines = conversation.split(/\r?\n/).filter((l) => l.trim().length > 0);
+  if (lines.length < 3) {
+    return { ok: false, reason: '对话内容太短，请至少输入 3 行有意义的对话' };
+  }
+  return { ok: true };
+}
+
+// ============================================================
 // 构建用户 Prompt（根据身份标注）
 // ============================================================
 export function buildUserPrompt(conversation, userRole) {
-  const roleLabel = userRole === 'A' ? 'A' : userRole === 'B' ? 'B' : '未标注（AI 自动判断）';
-  return `用户标注自己的身份为：${roleLabel}。
+  const roleLine = userRole
+    ? `用户标注自己的身份为：${userRole}`
+    : '用户未标注身份，请根据对话内容自动判断';
+  return `${roleLine}。
 
 对话记录：
 ${conversation}

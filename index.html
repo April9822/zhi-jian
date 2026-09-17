@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -6,12 +6,12 @@
   <title>知间 InBetween — 理解人与人之间</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
-<body>
+<body data-screen="intro-screen">
   <div id="app">
 
     <main id="intro-screen" class="screen active intro-screen">
-      <canvas id="skyCanvas"></canvas>
-      <canvas id="starCanvas"></canvas>
+      <canvas id="skyCanvas" class="sky-canvas"></canvas>
+      <canvas id="starCanvas" class="star-canvas"></canvas>
       <div class="scene-stage">
 
         <!-- Scene 1: 0-4s -->
@@ -102,14 +102,14 @@
       </div>
 
       <div class="scene-buttons">
-        <button class="intro-btn primary" onclick="window.goToInput(event)">开始倾诉</button>
-        <button class="intro-btn secondary" onclick="window.goToSpace(event)">以后再说</button>
+        <button class="intro-btn primary">开始倾诉</button>
+        <button class="intro-btn secondary">以后再说</button>
       </div>
     </main>
 
     <!-- ====== 知间空间 ====== -->
-    <main id="space-screen" class="screen">
-      <canvas id="warmCanvas"></canvas>
+    <main id="space-screen" class="screen space-screen">
+      <canvas id="warmCanvas" class="warm-canvas"></canvas>
       <div class="space-container">
         <!-- ① 品牌 Hero -->
         <div class="space-hero">
@@ -145,7 +145,7 @@
             <div class="benefit-card">
               <img class="space-card-icon" src="/icon-forms.png" alt="" width="32" height="32">
               <h3>不同关系不同形态</h3>
-              <p>家人是树、伴侣是花、朋友是游鱼，各有生命</p>
+              <p>家人是树、爱人是花、朋友是游鱼，各有生命</p>
             </div>
             <div class="benefit-card">
               <img class="space-card-icon" src="/icon-companion.png" alt="" width="32" height="32">
@@ -161,7 +161,7 @@
           <div class="growth-card">
             <img class="space-card-icon" src="/icon-garden.png" alt="" width="36" height="36">
             <p>每一次对话，都会留下痕迹。<br>它们化作<strong>关系养分</strong>，滋养属于你的生命空间。</p>
-            <p>家人是一棵古树，承载岁月的根系<br>伴侣是一朵花，需要被看见与呵护<br>朋友是一群游鱼，在陪伴中靠近又远游</p>
+            <p>家人是一棵古树，承载岁月的根系<br>爱人是一朵花，需要被看见与呵护<br>朋友是一群游鱼，在陪伴中靠近又远游</p>
             <p>它们不是冰冷的数据，<br>而是会随着你的理解、表达和改变<br><strong>慢慢生长的关系生命</strong></p>
             <p class="growth-ending">知间不评判你的过去，只是陪你看见——<br>你与每个人之间，正在如何靠近。</p>
           </div>
@@ -171,8 +171,8 @@
         <div class="space-section signup-section">
           <h2 class="space-section-title">种下你的种子</h2>
           <p class="signup-desc">每一次理解，都在滋养你的关系花园</p>
-          <button class="btn-primary btn-signup" onclick="document.getElementById('space-screen').classList.remove('active');document.getElementById('account-screen').classList.add('active')">种下我的种子</button>
-          <p class="signup-link">已有种子？<a href="#" onclick="document.getElementById('space-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active')">回到我的花园</a></p>
+          <button class="btn-primary btn-signup" data-goto="account-screen">种下我的种子</button>
+          <p class="signup-link">已有种子？<a href="#" data-goto="login-screen">回到我的花园</a></p>
         </div>
 
         <p class="footer-brand">知间 InBetween</p>
@@ -180,7 +180,7 @@
     </main>
 
     <!-- ====== 种下种子（注册） ====== -->
-    <main id="account-screen" class="screen">
+    <main id="account-screen" class="screen account-screen">
       <div class="account-container">
         <div class="account-hero">
           <h1 class="account-title">种下你的种子</h1>
@@ -195,14 +195,14 @@
             <input type="text" placeholder="验证码" style="flex:1">
             <button class="btn-code">获取验证码</button>
           </div>
-          <button class="btn-primary btn-signup" onclick="document.getElementById('account-screen').classList.remove('active');document.getElementById('garden-screen').classList.add('active');document.body.style.overflow='auto'">种下我的种子</button>
-          <p class="signup-link">已有种子？<a href="#" onclick="document.getElementById('account-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active')">回到我的花园</a></p>
+          <button class="btn-primary btn-signup" data-goto="garden-screen">种下我的种子</button>
+          <p class="signup-link">已有种子？<a href="#" data-goto="login-screen">回到我的花园</a></p>
         </div>
       </div>
     </main>
 
     <!-- ====== 回到花园（登录） ====== -->
-    <main id="login-screen" class="screen">
+    <main id="login-screen" class="screen login-screen">
       <div class="account-container">
         <div class="account-hero">
           <h1 class="account-title">回到你的花园</h1>
@@ -210,7 +210,7 @@
         </div>
         <div class="account-form">
           <div class="form-field">
-          <img class="account-icon" src="/icon-garden.png" alt="" width="48" height="48">
+            <img class="account-icon" src="/icon-garden.png" alt="" width="48" height="48">
             <label>邮箱</label>
             <input type="email" placeholder="输入你的邮箱地址">
           </div>
@@ -222,11 +222,12 @@
             <input type="text" placeholder="验证码" style="flex:1">
             <button class="btn-code">获取验证码</button>
           </div>
+        </div>
       </div>
     </main>
 
     <!-- ====== 关系花园 · 主页 ====== -->
-    <main id="garden-screen" class="screen">
+    <main id="garden-screen" class="screen garden-screen">
       <!-- 顶部导航栏 -->
       <header class="garden-topbar">
         <span class="garden-logo">知间</span>
@@ -238,17 +239,17 @@
         <!-- 关系养分总览卡 -->
         <section class="nurture-card">
           <div class="nurture-head">
-            <span class="nurture-icon">🌱</span>
+            <span class="nurture-icon" aria-hidden="true"></span>
             <span class="nurture-label">关系养分</span>
             <span class="nurture-value" id="nurture-total">0</span>
           </div>
           <p class="nurture-status" id="nurture-status">你的关系正在慢慢生长</p>
-          <button class="nurture-cta" id="nurture-practice-btn">🌿 重新模拟对话</button>
+          <button class="nurture-cta" id="nurture-practice-btn">重新模拟对话</button>
         </section>
 
-        <!-- 关系花园场景 -->
-        <div class="garden-scene">
-          <canvas id="gardenCanvas"></canvas>
+        <!-- 关系花园场景（五区域纵深构图：远/中/近景 + 核心） -->
+        <div class="garden-scene" id="garden-scene">
+          <canvas id="gardenCanvas" class="garden-canvas"></canvas>
 
           <!-- 天空 + 远山（中式水墨剪影） -->
           <div class="garden-bg">
@@ -260,56 +261,77 @@
             </div>
           </div>
 
-          <!-- 中景 · 大树（家人）+ 石灯 -->
-          <div class="garden-midlayer">
-            <div class="eco-tree" id="eco-tree">
+          <!-- 远景层 · 同事 · 林间营地（最小 / 最冷） -->
+          <div class="garden-layer garden-layer--far">
+            <div class="eco-camp" id="eco-camp" data-anchor="colleague">
+              <span class="camp-tent"></span>
+              <span class="camp-fire"></span>
+              <span class="glabel">同事 · 林间营地</span>
+            </div>
+          </div>
+
+          <!-- 中景层 · 家人（古树）+ 爱人（共生花园） -->
+          <div class="garden-layer garden-layer--mid">
+            <div class="eco-tree" id="eco-tree" data-anchor="family">
               <div class="tree-roots"><span class="root"></span><span class="root"></span><span class="root"></span></div>
               <div class="tree-trunk"><span class="trunk-ring"></span></div>
               <div class="tree-crowns">
                 <span class="tc tc1"></span><span class="tc tc2"></span><span class="tc tc3"></span>
               </div>
-              <div class="tree-ribbon">🎐</div>
               <span class="glabel">家人 · 古树</span>
             </div>
-            <!-- 中式石灯 -->
-            <div class="stone-lantern"><span class="lantern-light"></span></div>
-          </div>
 
-          <!-- 近景 · 花丛 + 小动物们 + 幼苗 -->
-          <div class="garden-fore">
-            <!-- 花丛（伴侣） -->
-            <div class="eco-flower" id="eco-flower">
+            <div class="eco-flower" id="eco-flower" data-anchor="partner">
               <div class="flower-stem"></div>
               <div class="flower-head">
                 <span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span><span class="fh-petal"></span>
                 <span class="fh-core"></span>
               </div>
-              <span class="glabel">伴侣 · 花</span>
+              <span class="glabel">爱人 · 花</span>
+            </div>
+          </div>
+
+          <!-- 前景层 · 孩子（新生苗圃）+ 朋友（流动溪谷，含溪边动物）+ 自我（幼苗） -->
+          <div class="garden-layer garden-layer--near">
+            <!-- 新生苗圃（孩子） -->
+            <div class="eco-nursery" id="eco-nursery" data-anchor="child">
+              <span class="nursery-bed"></span>
+              <span class="seedling seedling-a"></span>
+              <span class="seedling seedling-b"></span>
+              <span class="glabel">孩子 · 新生苗圃</span>
             </div>
 
-            <!-- 小动物选择区（朋友） -->
-            <div class="animal-zone" id="animal-zone">
-              <p class="animal-hint" id="animal-hint">选一位小伙伴吧</p>
-              <div class="animal fox" data-animal="fox" title="狐狸 · 灵动聪慧">
-                <span class="animal-sprite fox-sprite"></span>
-                <span class="animal-name">狐狸</span>
+            <!-- 流动溪谷（朋友）—— 溪边动物迁移至此 -->
+            <div class="eco-stream" id="eco-stream" data-anchor="friend">
+              <div class="stream-bed">
+                <span class="stream-stone s1"></span><span class="stream-stone s2"></span><span class="stream-stone s3"></span>
+                <span class="stream-fish f1"></span><span class="stream-fish f2"></span>
+                <span class="stream-firefly g1"></span><span class="stream-firefly g2"></span>
               </div>
-              <div class="animal rabbit" data-animal="rabbit" title="兔子 · 温柔陪伴">
-                <span class="animal-sprite rabbit-sprite"></span>
-                <span class="animal-name">兔子</span>
+              <div class="stream-animals" role="group" aria-label="选一位溪边小伙伴">
+                <p class="animal-hint" id="animal-hint">选一位小伙伴吧</p>
+                <button class="animal" type="button" data-animal="fox" aria-pressed="false" title="狐狸 · 灵动聪慧">
+                  <span class="animal-sprite fox-sprite" aria-hidden="true"></span>
+                  <span class="animal-name">狐狸</span>
+                </button>
+                <button class="animal" type="button" data-animal="rabbit" aria-pressed="false" title="兔子 · 温柔陪伴">
+                  <span class="animal-sprite rabbit-sprite" aria-hidden="true"></span>
+                  <span class="animal-name">兔子</span>
+                </button>
+                <button class="animal" type="button" data-animal="squirrel" aria-pressed="false" title="松鼠 · 活泼开心">
+                  <span class="animal-sprite squirrel-sprite" aria-hidden="true"></span>
+                  <span class="animal-name">松鼠</span>
+                </button>
+                <button class="animal" type="button" data-animal="deer" aria-pressed="false" title="小鹿 · 优雅从容">
+                  <span class="animal-sprite deer-sprite" aria-hidden="true"></span>
+                  <span class="animal-name">小鹿</span>
+                </button>
               </div>
-              <div class="animal squirrel" data-animal="squirrel" title="松鼠 · 活泼开心">
-                <span class="animal-sprite squirrel-sprite"></span>
-                <span class="animal-name">松鼠</span>
-              </div>
-              <div class="animal deer" data-animal="deer" title="小鹿 · 优雅从容">
-                <span class="animal-sprite deer-sprite"></span>
-                <span class="animal-name">小鹿</span>
-              </div>
+              <span class="glabel">朋友 · 流动溪谷</span>
             </div>
 
-            <!-- 幼苗（自我） -->
-            <div class="eco-seedling" id="eco-seedling">
+            <!-- 幼苗（自我）— 核心，中央偏下 -->
+            <div class="eco-seedling" id="eco-seedling" data-anchor="self">
               <div class="seedling-mound"></div>
               <span class="sprout"></span>
               <span class="glabel">自我 · 新芽</span>
@@ -321,17 +343,51 @@
         </div>
       </div>
 
-      <!-- 底部导航栏 -->
+      <!-- 底部导航栏（图标为内联 SVG 描边图标，stroke=currentColor 随 active 态自动变色） -->
       <nav class="garden-bottomnav">
-        <button class="nav-item active" data-nav="garden"><span class="nav-icon">🏡</span><span>花园</span></button>
-        <button class="nav-item" data-nav="talk" id="nav-talk"><span class="nav-icon">💬</span><span>倾诉</span></button>
-        <button class="nav-item" data-nav="record" id="nav-record"><span class="nav-icon">📋</span><span>记录</span></button>
-        <button class="nav-item" data-nav="me" id="nav-me"><span class="nav-icon">👤</span><span>我的</span></button>
+        <button class="nav-item active" data-nav="garden">
+          <!-- 花园：一株带两片叶子的幼苗（呼应花园页的 .eco-seedling 视觉语言） -->
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M12 21V10.5" />
+            <path d="M12 14.5C12 11.6 9.8 9.4 6.9 9.4C6.9 12.3 9.1 14.5 12 14.5Z" />
+            <path d="M12 11.6C12 9.1 13.9 7.2 16.4 7.2C16.4 9.7 14.5 11.6 12 11.6Z" />
+          </svg>
+          <span>花园</span>
+        </button>
+        <button class="nav-item" data-nav="talk" id="nav-talk">
+          <!-- 倾诉：对话气泡（圆角矩形 + 左下角尾巴） -->
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M20 12.4C20 16.2 16.4 19.2 12 19.2C10.9 19.2 9.9 19 9 18.7L5 20L6.6 16.4C4.9 15.2 4 13.4 4 11.4C4 7.6 7.6 4.6 12 4.6C16.4 4.6 20 7.6 20 12.4Z" />
+          </svg>
+          <span>倾诉</span>
+        </button>
+        <button class="nav-item" data-nav="record" id="nav-record" data-toast="记录 · 即将上线">
+          <!-- 记录：日历（外框 + 顶部两个挂钩 + 标题分隔线 + 两条日期线） -->
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="4" y="5.6" width="16" height="14.4" rx="2.4" />
+            <path d="M4 10.2H20" />
+            <path d="M8.6 3.4V7.4" />
+            <path d="M15.4 3.4V7.4" />
+            <path d="M8.4 13.8H10.4" />
+            <path d="M13.6 13.8H15.6" />
+            <path d="M8.4 17H10.4" />
+            <path d="M13.6 17H15.6" />
+          </svg>
+          <span>记录</span>
+        </button>
+        <button class="nav-item" data-nav="me" id="nav-me" data-toast="我的 · 即将上线">
+          <!-- 我的：标准人形轮廓（圆头 + 肩线弧） -->
+          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="8" r="3.7" />
+            <path d="M4.8 20V18.9C4.8 15.9 7.2 13.6 10 13.6H14C16.8 13.6 19.2 15.9 19.2 18.9V20" />
+          </svg>
+          <span>我的</span>
+        </button>
       </nav>
     </main>
 
     <!-- ====== 输入页 ====== -->
-    <main id="input-screen" class="screen">
+    <main id="input-screen" class="screen input-screen">
       <div class="hero">
         <h1 class="brand">知间</h1>
         <p class="subtitle">理解人与人之间</p>
@@ -375,9 +431,9 @@
     </main>
 
     <!-- ====== 加载/报告 ====== -->
-    <div id="loading-screen" class="screen">
+    <main id="loading-screen" class="screen loading-screen">
       <div class="loading-card">
-        <div class="loading-icon">🌿</div>
+        <div class="loading-icon" aria-hidden="true"></div>
         <div class="loading-msg-wrap">
           <p class="loading-msg" id="lm1">我在听你们刚才的对话……</p>
           <p class="loading-msg" id="lm2">有些话说出口的，和听到的，常常不一样</p>
@@ -385,9 +441,9 @@
           <p class="loading-msg" id="lm4">快了，让我把看到的整理给你……</p>
         </div>
       </div>
-    </div>
+    </main>
 
-    <main id="report-screen" class="screen">
+    <main id="report-screen" class="screen report-screen">
       <div class="report-container">
         <section id="screen-1" class="report-screen screen-1"><h2 class="section-label"><span class="zi-ring"></span>核心洞察</h2><div id="core-insight" class="core-insight"></div></section>
         <section id="screen-responsibility" class="report-screen screen-responsibility hidden"><h2 class="section-label"><span class="zi-lozenge"></span>双方各自的表达方式占比</h2><div id="responsibility-container"></div></section>
@@ -398,7 +454,7 @@
         <section id="screen-relief" class="report-screen screen-relief hidden"><h2 class="section-label"><span class="zi-dot"></span>试试这些方法</h2><div id="relief-container"></div><p id="relief-note" class="relief-note hidden"></p></section>
         <section id="screen-5" class="report-screen screen-5"><h2 class="section-label"><span class="zi-ring"></span>破局与分享</h2><div id="icebreaker-container" class="icebreaker-container"></div><div id="share-section" class="share-section"><button id="share-btn" class="btn-primary">分享 TA 的那一半</button><p class="share-hint">TA 只会看到自己的分析部分。你的隐私是安全的。</p></div></section>
         <section id="screen-total" class="report-screen screen-total hidden"><h2 class="section-label"><span class="zi-lozenge"></span>总体洞察</h2><div id="total-container"></div></section>
-        <footer class="report-footer"><button id="switch-view-btn" class="btn-secondary" style="margin-bottom:8px">🔄 切换视角</button><button id="new-analysis-btn" class="btn-secondary">开始新的分析</button><p class="register-teaser">🌱 想记住这次分析，看到自己的成长？<a href="#" id="register-teaser-link">创建账号</a></p><p class="footer-brand">知间 InBetween · 理解人与人之间</p></footer>
+        <footer class="report-footer"><button id="switch-view-btn" class="btn-secondary" style="margin-bottom:8px">切换视角</button><button id="new-analysis-btn" class="btn-secondary">开始新的分析</button><p class="register-teaser">想记住这次分析，看到自己的成长？<a href="#" id="register-teaser-link">创建账号</a></p><p class="footer-brand">知间 InBetween · 理解人与人之间</p></footer>
       </div>
     </main>
 
