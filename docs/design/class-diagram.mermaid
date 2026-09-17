@@ -1,0 +1,179 @@
+%% 知间 InBetween · 花园页关系图重构 · 类图 / 数据结构与模块接口
+%% 说明：core 层无业务、被依赖；modules 层有业务、依赖 core；modules 之间零直接 import。
+
+classDiagram
+    %% ============================================
+    %% core 层：基础能力（不 import modules）
+    %% ============================================
+
+    class State {
+        <<singleton>>
+        +string conversation
+        +string inputMode
+        +string|null currentViewParty
+        +object|null shareAnalysisRef
+        +boolean shareBound
+        +number lastClickX
+        +number lastClickY
+    }
+
+    class Dom {
+        <<module>>
+        +$(sel, root) Element|null
+        +$$(sel, root) Element[]
+        +byId(id) Element|null
+        +lazyDom(map) Record~string,getter~
+    }
+
+    class Router {
+        <<module>>
+        +string[] SCREEN_IDS
+        +object BODY_STYLE
+        +goTo(screenId) void
+        +initRouter() void
+    }
+
+    class Utils {
+        <<module>>
+        +escapeHtml(s) string
+        +showToast(msg, ms) void
+        +debounce(fn, wait) Function
+    }
+
+    %% ============================================
+    %% modules 层：业务模块
+    %% ============================================
+
+    class WelcomeModule {
+        <<module>>
+        +initWelcome() void
+        +rippleAt(x, y) void
+    }
+
+    class InputModule {
+        <<module>>
+        +initInput() void
+        +updateAnalyzeButton() void
+        +startAnalysis() Promise~void~
+    }
+
+    class ReportModule {
+        <<module>>
+        +initReport() void
+        +renderReport(analysis) void
+        +calcNurtureScore(items) number
+        +buildPartyLabelMap(parties) Map
+        +partyName(map, id) string
+        +handleSharedLink() boolean
+        +renderSharedView(payload) void
+    }
+
+    class SpaceModule {
+        <<module>>
+        +initSpace() void
+        +goToSpaceTransition() void
+    }
+
+    class GardenModule {
+        <<module>>
+        +RoleNode[] ROLE_NODES
+        +object FALLBACK_ANCHORS
+        +object STATUS_TEXT
+        +string[] SEASONS
+        +initGarden() void
+        +initGardenCanvas() void
+        +renderRelationGraph() void
+        +updateRelationshipBands() void
+        +nurtureTier(total) string
+        +bandPath(a, b) string
+        +getSeasonIndex() number
+        +getSeasonName() string
+        +getNurture() number
+        +addNurture(n) void
+        +updateNurtureUI() void
+        +waterCreature(elId) void
+        +waterGarden() void
+    }
+
+    %% ============================================
+    %% 数据结构
+    %% ============================================
+
+    class RoleNode {
+        +string id
+        +string label
+        +string elId
+        +string anchorKey
+        +boolean present
+    }
+
+    class Band {
+        +string from
+        +string to
+        +number strength
+        +boolean active
+        +string trend
+    }
+
+    class Anchor {
+        +number x
+        +number y
+    }
+
+    class BandTier {
+        <<enumeration>>
+        thin
+        mid
+        thick
+        full
+    }
+
+    class ApiCore {
+        <<module>>
+        +string SYSTEM_PROMPT
+        +string BALANCE_CHECK_PROMPT
+        +validateConversation(conv) object
+        +buildUserPrompt(conv, userRole) string
+        +runAnalysis(conv, userRole, apiKey) Promise
+    }
+
+    %% ============================================
+    %% 关系
+    %% ============================================
+
+    %% modules 依赖 core
+    WelcomeModule ..> Router : goTo()
+    InputModule ..> State : read/write conversation
+    InputModule ..> Utils : showToast
+    ReportModule ..> State : currentViewParty
+    ReportModule ..> Utils : escapeHtml / showToast
+    SpaceModule ..> Router : goTo()
+    GardenModule ..> State : (只读共享态)
+    GardenModule ..> Dom : byId / $
+    GardenModule ..> Utils : showToast
+    Router ..> Dom : byId
+    Router ..> Utils : showToast
+
+    %% 花园模块内部结构
+    GardenModule "1" --> "*" RoleNode : ROLE_NODES
+    GardenModule "1" --> "*" Band : 生成
+    GardenModule --> BandTier : nurtureTier() 产出
+    RoleNode --> Anchor : getBoundingClientRect 换算
+    Band --> Anchor : 起止锚点
+    Band --> BandTier : 驱动线宽/透明度
+
+    %% API 层
+    ApiCore ..> ApiCore : validateConversation 复用
+
+    %% 主入口编排（main.js）
+    class Main {
+        <<orchestrator>>
+        +imports 所有 core + modules
+        +DOMContentLoaded → initXxx()
+    }
+    Main ..> WelcomeModule : initWelcome()
+    Main ..> InputModule : initInput()
+    Main ..> ReportModule : initReport()
+    Main ..> SpaceModule : initSpace()
+    Main ..> GardenModule : initGarden()
+    Main ..> Router : initRouter()

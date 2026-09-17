@@ -1,0 +1,71 @@
+%% 知间 InBetween · 花园页重构 · 时序图
+%% 覆盖三条核心流程：页面切换 / 花园初始化 / 养分变化→连接带更新
+
+%% ============================================
+%% 流程一：页面切换（消除 onclick 后的新范式）
+%% ============================================
+sequenceDiagram
+    autonumber
+    participant U as 用户
+    participant DOM as index.html
+    participant R as core/router.js
+    participant B as document.body
+    participant G as modules/garden.js
+
+    U->>DOM: 点击 button[data-goto="garden-screen"]
+    DOM->>R: click 冒泡 → 事件委托命中 [data-goto]
+    R->>R: goTo('garden-screen')
+    R->>DOM: SCREEN_IDS.forEach(toggle('active'))
+    R->>B: style.background='#F3E3C1' / color='#343434'
+    R->>DOM: window.scrollTo({top:0})
+    R->>G: dispatchEvent('navigate', {screenId:'garden-screen'})
+    G->>G: 监听 navigate → initGardenCanvas() 启动粒子
+
+%% ============================================
+%% 流程二：花园页初始化
+%% ============================================
+sequenceDiagram
+    autonumber
+    participant M as main.js
+    participant G as modules/garden.js
+    participant Dom as core/dom.js
+    participant LS as localStorage
+    participant SVG as .relation-graph (SVG)
+
+    M->>G: initGarden()
+    G->>Dom: byId('garden-scene') / byId('relation-graph')
+    alt 元素缺失
+        G-->>M: return（静默容错）
+    end
+    G->>LS: getItem('zhijian-relations') → present 角色列表
+    G->>LS: getItem('zhijian-friend-animal') → 朋友节点是否存在
+    G->>G: renderRelationGraph()
+    G->>G: 对每个 present 角色 anchorOf(el, sceneRect)
+    Note over G: getBoundingClientRect 换算百分比 → SVG 用户单位
+    G->>SVG: 为每个 to 角色创建/更新 path.band-line + path.band-spark
+    G->>G: updateNurtureUI()
+    G->>LS: getItem('zhijian-nurture')
+    G->>G: nurtureTier(total) → 'thin'|'mid'|'thick'|'full'
+    G->>SVG: 施加 band--{tier} class（CSS transition 平滑过渡）
+    G->>G: bindGardenEvents() 绑定节点点击/动物选择/导航
+
+%% ============================================
+%% 流程三：养分变化 → 连接带更新
+%% ============================================
+sequenceDiagram
+    autonumber
+    participant U as 用户
+    participant G as modules/garden.js
+    participant LS as localStorage
+    participant SVG as .relation-graph
+    participant C as CSS transition
+
+    U->>G: 点击角色节点 / 选择小动物 / 完成情境回顾
+    G->>G: waterCreature(elId) 或 addNurture(+10)
+    G->>LS: setItem('zhijian-nurture', total + n)
+    G->>G: updateNurtureUI()
+    G->>G: updateRelationshipBands()
+    G->>G: tier = nurtureTier(getNurture())
+    G->>SVG: 移除旧 band--* / 添加 band--{tier}
+    SVG->>C: stroke-width .8s / opacity .8s 平滑过渡（非瞬切）
+    Note over U,C: 用户看到「它变粗了」的过程（PRD P0-3）
