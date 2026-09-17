@@ -1,14 +1,34 @@
 {
   "name": "zhi-jian",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "知间 InBetween — 理解人与人之间",
   "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . && npm run lint:html && npm run lint:css && npm run lint:nodes && npm run lint:garden-dom && npm run lint:constitution",
+    "lint:html": "node scripts/check-html.mjs",
+    "lint:css": "node scripts/check-css.mjs",
+    "lint:nodes": "node scripts/check-nodes.mjs",
+    "lint:garden-dom": "node scripts/check-garden-dom.mjs",
+    "lint:constitution": "node scripts/check-constitution.mjs",
+    "test:e2e": "node scripts/check-e2e.mjs",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "check": "npm run lint && npm run test",
+    "check:full": "npm run check && npm run test:e2e"
   },
-  "dependencies": {
-    "vite": "^6.0.0"
+  "dependencies": {},
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "eslint": "^9.13.0",
+    "prettier": "^3.3.3",
+    "vite": "^6.0.0",
+    "vitest": "^2.1.4"
   }
 }

@@ -4,4 +4,22 @@ dist/
 .env.local
 .DS_Store
 
+# 临时脚手架 / 调试产物（禁止污染 eslint . 扫描面）
+.tmp-*
+_tmp-*
+# 工作过程中落盘的命令输出 / 探针 / CDP 调试产物
+# 约定：以 _ 开头、或 .tmp- / .probe- 开头、或 *_out.txt / *.log（根目录）
+_*
+.*out*.txt
+*.log
+# 浏览器临时 profile（走 CDP 调试时产生）
+.ep*/
+.edge-profile*/
+
 .vercel
+
+# 本地 AI 助手工作产物（不进仓库）
+.workbuddy/
+.claude/
+# QA 过程截图（交付物走项目资料库，不进源码仓库）
+qa-screenshots/
