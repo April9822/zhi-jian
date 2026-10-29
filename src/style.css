@@ -159,7 +159,8 @@ canvas.star-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;
 .tab-bar{display:flex;gap:4px;margin-bottom:20px;background:var(--warm-bg);border-radius:8px;padding:4px}
 .tab{flex:1;padding:12px 10px;border:none;background:transparent;font-size:13px;color:var(--text-secondary);cursor:pointer;border-radius:6px;transition:all .2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px}
 .tab.active{background:var(--neutral-white);color:var(--navy);font-weight:500;box-shadow:var(--shadow-sm)}
-.tab-icon{width:18px;height:18px;flex-shrink:0}
+.tab-icon{width:18px;height:18px;flex-shrink:0;display:block}
+.tab-icon svg{width:100%;height:100%;display:block}
 .tab-content{display:none}.tab-content.active{display:block}
 textarea{width:100%;border:1px solid var(--warm-border);border-radius:var(--radius);padding:16px;font-size:16px;font-family:inherit;line-height:1.8;resize:vertical;background:var(--warm-bg);transition:border-color .2s}
 textarea:focus{outline:none;border-color:var(--gold);background:var(--neutral-white);box-shadow:0 0 0 3px rgba(212,168,83,.1)}
@@ -518,6 +519,9 @@ canvas.warm-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;
 .zi-line{display:inline-block;width:14px;height:1.5px;background:#A8C3AE;margin-right:10px;vertical-align:middle;border-radius:1px}
 .zi-lozenge{display:inline-block;width:6px;height:6px;transform:rotate(45deg);background:#C4915A;margin-right:10px;vertical-align:middle}
 .zi-wave{display:inline-block;width:16px;height:8px;margin-right:10px;vertical-align:middle;border-bottom:1.5px solid #A8C3AE;border-radius:0 0 8px 8px}
+/* 报告 section-label 图标：icons.js 彩色 SVG 占位（JS 注入） */
+.zi-icon{display:inline-block;width:16px;height:16px;margin-right:10px;vertical-align:middle}
+.zi-icon svg{width:100%;height:100%;display:block}
 
 /* ============================================================
    关系花园 · 动森×中式田园融合风格
@@ -596,9 +600,11 @@ canvas.garden-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-ind
 /* --- 底部导航栏 --- */
 .garden-bottomnav{flex:0 0 auto;height:64px;display:flex;align-items:stretch;background:rgba(253,245,232,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid rgba(196,145,90,.16);padding-bottom:env(safe-area-inset-bottom);z-index:40}
 .nav-item{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:#A09080;background:none;border:none;cursor:pointer;transition:color .2s ease;min-height:44px}
-/* 图标为内联 SVG 描边图标：fill/stroke 由 SVG 属性（currentColor）接管，CSS 只负责尺寸与布局 */
-.nav-item .nav-icon{width:20px;height:20px;display:block;flex:0 0 auto}
+/* 图标为 icons.js 的彩色负空间 SVG（JS 注入）：active 态改用淡色背景圆 + 轻微放大区分 */
+.nav-item .nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex:0 0 auto;transition:transform .2s ease,background .2s ease}
+.nav-item .nav-icon svg{width:20px;height:20px;display:block}
 .nav-item.active{color:#B57A45;font-weight:500}
+.nav-item.active .nav-icon{background:rgba(196,145,90,.16);transform:scale(1.1)}
 .nav-item:active{opacity:.7}
 
 /* --- 天空 + 远山 --- */
@@ -854,3 +860,67 @@ canvas.garden-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-ind
   /* 装饰元素可降级 */
   .season-deco{display:none}
 }
+
+/* ============================================================
+   v4 报告改版 · 冲突占比 div100 双色条 + 左右对照卡
+   ============================================================ */
+.ratio-wrap{margin:4px 0 14px;background:var(--neutral-white);border:1px solid var(--warm-border);border-radius:var(--radius-lg);padding:16px}
+.ratio-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:5px}
+.ratio-top .rn{font-size:13px;font-weight:600;color:var(--navy)}
+.ratio-top .rp{font-size:13px;font-weight:600;color:#C98E63}
+.div100{display:flex;height:16px;border-radius:8px;overflow:hidden;margin:6px 0 4px;border:1px solid var(--warm-border)}
+.div100 span{display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--neutral-white);font-weight:600}
+
+.lr-container{display:flex;flex-direction:column;gap:12px}
+.lr-card{background:var(--neutral-white);border:1px solid var(--warm-border);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow-sm)}
+.lr-quote{font-size:14px;color:var(--navy);font-weight:600;line-height:1.5;margin-bottom:12px;padding-left:10px;border-left:3px solid #F2A085}
+.lr-quote .who{font-size:11px;color:#C98E63;font-weight:600;display:block;margin-bottom:3px}
+.lr-body{display:grid;grid-template-columns:1fr 26px 1fr;gap:0;align-items:stretch}
+.lr-side{border-radius:12px;padding:11px 12px;font-size:12px;line-height:1.6}
+.lr-left{background:#FFF6EC;border:1px solid #EBD3BC;color:var(--navy)}
+.lr-right{background:#EFF4EC;border:1px solid #DCEBD4;color:#5f7a55}
+.lr-lab{font-size:10px;font-weight:600;letter-spacing:.04em;margin-bottom:4px;color:var(--text-muted)}
+.lr-left .lr-lab{color:#C98E63}
+.lr-right .lr-lab{color:#8FB486}
+.lr-mid{display:flex;align-items:center;justify-content:center;color:#F2A085;font-size:18px;font-weight:600}
+
+/* ============================================================
+   v4 对话模拟 · 重新表达 → 养分换算 → 古树成长
+   ============================================================ */
+.practice-screen{height:100vh;height:100dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:linear-gradient(180deg,#F8F6F2 0%,#F3EFE7 100%)}
+.practice-container{width:100%;max-width:640px;margin:0 auto;padding:20px 16px 60px}
+.practice-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.practice-back{flex:0 0 auto}
+.practice-head-title h1{font-size:20px;font-weight:600;color:var(--navy);margin:0}
+.practice-head-title p{font-size:12px;color:var(--text-secondary);margin:2px 0 0}
+
+.sim-card{background:var(--neutral-white);border:1px solid var(--warm-border);border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow-sm)}
+.sim-quote{font-size:14px;color:var(--navy);line-height:1.6;margin:0 0 10px}
+.sim-input{width:100%;box-sizing:border-box;border:1px solid var(--warm-border);border-radius:12px;padding:11px 12px;font-size:16px;font-family:inherit;line-height:1.6;resize:none;background:var(--warm-bg);color:var(--navy)}
+.sim-input:focus{outline:none;border-color:var(--gold);background:var(--neutral-white)}
+.sim-row{display:flex;gap:10px;align-items:center;margin-top:12px}
+.sim-btn{flex:0 0 auto;padding:10px 18px;border:none;border-radius:999px;background:linear-gradient(135deg,#F2A085,#F4B58F);color:var(--neutral-white);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer}
+.sim-score{flex:1;text-align:center}
+.sim-score .sn{font-size:34px;font-weight:600;color:#C98E63;line-height:1}
+.sim-score .st{font-size:11px;color:var(--text-secondary)}
+.practice-screen input[type="range"]{width:100%;margin-top:12px;accent-color:#F2A085}
+.sim-tier{margin-top:12px;background:var(--warm-bg);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.7;color:var(--text-primary)}
+.sim-tier b{color:#C98E63}
+.sim-tier.fail{background:#FBEAE6;border:1px solid #F2C4B8;color:#a8553f}
+.sim-tier.pass{background:#EFF4EC;border:1px solid #DCEBD4;color:#5f7a55}
+.nutrient-row{display:flex;align-items:center;gap:14px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--warm-border)}
+.nr-lab{font-size:12px;color:var(--text-secondary);flex:0 0 auto;line-height:1.4}
+.tree-stages{display:flex;gap:5px;align-items:flex-end}
+.tree-stages .ts{width:30px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.32;transition:opacity .3s ease}
+.tree-stages .ts.on{opacity:1}
+.tree-stages .ts svg{width:30px;height:40px;display:block}
+.tree-stages .ts span{font-size:9px;color:var(--text-secondary)}
+.nutrient-val{margin-left:auto;text-align:center}
+.nutrient-val .nv{font-size:24px;font-weight:600;color:#8FB486;line-height:1}
+.nutrient-val .nu{font-size:10px;color:var(--text-secondary)}
+
+.tier-legend{margin:12px 0 16px;background:var(--neutral-white);border:1px solid var(--warm-border);border-radius:var(--radius-lg);padding:14px 16px}
+.tier-legend h4{font-size:12px;font-weight:600;color:#C98E63;margin:0 0 8px}
+.tier-legend .tl{display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);padding:3px 0;border-bottom:1px dashed var(--warm-border)}
+.tier-legend .tl b{color:var(--navy)}
+.practice-note{font-size:12px;color:var(--text-muted);line-height:1.6;margin:0}

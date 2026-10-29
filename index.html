@@ -341,41 +341,19 @@
       <!-- 底部导航栏（图标为内联 SVG 描边图标，stroke=currentColor 随 active 态自动变色） -->
       <nav class="garden-bottomnav">
         <button class="nav-item active" data-nav="garden">
-          <!-- 花园：一株带两片叶子的幼苗（呼应花园页的 .eco-seedling 视觉语言） -->
-          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <path d="M12 21V10.5" />
-            <path d="M12 14.5C12 11.6 9.8 9.4 6.9 9.4C6.9 12.3 9.1 14.5 12 14.5Z" />
-            <path d="M12 11.6C12 9.1 13.9 7.2 16.4 7.2C16.4 9.7 14.5 11.6 12 11.6Z" />
-          </svg>
+          <span class="nav-icon" data-icon="garden" aria-hidden="true"></span>
           <span>花园</span>
         </button>
         <button class="nav-item" data-nav="talk" id="nav-talk">
-          <!-- 倾诉：对话气泡（圆角矩形 + 左下角尾巴） -->
-          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <path d="M20 12.4C20 16.2 16.4 19.2 12 19.2C10.9 19.2 9.9 19 9 18.7L5 20L6.6 16.4C4.9 15.2 4 13.4 4 11.4C4 7.6 7.6 4.6 12 4.6C16.4 4.6 20 7.6 20 12.4Z" />
-          </svg>
+          <span class="nav-icon" data-icon="chat" aria-hidden="true"></span>
           <span>倾诉</span>
         </button>
         <button class="nav-item" data-nav="record" id="nav-record" data-toast="记录 · 即将上线">
-          <!-- 记录：日历（外框 + 顶部两个挂钩 + 标题分隔线 + 两条日期线） -->
-          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <rect x="4" y="5.6" width="16" height="14.4" rx="2.4" />
-            <path d="M4 10.2H20" />
-            <path d="M8.6 3.4V7.4" />
-            <path d="M15.4 3.4V7.4" />
-            <path d="M8.4 13.8H10.4" />
-            <path d="M13.6 13.8H15.6" />
-            <path d="M8.4 17H10.4" />
-            <path d="M13.6 17H15.6" />
-          </svg>
+          <span class="nav-icon" data-icon="record" aria-hidden="true"></span>
           <span>记录</span>
         </button>
         <button class="nav-item" data-nav="me" id="nav-me" data-toast="我的 · 即将上线">
-          <!-- 我的：标准人形轮廓（圆头 + 肩线弧） -->
-          <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <circle cx="12" cy="8" r="3.7" />
-            <path d="M4.8 20V18.9C4.8 15.9 7.2 13.6 10 13.6H14C16.8 13.6 19.2 15.9 19.2 18.9V20" />
-          </svg>
+          <span class="nav-icon" data-icon="profile" aria-hidden="true"></span>
           <span>我的</span>
         </button>
       </nav>
@@ -391,13 +369,13 @@
       <div class="input-card">
         <div class="tab-bar">
           <button class="tab active" data-tab="paste">
-            <img src="/icon-chat.png" alt="" width="20" height="20" class="tab-icon"> 粘贴对话
+            <span class="tab-icon" data-icon="chat" aria-hidden="true"></span> 粘贴对话
           </button>
           <button class="tab" data-tab="image">
-            <img src="/icon-screenshot.png" alt="" width="20" height="20" class="tab-icon"> 上传截图 <span class="coming-soon-tag">即将上线</span>
+            <span class="tab-icon" data-icon="screenshot" aria-hidden="true"></span> 上传截图 <span class="coming-soon-tag">即将上线</span>
           </button>
           <button class="tab" data-tab="audio">
-            <img src="/icon-record.png" alt="" width="20" height="20" class="tab-icon"> 录制对话 <span class="coming-soon-tag">即将上线</span>
+            <span class="tab-icon" data-icon="record" aria-hidden="true"></span> 录制对话 <span class="coming-soon-tag">即将上线</span>
           </button>
         </div>
         <div id="tab-paste" class="tab-content active">
@@ -440,16 +418,55 @@
 
     <main id="report-screen" class="screen report-screen">
       <div class="report-container">
-        <section id="screen-1" class="report-screen screen-1"><h2 class="section-label"><span class="zi-ring"></span>核心洞察</h2><div id="core-insight" class="core-insight"></div></section>
-        <section id="screen-responsibility" class="report-screen screen-responsibility hidden"><h2 class="section-label"><span class="zi-lozenge"></span>双方各自的表达方式占比</h2><div id="responsibility-container"></div></section>
-        <section id="screen-2" class="report-screen screen-2"><h2 class="section-label"><span class="zi-dot"></span>你们各自的世界</h2><div id="dual-columns" class="dual-columns"></div><div id="gap-annotation" class="gap-annotation"></div></section>
-        <section id="screen-3" class="report-screen screen-3"><h2 class="section-label"><span class="zi-line"></span>对话回放 · 心声解读</h2><div id="replay-container" class="replay-container"></div></section>
-        <section id="screen-4" class="report-screen screen-4"><h2 class="section-label"><span class="zi-dot"></span>如果重来</h2><div id="what-if-container" class="what-if-container"></div></section>
-        <section id="screen-emotion" class="report-screen screen-emotion hidden"><h2 class="section-label"><span class="zi-wave"></span>情绪画像</h2><div id="emotion-container"></div></section>
-        <section id="screen-relief" class="report-screen screen-relief hidden"><h2 class="section-label"><span class="zi-dot"></span>试试这些方法</h2><div id="relief-container"></div><p id="relief-note" class="relief-note hidden"></p></section>
-        <section id="screen-5" class="report-screen screen-5"><h2 class="section-label"><span class="zi-ring"></span>破局与分享</h2><div id="icebreaker-container" class="icebreaker-container"></div><div id="share-section" class="share-section"><button id="share-btn" class="btn-primary">分享 TA 的那一半</button><p class="share-hint">TA 只会看到自己的分析部分。你的隐私是安全的。</p></div></section>
-        <section id="screen-total" class="report-screen screen-total hidden"><h2 class="section-label"><span class="zi-lozenge"></span>总体洞察</h2><div id="total-container"></div></section>
+        <section id="screen-1" class="report-screen screen-1"><h2 class="section-label"><span class="zi-icon" data-icon="insight" aria-hidden="true"></span>核心洞察</h2><div id="core-insight" class="core-insight"></div></section>
+        <section id="screen-responsibility" class="report-screen screen-responsibility hidden"><h2 class="section-label"><span class="zi-icon" data-icon="report" aria-hidden="true"></span>可能引发冲突的占比</h2><div id="responsibility-container"></div></section>
+        <section id="screen-2" class="report-screen screen-2"><h2 class="section-label"><span class="zi-icon" data-icon="space" aria-hidden="true"></span>你们各自的世界</h2><div id="dual-columns" class="dual-columns"></div><div id="gap-annotation" class="gap-annotation"></div></section>
+        <section id="screen-lr" class="report-screen screen-lr hidden"><h2 class="section-label"><span class="zi-icon" data-icon="translate" aria-hidden="true"></span>左右对照</h2><div id="lr-container" class="lr-container"></div></section>
+        <section id="screen-3" class="report-screen screen-3"><h2 class="section-label"><span class="zi-icon" data-icon="track" aria-hidden="true"></span>对话回放 · 心声解读</h2><div id="replay-container" class="replay-container"></div></section>
+        <section id="screen-4" class="report-screen screen-4"><h2 class="section-label"><span class="zi-icon" data-icon="change" aria-hidden="true"></span>如果重来</h2><div id="what-if-container" class="what-if-container"></div></section>
+        <section id="screen-emotion" class="report-screen screen-emotion hidden"><h2 class="section-label"><span class="zi-icon" data-icon="energy" aria-hidden="true"></span>情绪画像</h2><div id="emotion-container"></div></section>
+        <section id="screen-relief" class="report-screen screen-relief hidden"><h2 class="section-label"><span class="zi-icon" data-icon="growth" aria-hidden="true"></span>试试这些方法</h2><div id="relief-container"></div><p id="relief-note" class="relief-note hidden"></p></section>
+        <section id="screen-5" class="report-screen screen-5"><h2 class="section-label"><span class="zi-icon" data-icon="change" aria-hidden="true"></span>破局与分享</h2><div id="icebreaker-container" class="icebreaker-container"></div><div id="share-section" class="share-section"><button id="share-btn" class="btn-primary">分享 TA 的那一半</button><p class="share-hint">TA 只会看到自己的分析部分。你的隐私是安全的。</p></div></section>
+        <section id="screen-total" class="report-screen screen-total hidden"><h2 class="section-label"><span class="zi-icon" data-icon="companion" aria-hidden="true"></span>总体洞察</h2><div id="total-container"></div></section>
         <footer class="report-footer"><button id="switch-view-btn" class="btn-secondary" style="margin-bottom:8px">切换视角</button><button id="new-analysis-btn" class="btn-secondary">开始新的分析</button><p class="register-teaser">想记住这次分析，看到自己的成长？<a href="#" id="register-teaser-link">创建账号</a></p><p class="footer-brand">知间 InBetween · 理解人与人之间</p></footer>
+      </div>
+    </main>
+
+    <!-- ====== 对话模拟（重新表达 → 养分换算 → 古树成长） ====== -->
+    <main id="practice-screen" class="screen practice-screen">
+      <div class="practice-container">
+        <header class="practice-head">
+          <button class="btn-secondary practice-back" data-goto="garden-screen">返回花园</button>
+          <div class="practice-head-title">
+            <h1>对话模拟</h1>
+            <p>重新表达 · 养分换算</p>
+          </div>
+        </header>
+        <section class="sim-card">
+          <p class="sim-quote" id="practice-quote"></p>
+          <textarea class="sim-input" id="practice-input" rows="3" placeholder="试着换一种方式说给对方听…"></textarea>
+          <div class="sim-row">
+            <button class="sim-btn" id="practice-btn" type="button">重新表达</button>
+            <div class="sim-score"><span class="sn" id="practice-num">0</span><div class="st" id="practice-state">拖动下方打分</div></div>
+          </div>
+          <input type="range" min="0" max="100" value="0" id="practice-range" aria-label="为这次重新表达打分">
+          <div class="sim-tier" id="practice-tier">打分后，系统会换算「关系养分」并反馈古树成长。</div>
+          <div class="nutrient-row">
+            <div class="nr-lab">关系古树<br>成长反馈</div>
+            <div class="tree-stages" id="practice-tree"></div>
+            <div class="nutrient-val"><div class="nv" id="practice-nut">+0</div><div class="nu">关系养分</div></div>
+          </div>
+        </section>
+        <section class="tier-legend">
+          <h4>养分换算规则</h4>
+          <div class="tl"><span>低于 60 分</span><b>不及格 · 需重来</b></div>
+          <div class="tl"><span>60-70</span><b>+1 养分</b></div>
+          <div class="tl"><span>70-80</span><b>+2 养分</b></div>
+          <div class="tl"><span>80-90</span><b>+3 养分</b></div>
+          <div class="tl"><span>90-99</span><b>+4 养分</b></div>
+          <div class="tl"><span>100</span><b>+5 养分</b></div>
+        </section>
+        <p class="practice-note">关系养分映射到对应关系的「古树」成长，逐级抽枝散叶。</p>
       </div>
     </main>
 

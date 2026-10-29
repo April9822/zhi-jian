@@ -49,56 +49,65 @@ function buildCoreInsightHTML(insight) {
 
 function buildResponsibilityHTML(ratio, parties) {
   const labelMap = buildPartyLabelMap(parties);
-  let bars = '';
-  if (ratio.ratios && Array.isArray(ratio.ratios)) {
-    bars = ratio.ratios
-      .map((r, i) => {
-        const label = escapeHtml(partyName(labelMap, r.party) || `参与方 ${i + 1}`);
-        const hue = ['#C4915A', '#8B6A5A', '#A08070', '#D9A870', '#6B8A7A'][i] || '#C4915A';
-        return (
-          '<div class="ratio-side"><span class="ratio-label">' +
-          label +
-          '</span>' +
-          '<div class="ratio-bar-bg"><div class="ratio-bar-fill" style="width:' +
-          Number(r.percent) +
-          '%;background:' +
-          hue +
-          '"></div></div>' +
-          '<span class="ratio-pct">' +
-          Number(r.percent) +
-          '%</span>' +
-          '<p class="ratio-reason">' +
-          escapeHtml(r.reason || '') +
-          '</p></div>'
-        );
-      })
-      .join('');
+  // v4 暖色双色条分段色板（左=珊瑚 #F2A085，右=叶绿 #8FB486，超出两位时循环取色）
+  const palette = ['#F2A085', '#8FB486', '#E0A878', '#C98E63', '#AECBA3'];
+  const segments = [];
+  const reasons = [];
+
+  if (ratio.ratios && Array.isArray(ratio.ratios) && ratio.ratios.length > 0) {
+    ratio.ratios.forEach((r, i) => {
+      const pct = Number(r.percent) || 0;
+      const label = partyName(labelMap, r.party) || `参与方 ${i + 1}`;
+      segments.push({ pct, label, color: palette[i % palette.length] });
+      if (r.reason) reasons.push(escapeHtml(r.reason));
+    });
   } else {
-    // 兼容旧格式
-    const a = ratio.sideA || 50;
-    const b = ratio.sideB || 50;
-    bars =
-      '<div class="ratio-side"><span class="ratio-label">一方</span><div class="ratio-bar-bg"><div class="ratio-bar-fill" style="width:' +
-      Number(a) +
-      '%;background:#C4915A"></div></div><span class="ratio-pct">' +
-      Number(a) +
-      '%</span><p class="ratio-reason">' +
-      escapeHtml(ratio.reasonA || '') +
-      '</p></div>' +
-      '<div class="ratio-side"><span class="ratio-label">另一方</span><div class="ratio-bar-bg"><div class="ratio-bar-fill" style="width:' +
-      Number(b) +
-      '%;background:#8B6A5A"></div></div><span class="ratio-pct">' +
-      Number(b) +
-      '%</span><p class="ratio-reason">' +
-      escapeHtml(ratio.reasonB || '') +
-      '</p></div>';
+    // 兼容旧格式（sideA / sideB）
+    const a = Number(ratio.sideA ?? 50);
+    const b = Number(ratio.sideB ?? 50);
+    segments.push({ pct: a, label: '一方', color: palette[0] });
+    segments.push({ pct: b, label: '另一方', color: palette[1] });
+    if (ratio.reasonA) reasons.push(escapeHtml(ratio.reasonA));
+    if (ratio.reasonB) reasons.push(escapeHtml(ratio.reasonB));
   }
+
+  // div100 双色条：各段按百分比 flex 占比，合计 100%
+  const bars = segments
+    .map(
+      (s) =>
+        '<span style="flex:' +
+        s.pct +
+        ';background:' +
+        s.color +
+        '">' +
+        escapeHtml(s.label) +
+        ' ' +
+        s.pct +
+        '%</span>'
+    )
+    .join('');
+
+  const total = segments.reduce((sum, s) => sum + s.pct, 0);
+  const top =
+    '<div class="ratio-top"><span class="rn">双方各自可能引发冲突的占比</span>' +
+    '<span class="rp">合计 ' +
+    Math.round(total) +
+    '%</span></div>';
+
+  const reason = reasons.length
+    ? '<div class="ratio-reason">' + reasons.join('；') + '</div>'
+    : '';
+
   return (
-    '<div class="ratio-bar-wrap">' +
+    '<div class="ratio-wrap">' +
+    top +
+    '<div class="div100">' +
     bars +
     '</div>' +
+    reason +
+    '</div>' +
     '<p class="ratio-note">' +
-    escapeHtml(ratio.totalNote || ratio.note || '以上是基于本次对话中双方表达方式的占比，不是对人的评价') +
+    escapeHtml(ratio.totalNote || ratio.note || '以上仅针对本次对话中的表达方式，不是对人的评价') +
     '</p>'
   );
 }
@@ -167,6 +176,41 @@ function buildDualColumnsHTML(dual, parties) {
 function buildGapHTML(dual) {
   if (!dual.gap) return '';
   return `<div class="gap-card"><p>${escapeHtml(dual.gap)}</p></div>`;
+}
+
+/**
+ * 左右对照卡（v4 .lr-card）：原话 → 左「原本想表达」→ 右「实际听到」。
+ * 数据源：dualAnalysis.entries[].{said, realMeaning, heardAs}。
+ * @param {object} dual
+ * @param {Array} parties
+ * @returns {string} 无有效数据时返回空串
+ */
+function buildLrCardsHTML(dual, parties) {
+  const entries = dual && Array.isArray(dual.entries) ? dual.entries : null;
+  if (!entries || entries.length === 0) return '';
+  const labelMap = buildPartyLabelMap(parties);
+  return entries
+    .map((e) => {
+      const who = escapeHtml(e.label || partyName(labelMap, e.party) || '一方');
+      return (
+        '<div class="lr-card">' +
+        '<div class="lr-quote"><span class="who">' +
+        who +
+        ' 说</span>「' +
+        escapeHtml(e.said || '') +
+        '」</div>' +
+        '<div class="lr-body">' +
+        '<div class="lr-side lr-left"><div class="lr-lab">原本想表达</div>' +
+        escapeHtml(e.realMeaning || '') +
+        '</div>' +
+        '<div class="lr-mid">→</div>' +
+        '<div class="lr-side lr-right"><div class="lr-lab">实际听到</div>' +
+        escapeHtml(e.heardAs || '') +
+        '</div>' +
+        '</div></div>'
+      );
+    })
+    .join('');
 }
 
 function buildReplayHTML(replayList, parties) {
@@ -267,13 +311,18 @@ function buildEmotionHTML(emotion, parties) {
       });
     }
   }
+  // 8 维情绪画像对齐 v4 口径：焦虑/委屈/疲惫/愤怒/受伤/无助/失望/孤独。
+  // 后端仅提供 anxiety/anger/sadness/hurt/exhaustion/helplessness 六字段：
+  //   · 「受伤」「孤独」无对应字段 -> 就近映射仍缺失，故跳过（不编造数值）。
+  //   · 「失望」就近映射到 sadness（后端无独立 disappointment 字段）。
+  //   · 「无助」即原 helplessness（旧标签「无力感」更名）。
   const dims = [
-    { key: 'anxiety', label: '焦虑', color: '#C4915A' },
-    { key: 'anger', label: '愤怒', color: '#D4784A' },
-    { key: 'sadness', label: '悲伤', color: '#8B6A5A' },
-    { key: 'hurt', label: '委屈', color: '#A06050' },
-    { key: 'exhaustion', label: '疲惫', color: '#8A7A6A' },
-    { key: 'helplessness', label: '无力感', color: '#9A8A7A' },
+    { key: 'anxiety', label: '焦虑', color: '#F2A085' },
+    { key: 'hurt', label: '委屈', color: '#F8C3A6' },
+    { key: 'exhaustion', label: '疲惫', color: '#E0A878' },
+    { key: 'anger', label: '愤怒', color: '#D98C6A' },
+    { key: 'helplessness', label: '无助', color: '#C98E63' },
+    { key: 'sadness', label: '失望', color: '#8FB486' },
   ];
   let html = '';
   if (entries && Array.isArray(entries)) {
@@ -490,6 +539,14 @@ function renderDualColumns(dual, parties) {
   if (gap) gap.innerHTML = buildGapHTML(dual);
 }
 
+function renderLrCards(dual, parties) {
+  const entries = dual && Array.isArray(dual.entries) ? dual.entries : null;
+  if (!entries || entries.length === 0) return;
+  byId('screen-lr')?.classList.remove('hidden');
+  const el = $('#lr-container');
+  if (el) el.innerHTML = buildLrCardsHTML(dual, parties);
+}
+
 function renderReplay(replayList, parties) {
   if (!replayList || !Array.isArray(replayList)) return;
   const el = $('#replay-container');
@@ -619,6 +676,7 @@ export function renderReport(analysis) {
   renderCoreInsight(view.coreInsight);
   renderResponsibilityRatio(view.responsibilityRatio, view.parties);
   renderDualColumns(view.dualAnalysis, view.parties);
+  renderLrCards(view.dualAnalysis, view.parties);
   renderReplay(view.replay, view.parties);
   renderWhatIf(view.whatIf, view.parties);
   renderEmotionAnalysis(view.emotionAnalysis, view.parties);

@@ -913,7 +913,7 @@ function bindGardenEvents() {
   renderRegionCapsules();
   renderEmptyState();
   byId('nurture-practice-btn')?.addEventListener('click', () => {
-    showToast('模拟对话 · 即将上线');
+    goTo('practice-screen');
   });
 
   // 恢复动物选中态（读 zhijian-friend-animal，键名不变）

@@ -54,21 +54,26 @@ describe('E2E · 五生态区域 DOM 齐备（§A.3）', () => {
 // ============================================================
 // ② 溪边动物交互契约（§A.6.2 / §A.6.3）
 // ============================================================
-describe('E2E · 溪边动物契约（§A.6）', () => {
-  it('4 只动物为 <button type="button">（天然键盘可达）', () => {
-    // 每只 animal 都应是 button，且 data-animal 值域正确
+describe('E2E · 溪边动物契约（§A.6，动物由 garden.js 动态渲染）', () => {
+  // 自多元素重构后，动物不再静态写死在 index.html，而是由 garden.js::renderPersonCluster
+  // 按 who 动态生成。故契约断言从「静态 HTML」改为「渲染源码契约」。
+  const garden = read('src/modules/garden.js');
+  const stateSrc = read('src/core/state.js');
+
+  it('动物渲染为 <button type="button"> + aria-pressed（天然键盘可达）', () => {
+    expect(garden).toContain("type = 'button'");
+    expect(garden).toContain('className = `animal form--');
+    expect(garden).toContain('dataset.animal = sprite');
+    expect(garden).toContain("setAttribute('aria-pressed', 'false')");
+  });
+
+  it('动物精灵值域 fox/rabbit/squirrel/deer（state.js ANIMAL_SPRITE_POOL）', () => {
     for (const a of ['fox', 'rabbit', 'squirrel', 'deer']) {
-      const re = new RegExp(`<button[^>]*class="animal"[^>]*data-animal="${a}"`);
-      expect(html, `动物 ${a} 不是 <button class="animal" data-animal=...>`).toMatch(re);
+      expect(stateSrc, `缺精灵 ${a}`).toContain(a);
     }
   });
 
-  it('每只动物带 aria-pressed 初始态', () => {
-    const pressed = html.match(/data-animal="(fox|rabbit|squirrel|deer)"[^>]*aria-pressed="false"/g) || [];
-    expect(pressed.length).toBe(4);
-  });
-
-  it('.stream-animals 子组存在（迁移后的容器）', () => {
+  it('.stream-animals 子组存在（动态渲染目标容器）', () => {
     expect(html).toContain('stream-animals');
   });
 
@@ -76,9 +81,9 @@ describe('E2E · 溪边动物契约（§A.6）', () => {
     expect(html).not.toContain('animal-zone');
   });
 
-  it('sprite 为装饰（aria-hidden），名字可读', () => {
-    expect(html).toContain('class="animal-sprite fox-sprite" aria-hidden="true"');
-    expect(html).toContain('class="animal-name"');
+  it('sprite 为装饰（aria-hidden），名字标签可读（who-label）', () => {
+    expect(garden).toContain('aria-hidden="true"');
+    expect(garden).toContain("who-label");
   });
 
   it('零内联 onclick（宪法：事件委托）', () => {

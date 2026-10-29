@@ -12,6 +12,7 @@ export const SCREEN_IDS = [
   'input-screen',
   'loading-screen',
   'report-screen',
+  'practice-screen',
 ];
 
 /**
