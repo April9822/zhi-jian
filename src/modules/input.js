@@ -132,6 +132,9 @@ export async function startAnalysis() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   startLoadingMessages();
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 55000);
+
   try {
     const response = await fetch('/api/analyze', {
       method: 'POST',
@@ -140,6 +143,7 @@ export async function startAnalysis() {
         conversation,
         userRole: 'auto',
       }),
+      signal: controller.signal,
     });
 
     const data = await response.json();
@@ -158,8 +162,11 @@ export async function startAnalysis() {
   } catch (err) {
     stopLoadingMessages();
     goTo('input-screen');
-    showToast(`分析失败：${err.message}`);
+    const message = err.name === 'AbortError' ? '分析超时，请缩短对话后重试' : err.message;
+    showToast(`分析失败：${message}`);
     console.error('分析错误：', err);
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 

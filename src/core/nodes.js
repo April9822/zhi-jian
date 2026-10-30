@@ -9,11 +9,14 @@
  * 节点主定义表。顺序 = 展示顺序；用于一切派生。
  * @type {ReadonlyArray<{id:string, display:string, region:string, elId:string, anchorKey:string}>}
  */
+// seedKey：荒芜态种子选择器的槽位键（v4 效果图 §④）。仅此 4 类参与种子选择，
+// colleague 无 seedKey（不在种子选择器内，始终按数据呈现）。
+// 注意：seedKey 是「槽位键」而非节点 id，故在 garden.js 中引用不构成节点字面量违规。
 export const NODES = Object.freeze([
-  { id: 'family', display: '家人', region: '家人 · 根系森林', elId: 'eco-tree', anchorKey: 'family' },
-  { id: 'partner', display: '爱人', region: '爱人 · 共生花园', elId: 'eco-flower', anchorKey: 'partner' },
-  { id: 'friend', display: '朋友', region: '朋友 · 流动溪谷', elId: 'eco-stream', anchorKey: 'friend' },
-  { id: 'child', display: '孩子', region: '孩子 · 新生苗圃', elId: 'eco-nursery', anchorKey: 'child' },
+  { id: 'family', display: '家人', region: '家人 · 根系森林', elId: 'eco-tree', anchorKey: 'family', seedKey: 'tree' },
+  { id: 'partner', display: '爱人', region: '爱人 · 共生花园', elId: 'eco-flower', anchorKey: 'partner', seedKey: 'flower' },
+  { id: 'friend', display: '朋友', region: '朋友 · 流动溪谷', elId: 'eco-stream', anchorKey: 'friend', seedKey: 'animal' },
+  { id: 'child', display: '孩子', region: '孩子 · 新生苗圃', elId: 'eco-nursery', anchorKey: 'child', seedKey: 'sprout' },
   { id: 'colleague', display: '同事', region: '同事 · 林间营地', elId: 'eco-camp', anchorKey: 'colleague' },
 ]);
 

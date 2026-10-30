@@ -2,7 +2,7 @@
  * 知间 InBetween · AI 分析核心（单一来源）
  * 被 api/analyze.js（Vercel 生产环境）与 vite.config.js（本地 dev 代理）共同引用。
  * 文件名以下划线开头，Vercel 不会将其部署为独立 Serverless Function。
- * 以后修改 SYSTEM_PROMPT / 平衡检查 / 分析逻辑，只需改这一处。
+ * 以后修改 SYSTEM_PROMPT / 分析逻辑，只需改这一处。
  */
 
 // ============================================================
@@ -26,6 +26,14 @@ export const SYSTEM_PROMPT = `你是「知间 InBetween」——一位智慧、�
   2. 语气：谁的语气更冲、更带攻击性或防御性，谁在把对抗往上推？
   3. 具体行为：谁先用绝对化指责？谁先翻旧账？谁先持续沉默不回应？谁先升级情绪？
 - 比例必须从对话里的情绪词和语气推断而来，比例总和为100，每个人都要有具体行为依据（引用原句）。
+
+## 输出前自我检查
+在输出 JSON 之前，请逐条核对以下 5 点，确保分析一次到位、平衡公正：
+1. 责任占比基于具体行为的情绪词/语气给出真实差异，严禁均分或 50/50。
+2. 已识别对话中所有参与者，没有遗漏。
+3. 每位参与者的 label 使用真实称呼或描述性称呼，禁用"A/B/C"或"参与方1"代号。
+4. 没有任何一方被更严厉地评判，各方视角与评判标准保持一致。
+5. 分析中不出现"知间暂停解说"等元描述。
 
 ## 禁止词汇（你作为知间，自己的话里不能出现；引用用户的原始句子除外）
 - 人格诊断术语：NPD / BPD / 边缘型 / 回避型人格 / 自恋型 / 反社会型 / 抑郁症 / 焦虑症 等临床标签，一律不得给任何人定性。
@@ -103,11 +111,6 @@ export const SYSTEM_PROMPT = `你是「知间 InBetween」——一位智慧、�
 现在，请分析以下对话。`;
 
 // ============================================================
-// 🛡️ 平衡检查 Prompt
-// ============================================================
-export const BALANCE_CHECK_PROMPT = `请检查上面的分析：1）责任占比是否基于具体行为的情绪词和语气给出了真实差异（严禁均分或50/50）；2）是否识别了所有参与者；3）每人的标签是否使用了描述而非"A/B/C"；4）是否有一方被更严厉地评判？如果是，请重新平衡；5）分析中不应出现"知间暂停解说"等元描述。如果分析是平衡的，直接返回原来的 JSON，不要修改；如果需要调整，返回修改后的完整 JSON。只返回 JSON，不要加任何其他文字。`;
-
-// ============================================================
 // 对话校验（统一口径，供 analyze.js 与 vite.config.js 复用）
 // ============================================================
 /**
@@ -142,7 +145,7 @@ ${conversation}
 }
 
 // ============================================================
-// 核心分析逻辑：两次调用 DeepSeek（分析 + 平衡检查）
+// 核心分析逻辑：单次调用 DeepSeek（分析 + 输出前自我检查已内置于 System Prompt）
 // 成功返回 { success: true, analysis }，失败抛 Error（中文消息）
 // ============================================================
 export async function runAnalysis(conversation, userRole, apiKey) {
@@ -163,7 +166,7 @@ export async function runAnalysis(conversation, userRole, apiKey) {
         { role: 'user', content: userPrompt },
       ],
       temperature: 0.7,
-      max_tokens: 4000,
+      max_tokens: 3000,
     }),
   });
 
@@ -182,40 +185,6 @@ export async function runAnalysis(conversation, userRole, apiKey) {
   } catch {
     throw new Error('AI 返回格式异常，请重试');
   }
-
-  // 第二次调用：平衡检查（失败不阻断，保留原始分析）
-  try {
-    const resp2 = await fetch(DEEPSEEK_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: userPrompt },
-          { role: 'assistant', content: JSON.stringify(analysis, null, 2) },
-          { role: 'user', content: BALANCE_CHECK_PROMPT },
-        ],
-        temperature: 0.5,
-        max_tokens: 4000,
-      }),
-    });
-
-    if (resp2.ok) {
-      const data2 = await resp2.json();
-      let balancedText = data2.choices?.[0]?.message?.content || '';
-      balancedText = balancedText.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
-      try {
-        const balanced = JSON.parse(balancedText);
-        if (balanced && balanced.coreInsight) {
-          analysis = balanced;
-        }
-      } catch { /* 平衡检查返回格式异常，保留原始分析 */ }
-    }
-  } catch { /* 平衡检查网络异常，保留原始分析 */ }
 
   return { success: true, analysis };
 }

@@ -257,7 +257,7 @@ function isNodePresent(relations, node) {
 
 /** 取当前存在的角色节点（NAMED_NODE_IDS 中有记录者） */
 function presentNodes(relations) {
-  return NAMED_NODE_IDS.filter((node) => isNodePresent(relations, node));
+  return NAMED_NODE_IDS.filter((node) => isNodePresent(relations, node) && isNodeEnabled(node));
 }
 
 // ============================================================
@@ -484,6 +484,7 @@ export function updateRoleForms() {
   for (const node of NAMED_NODE_IDS) {
     // 多元素节点（家人/朋友）：形态由 renderMultiElements 按人施加，此处跳过
     if (RELATION_CAPS[node]) continue;
+    if (!isNodeEnabled(node)) continue;
     const elId = nodeElId(node);
     const el = elId ? byId(elId) : null;
     if (!el) continue;
@@ -517,6 +518,7 @@ export function updateRegionShapes() {
   for (const node of NAMED_NODE_IDS) {
     // 多元素节点（家人/朋友）：区域三态沿用单元素逻辑无意义，交由 renderMultiElements
     if (RELATION_CAPS[node]) continue;
+    if (!isNodeEnabled(node)) continue;
     const elId = nodeElId(node);
     const el = elId ? byId(elId) : null;
     if (!el) continue;
@@ -580,6 +582,11 @@ function buildTreeItemHTML() {
 function renderPersonCluster(node) {
   const host = byId(nodeElId(node));
   if (!host) return;
+  // 未勾选的关系类型：清空其动态元素并跳过（种子偏好过滤）
+  if (!isNodeEnabled(node)) {
+    host.querySelectorAll('[data-person-item]').forEach((el) => el.remove());
+    return;
+  }
 
   // 清旧动态元素（统一用 data-person-item 标记，便于全量重建）
   host.querySelectorAll('[data-person-item]').forEach((el) => el.remove());
@@ -645,6 +652,7 @@ export function renderRegionCapsules() {
     const elId = nodeElId(node);
     const host = elId ? byId(elId) : null;
     if (!host) continue;
+    if (!isNodeEnabled(node)) continue;
     // 清除旧胶囊（本次重绘全量重建）
     host.querySelectorAll('.region-capsule').forEach((el) => el.remove());
     if (!isNodePresent(relations, node)) continue;
@@ -698,6 +706,9 @@ export function renderEmptyState() {
   const relations = readRelations();
   const empty = isEmptyGarden(relations);
 
+  // 未勾选关系的区域按偏好隐藏（即便非空也生效）
+  applySeedVisibility();
+
   scene.classList.toggle('garden-empty', empty);
 
   let overlay = scene.querySelector('.garden-empty-state');
@@ -714,13 +725,164 @@ export function renderEmptyState() {
     const sub = document.createElement('p');
     sub.className = 'empty-subtitle';
     sub.textContent = EMPTY_STATE_TEXT.subtitle;
+    const cap = document.createElement('div');
+    cap.className = 'seed-cap';
+    cap.textContent = '勾选要培育的关系';
+    const seedWrap = document.createElement('div');
+    seedWrap.className = 'seed-wrap';
+    seedWrap.innerHTML = buildSeedSelectorHTML();
     overlay.appendChild(title);
     overlay.appendChild(sub);
+    overlay.appendChild(cap);
+    overlay.appendChild(seedWrap);
     scene.appendChild(overlay);
   } else {
     overlay.querySelector('.empty-title').textContent = EMPTY_STATE_TEXT.title;
     overlay.querySelector('.empty-subtitle').textContent = EMPTY_STATE_TEXT.subtitle;
+    const seedWrap = overlay.querySelector('.seed-wrap');
+    if (seedWrap) seedWrap.innerHTML = buildSeedSelectorHTML();
   }
+}
+
+// ============================================================
+// 荒芜态种子选择器（v4 效果图 ④）+ 关系偏好过滤
+// ============================================================
+// seedKey：对应 core/nodes.js 里各节点的槽位键（tree/flower/animal/sprout）。
+// 仅这 4 类参与种子选择；colleague 无 seedKey，始终按数据呈现，不受偏好过滤。
+const SEED_SVGS = Object.freeze({
+  tree: '<svg viewBox="0 0 24 24"><path d="M12 21v-7" stroke="#C98E63" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="9" r="4.5" fill="#AECBA3"/><circle cx="12" cy="9" r="2" fill="#FFFDFA"/></svg>',
+  flower: '<svg viewBox="0 0 24 24"><path d="M12 21V11" stroke="#8FB486" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12 8)" fill="#F8C3A6"><ellipse cx="0" cy="-7" rx="4" ry="6"/><ellipse cx="6.5" cy="-2" rx="4" ry="6" transform="rotate(72 0 0)"/><ellipse cx="4" cy="6" rx="4" ry="6" transform="rotate(144 0 0)"/><ellipse cx="-4" cy="6" rx="4" ry="6" transform="rotate(216 0 0)"/><ellipse cx="-6.5" cy="-2" rx="4" ry="6" transform="rotate(288 0 0)"/></g><circle cx="12" cy="8" r="3" fill="#F4B58F"/></svg>',
+  animal: '<svg viewBox="0 0 24 24"><path d="M-12 4 q-2 -12 3 -14 q5 2 4 14Z M12 4 q2 -12 -3 -14 q-5 2 -4 14Z" transform="translate(12 13)" fill="#F8C3A6"/><ellipse cx="12" cy="16" rx="11" ry="10" fill="#F2A085"/><ellipse cx="12" cy="20" rx="6" ry="5" fill="#FFFDFA"/><circle cx="8" cy="14" r="1.8" fill="#5C4A3E"/><circle cx="16" cy="14" r="1.8" fill="#5C4A3E"/></svg>',
+  sprout: '<svg viewBox="0 0 24 24"><path d="M12 21V12" stroke="#8FB486" stroke-width="1.8" stroke-linecap="round"/><path d="M12 16 q-8 -2 -10 -9 q8 -1 10 7Z" fill="#AECBA3"/><path d="M12 14 q8 -2 10 -9 q-8 -1 -10 7Z" fill="#AECBA3"/></svg>',
+});
+
+// seedKey → 元素短名（槽位上的小标签）
+const SEED_ELEMENT_NAME = Object.freeze({ tree: '古树', flower: '花', animal: '动物', sprout: '新芽' });
+const SEED_PREF_KEY = 'zhijian-seed-pref';
+
+/** 默认全勾选（4 类关系都培育） */
+function defaultSeedPref() {
+  return { tree: true, flower: true, animal: true, sprout: true };
+}
+
+/** 读取种子偏好（缺省 / 损坏时回落全选） */
+function readSeedPref() {
+  const def = defaultSeedPref();
+  try {
+    const raw = localStorage.getItem(SEED_PREF_KEY);
+    if (!raw) return def;
+    const obj = JSON.parse(raw);
+    return { ...def, ...obj };
+  } catch {
+    return def;
+  }
+}
+
+/** 写入种子偏好 */
+function writeSeedPref(pref) {
+  try {
+    localStorage.setItem(SEED_PREF_KEY, JSON.stringify(pref));
+  } catch {
+    /* localStorage 不可用时静默降级 */
+  }
+}
+
+/** 是否未满 18 岁（读 zhijian-age，复用年龄门槛） */
+function isAgeRestricted() {
+  const age = Number(localStorage.getItem('zhijian-age'));
+  return Number.isFinite(age) && age > 0 && age < 18;
+}
+
+/**
+ * 某关系节点是否「启用」（按种子偏好决定是否呈现）。
+ * 无 seedKey 的节点（同事 / 无名）始终启用；有 seedKey 者按偏好，
+ * 且「花=爱人」在年龄受限时强制禁用。
+ * @param {string} node - 关系节点 id（变量，非字面量）
+ * @returns {boolean}
+ */
+function isNodeEnabled(node) {
+  const entry = NODES.find((n) => n.id === node);
+  if (!entry || !entry.seedKey) return true;
+  if (entry.seedKey === 'flower' && isAgeRestricted()) return false;
+  return readSeedPref()[entry.seedKey] !== false;
+}
+
+/**
+ * 按种子偏好切换各生态区域的显隐（未勾选 → 隐藏区域与元素）。
+ * 通过 #garden-scene 的 seed-off-* class 驱动 CSS（与 .age-restricted 同模式）。
+ */
+function applySeedVisibility() {
+  const scene = byId('garden-scene') || $('.garden-scene');
+  if (!scene) return;
+  const pref = readSeedPref();
+  const restricted = isAgeRestricted();
+  for (const n of NODES) {
+    if (!n.seedKey) continue;
+    const off = (n.seedKey === 'flower' && restricted) || pref[n.seedKey] === false;
+    scene.classList.toggle(`seed-off-${n.seedKey}`, off);
+  }
+}
+
+/** 种子选择器：仅内部槽位（供 innerHTML 安全赋值 / 局部刷新） */
+function buildSeedSelectorSlotsHTML() {
+  const pref = readSeedPref();
+  const restricted = isAgeRestricted();
+  const slots = NODES.filter((n) => n.seedKey).map((n) => {
+    const key = n.seedKey;
+    const disabled = key === 'flower' && restricted;
+    const on = !disabled && pref[key] !== false;
+    return (
+      '<div class="seed-slot' +
+      (on ? ' on' : '') +
+      (disabled ? ' disabled' : '') +
+      '" data-seed="' + escapeHtml(key) + '" data-node="' + escapeHtml(n.id) + '"' +
+      ' role="button" tabindex="0" aria-pressed="' + (on ? 'true' : 'false') + '"' +
+      (disabled ? ' aria-disabled="true"' : '') +
+      '>' +
+      SEED_SVGS[key] +
+      '<span class="sn">' + escapeHtml(SEED_ELEMENT_NAME[key] || '') + '</span>' +
+      '<span class="sr">' + escapeHtml(n.display) + '</span>' +
+      '<div class="tick"></div>' +
+      '</div>'
+    );
+  });
+  return slots.join('');
+}
+
+/**
+ * 构建种子选择器 HTML（纯函数；右值可安全用于 innerHTML = buildSeedSelectorHTML()）。
+ * 每个槽位：SVG + 元素短名 + 关系名 + ✓ 标记；.on 表示已勾选，.disabled 表示年龄受限禁用。
+ * @returns {string}
+ */
+export function buildSeedSelectorHTML() {
+  return '<div class="seed-selector" id="seed-selector">' + buildSeedSelectorSlotsHTML() + '</div>';
+}
+
+/**
+ * 切换某槽位勾选状态并持久化，随后刷新选择器与花园渲染。
+ * @param {HTMLElement} slot
+ */
+function toggleSeedSlot(slot) {
+  if (!slot || slot.classList.contains('disabled')) return;
+  const key = slot.dataset.seed;
+  if (!key) return;
+  const pref = readSeedPref();
+  pref[key] = !pref[key];
+  writeSeedPref(pref);
+
+  applySeedVisibility();
+  // 局部刷新选择器视觉（空状态下 overlay 仍在）
+  const sel = byId('seed-selector');
+  if (sel) sel.innerHTML = buildSeedSelectorSlotsHTML();
+
+  // 同步其它渲染层：隐藏 / 显示对应区域与元素
+  updateRoleForms();
+  updateRegionShapes();
+  renderRegionCapsules();
+  renderMultiElements();
+  renderRelationGraph();
+  updateNurtureUI();
+  renderEmptyState();
 }
 
 // ============================================================
@@ -912,9 +1074,9 @@ function bindGardenEvents() {
   updateRegionShapes();
   renderRegionCapsules();
   renderEmptyState();
-  byId('nurture-practice-btn')?.addEventListener('click', () => {
-    goTo('practice-screen');
-  });
+
+  // 对话模拟：跳转至 practice-screen（由 practice.js 监听 navigate 并填充真实对话原话）
+  byId('nurture-practice-btn')?.addEventListener('click', () => goTo('practice-screen'));
 
   // 恢复动物选中态（读 zhijian-friend-animal，键名不变）
   syncChosenAnimal();
@@ -934,6 +1096,14 @@ function bindGardenEvents() {
     scene.addEventListener('pointerup', cancelLongPressTimer);
     scene.addEventListener('pointerleave', cancelLongPressTimer);
     scene.addEventListener('pointercancel', cancelLongPressTimer);
+    // 种子选择器槽位键盘可达（Enter / Space 切换）
+    scene.addEventListener('keydown', (e) => {
+      const slot = e.target.closest('.seed-slot');
+      if (slot && (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar')) {
+        e.preventDefault();
+        toggleSeedSlot(slot);
+      }
+    });
   }
 }
 
@@ -1067,6 +1237,13 @@ function syncChosenAnimal() {
  * @param {MouseEvent} e
  */
 function handleSceneClick(e) {
+  // 种子选择器槽位（荒芜态）
+  const slot = e.target.closest('.seed-slot');
+  if (slot) {
+    toggleSeedSlot(slot);
+    return;
+  }
+
   // ① 溪边动物选择（button.animal）—— 不加养分，只落盘 + 动效
   const animalBtn = e.target.closest('.animal');
   if (animalBtn) {

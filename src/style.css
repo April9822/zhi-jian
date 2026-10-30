@@ -924,3 +924,29 @@ canvas.garden-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-ind
 .tier-legend .tl{display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);padding:3px 0;border-bottom:1px dashed var(--warm-border)}
 .tier-legend .tl b{color:var(--navy)}
 .practice-note{font-size:12px;color:var(--text-muted);line-height:1.6;margin:0}
+
+/* —— data-icon 占位 span 内的 SVG 尺寸 —— */
+.space-card-icon svg{width:100%;height:100%;display:block}
+.account-icon svg{width:36px;height:36px;display:block;margin:0 auto}
+.drop-icon-img svg{width:100%;height:100%;display:block}
+.audio-icon-img svg{width:100%;height:100%;display:block}
+
+/* —— 荒芜态种子选择器（v4 ④） —— */
+.garden-empty-state .seed-wrap{padding:0 18px 18px}
+.seed-cap{font-size:13px;color:var(--text-secondary);margin:6px 0 12px;text-align:center}
+.seed-selector{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.seed-slot{position:relative;width:72px;height:88px;border:1.5px dashed var(--warm-border);border-radius:16px;background:var(--warm-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;transition:border-color .2s ease,background .2s ease,opacity .2s ease,box-shadow .2s ease;opacity:.7}
+.seed-slot svg{width:34px;height:34px;display:block}
+.seed-slot .sn{font-size:13px;font-weight:600;color:var(--navy)}
+.seed-slot .sr{font-size:11px;color:var(--text-secondary)}
+.seed-slot .tick{position:absolute;top:8px;right:9px;width:12px;height:7px;border-left:2px solid var(--coral,#F2A085);border-bottom:2px solid var(--coral,#F2A085);transform:rotate(-45deg);opacity:0;transition:opacity .2s ease}
+.seed-slot.on{border-style:solid;border-color:var(--coral,#F2A085);background:var(--neutral-white);opacity:1;box-shadow:0 4px 12px rgba(242,160,133,.2)}
+.seed-slot.on .tick{opacity:1}
+.seed-slot.disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.7)}
+.seed-slot:focus-visible{outline:2px solid var(--gold,#E0A878);outline-offset:2px}
+
+/* 未勾选关系：隐藏其生态区域（与 #garden-scene.age-restricted 同模式） */
+#garden-scene.seed-off-tree .eco-tree{display:none}
+#garden-scene.seed-off-flower .eco-flower{display:none}
+#garden-scene.seed-off-animal .eco-stream{display:none}
+#garden-scene.seed-off-sprout .eco-nursery{display:none}
